@@ -8,9 +8,10 @@
 
 using namespace std;
 
-void comandosDisponibles(/*Risk &risk*/) {
+int main(/*Risk &risk*/) {
 
     string command;
+    string command2;
     bool isRunning = true;
     do {
         // Imprimir el indicador de línea de comando
@@ -27,6 +28,11 @@ void comandosDisponibles(/*Risk &risk*/) {
             tokens.push_back(s);
         }
         command = tokens[0];
+        command2 = tokens[1];
+
+        if(tokens.size()==2){
+            //things
+        }
 
         if (command == "inicializar") {
             // Implementar la lógica para inicializar el juego
@@ -43,14 +49,47 @@ void comandosDisponibles(/*Risk &risk*/) {
             // Implementar la lógica para calcular el costo y la secuencia de territorios para conquistar un territorio
         } else if (command == "conquista_mas_barata") {
             // Implementar la lógica para calcular la conquista más barata
-        } else if (command == "help") {
-            // Ayudaa
+        } else if (command == "ayuda") {
+            if(tokens.size()==1){
+                cout<< "inicializar                         Inicia un juego si el juego no esta iniciado"<<endl;
+                cout<< "inicializar <nombre_archivo>        Inicializa el juego con los datos contenidos en el archivo identificado por <nombre_archivo>"<<endl;
+                cout<< "turno <id_jugador>                  Comienza el turno del jugador al que le toca"<<endl;
+                cout<< "salir                               Termina la ejecucion de la aplicacion"<<endl;
+                cout<< "guardar <nombre_archivo>            El estado actual del juego es guardado en un archivo de texto"<<endl;
+                cout<< "guardar_comprimido <nombre_archivo> El estado actual del juego es guardado en un arhivo binario con la informacion comprimida"<<endl;
+                cout<< "costo_conquista <territorio>        Calcula el costo y la secuencia de territorios a ser conquistados para lograr "
+                       "controlar el territorio dado por el jugador actual."<<endl;
+                cout<< "conquista_mas_barata                Calcula el territorio el cual implica una menor cantidad de unidades de ejericito perdidos del jugador actual"<<endl;
+            }
         } else {
-            cout << "Comando no reconocido, intente de nuevo. \n";
+            if (command2 == "inicializar") {
+                cout << "inicializar                         Inicia un juego si el juego no esta iniciado" << endl;
+                cout << "inicializar <nombre_archivo>        Inicializa el juego con los datos contenidos en el archivo identificado por <nombre_archivo>" << endl;
+            } else if (command2 == "turno") {
+                cout << "turno <id_jugador>                  Comienza el turno del jugador al que le toca" << endl;
+            } else if (command2 == "salir") {
+                cout << "salir                               Termina la ejecucion de la aplicacion" << endl;
+            } else if (command2 == "guardar") {
+                cout << "guardar <nombre_archivo>            El estado actual del juego es guardado en un archivo de texto"<< endl;
+            } else if (command2 == "guardar_comprimido") {
+                cout << "guardar_comprimido <nombre_archivo> El estado actual del juego es guardado en un arhivo binario con la informacion comprimida"<< endl;
+            } else if (command2 == "costo_conquista") {
+                cout<< "costo_conquista <territorio>        Calcula el costo y la secuencia de territorios a ser conquistados para lograr "
+                       "controlar el territorio dado por el jugador actual." << endl;
+            } else if (command2 == "conquista_mas_barata") {
+                cout<< "conquista_mas_barata                Calcula el territorio el cual implica una menor cantidad de unidades de ejericito "
+                       "perdidos del jugador actual"<< endl;
+            } else {
+                cout << "No existe ningun comando con ese nombre"<<endl;
+            }
+
         }
+        cout << "Comando no reconocido, intente de nuevo. \n";
 
     } while (isRunning);
+    return 1;
 }
+
 
 /*
 #include <iostream>
