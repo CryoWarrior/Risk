@@ -43,6 +43,8 @@ void comandosDisponibles(/*Risk &risk*/) {
             // Implementar la lógica para calcular el costo y la secuencia de territorios para conquistar un territorio
         } else if (command == "conquista_mas_barata") {
             // Implementar la lógica para calcular la conquista más barata
+        } else if (command == "help") {
+            // Ayudaa
         } else {
             cout << "Comando no reconocido, intente de nuevo. \n";
         }
