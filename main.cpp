@@ -1,4 +1,4 @@
-#include "comandos.h"
+/*#include "comandos.h"*/
 #include <iostream>
 #include <iterator>
 #include <list>
