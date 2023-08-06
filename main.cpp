@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -15,9 +14,9 @@ int currentTurn = 1; //id del jugador con el turno actual
 void inicializarJuego();
 void turnoJugador(int jugadorId);
 void salirJuego();
-void guardarEstadoJuego(const std::string& nombreArchivo);
-void guardarEstadoComprimido(const std::string& nombreArchivo);
-void calcularCostoConquista(const std::string& territorio, const std::vector<std::string>& territorios);
+void guardarEstadoJuego(const string& nombreArchivo);
+void guardarEstadoComprimido(const string& nombreArchivo);
+void calcularCostoConquista(const string& territorio, const vector<string>& territorios);
 void calcularConquistaMasBarata();
 
 int main(/*Risk &risk*/) {
@@ -45,10 +44,10 @@ int main(/*Risk &risk*/) {
             inicializarJuego();
         } else if (commandName == "turno") {
             if (tokens.size() >= 2) {
-                int jugadorId = std::stoi(tokens[1]);
+                int jugadorId = stoi(tokens[1]);
                 turnoJugador(jugadorId);
             } else {
-                std::cout << "Falta el <id_jugador>.\n";
+                cout << "Falta el <id_jugador>.\n";
             }
         } else if (commandName == "salir") {
             salirJuego();
@@ -57,17 +56,17 @@ int main(/*Risk &risk*/) {
             if (tokens.size() >= 2) {
                 guardarEstadoJuego(tokens[1]);
             } else {
-                std::cout << "Falta el <nombre_archivo>.\n";
+                cout << "Falta el <nombre_archivo>.\n";
             }
         } else if (commandName == "guardar_comprimido") {
             if (tokens.size() >= 2) {
                 guardarEstadoComprimido(tokens[1]);
             } else {
-                std::cout << "Falta el <nombre_archivo>.\n";
+                cout << "Falta el <nombre_archivo>.\n";
             }
         } else if (commandName == "costo_conquista") {
-            if (tokens.size() >= 3) { // Verificar que haya al menos dos territorios
-                std::vector<std::string> territoriosNecesarios;
+            if (tokens.size() >= 2) { // Verificar que haya un territorio
+                vector<string> territoriosNecesarios;
 
                 for (size_t i = 2; i < tokens.size(); ++i) {
                     territoriosNecesarios.push_back(tokens[i]);
@@ -75,11 +74,9 @@ int main(/*Risk &risk*/) {
 
                 calcularCostoConquista(tokens[1], territoriosNecesarios);
             } else {
-                std::cout << "Comando costo_conquista requiere al menos 2 territorios.\n";
+                cout << "Comando costo_conquista requiere un territorio.\n";
             }
-        } else if (commandName == "conquista_mas_barata") {
-            // Lógica para calcular la conquista más barata
-        } else if (commandName== "ayuda") {
+        }else if (commandName== "ayuda") {
             if(tokens.size()==1){
                 if(!isGameInitialized){
                     cout<< "inicializar                         Inicia un juego si el juego no esta iniciado"<<endl;
@@ -141,29 +138,34 @@ int main(/*Risk &risk*/) {
 
 // Implementa las funciones correspondientes a cada comando
 
-// Implementa las funciones correspondientes a cada comando
 void inicializarJuego() {
     if (isGameInitialized) {
         std::cout << "(Juego en curso) El juego ya ha sido inicializado.\n";
     } else {
-        // Realiza la inicialización del juego aquí
+        // Realiza la inicializacion del juego aquí
         isGameInitialized = true;
-        std::cout << "(Inicializacion satisfactoria) El juego se ha inicializado correctamente.\n";
+        std::cout << "(Inicializacion satisfactoria) El juego se ha inicializado "
+                     "correctamente.\n";
     }
 }
 
 void turnoJugador(int jugadorId) {
     if (!isGameInitialized) {
-        std::cout << "(Juego no inicializado) Esta partida no ha sido inicializada correctamente.\n";
+        std::cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
+                     "correctamente.\n";
     } else if (isGameOver) {
         std::cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
-    } else if (jugadorId < 1 || jugadorId > 4) { // Cambiar 4 al número máximo de jugadores
-        std::cout << "(Jugador no valido) El jugador " << jugadorId << " no forma parte de esta partida.\n";
+    } else if (jugadorId < 1 ||
+               jugadorId > 4) { // Cambiar 4 al número máximo de jugadores
+        std::cout << "(Jugador no valido) El jugador " << jugadorId
+                  << " no forma parte de esta partida.\n";
     } else if (jugadorId != currentTurn) {
-        std::cout << "(Jugador fuera de turno) No es el turno del jugador " << jugadorId << ".\n";
+        std::cout << "(Jugador fuera de turno) No es el turno del jugador "
+                  << jugadorId << ".\n";
     } else {
         // Realiza las acciones del turno aquí
-        std::cout << "(Turno terminado correctamente) El turno del jugador " << jugadorId << " ha terminado.\n";
+        std::cout << "(Turno terminado correctamente) El turno del jugador "
+                  << jugadorId << " ha terminado.\n";
         // Cambiar el turno al siguiente jugador (ejemplo: ciclo entre 1, 2, 3, 4)
         currentTurn = (currentTurn % 4) + 1;
     }
@@ -174,38 +176,45 @@ void salirJuego() {
     std::cout << "El juego ha terminado. ¡Hasta luego!\n";
 }
 
-
-void guardarEstadoJuego(const std::string& nombreArchivo) {
-    // Implementar la lógica para guardar el estado del juego en un archivo de texto
+void guardarEstadoJuego(const std::string &nombreArchivo) {
+    // Implementar la logica para guardar el estado del juego en un archivo de
+    // texto
 }
 
-void guardarEstadoComprimido(const std::string& nombreArchivo) {
-    // Implementar la lógica para guardar el estado del juego en un archivo binario comprimido
+void guardarEstadoComprimido(const std::string &nombreArchivo) {
+    // Implementar la logica para guardar el estado del juego en un archivo
+    // binario comprimido
 }
 
-void calcularCostoConquista(const std::string& territorio, const std::vector<std::string>& territorios) {
+void calcularCostoConquista(const std::string &territorio,
+                            const std::vector<std::string> &territorios) {
     if (!isGameInitialized) {
-        std::cout << "(Juego no inicializado) Esta partida no ha sido inicializada correctamente.\n";
+        std::cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
+                     "correctamente.\n";
     } else if (isGameOver) {
         std::cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
     } else {
         // Mostrar el mensaje con los valores calculados
-        std::cout << "(Comando correcto) Para conquistar el territorio " << territorio << ", debe atacar desde "
-                  << territorios[0] << ", pasando por los territorios ";
+        std::cout << "(Comando correcto) Para conquistar el territorio "
+                  << territorio;
 
-        for (size_t i = 1; i < territorios.size(); ++i) {
-            std::cout << territorios[i];
-            if (i < territorios.size() - 1) {
-                std::cout << ", ";
+        if (!territorios.empty()) {
+            std::cout << ", debe atacar desde " << territorios[0]
+                      << ", pasando por los territorios ";
+
+            for (size_t i = 1; i < territorios.size(); ++i) {
+                std::cout << territorios[i];
+                if (i < territorios.size() - 1) {
+                    std::cout << ", ";
+                }
             }
         }
 
-        std::cout << ". Debe conquistar " << territorios.size() << " unidades de ejército.\n";
+        std::cout << ". Debe conquistar " << territorios.size()
+                  << " unidades de ejercito.\n";
     }
 }
 
-
-
 void calcularConquistaMasBarata() {
-    // Implementar la lógica para calcular la conquista más barata
+    // Implementar la logica para calcular la conquista más barata
 }
