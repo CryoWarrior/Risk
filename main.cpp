@@ -81,6 +81,7 @@ int main(/*Risk &risk*/) {
                 if(!isGameInitialized){
                     cout<< "inicializar                         Inicia un juego si el juego no esta iniciado"<<endl;
                     cout<< "inicializar <nombre_archivo>        Inicializa el juego con los datos contenidos en el archivo identificado por <nombre_archivo>"<<endl;
+                    cout<< "salir                               Termina la ejecucion de la aplicacion"<<endl;
                 }
                 else{
                     cout<< "turno <id_jugador>                  Comienza el turno del jugador actual"<<endl;
