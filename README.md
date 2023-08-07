@@ -1,4 +1,4 @@
-# EstrucDatos
+# Risk
 Este proyecto tiene como objetivo la creación de una herramienta  de software que sirva como ayuda para los jugadores de Risk.
 
 
