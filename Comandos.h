@@ -25,6 +25,12 @@ public:
     void setIsGameInitialized(bool value); 
     bool getIsGameOver() const; 
     void setIsGameOver(bool value);  
+    int obtenerNuevasUnidades(int jugadorId);
+    int obtenerCantidadTerritoriosOcupados(int jugadorId, const vector<string> &territorios);
+    int obtenerUnidadesPorContinentes(int jugadorId);
+    int obtenerUnidadesPorCartas(int jugadorId); 
+    vector <string> obtenerTerritoriosJugador(int jugadorId, const vector<string> &territorios);
+    int obtenerPropietarioTerritorio(const string &territorio, const vector<string> &territorios);
 };
 
 
