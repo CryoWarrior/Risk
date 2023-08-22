@@ -27,7 +27,7 @@ public:
 
     void setColor(const string &color);
 
-    const list<Territorio> &getTerritoriosOcupados() const;
+    list<Territorio> &getTerritoriosOcupados();
 
     void setTerritoriosOcupados(const list<Territorio> &territoriosOcupados);
 

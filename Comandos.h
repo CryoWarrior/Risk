@@ -16,7 +16,7 @@ private:
 public:
     void inicializarJuego();
     void inicializar(string nombre_archivo);
-    void turnoJugador(int jugadorId, Risk risk);
+    void turnoJugador(int jugadorId, Risk& risk);
     void salirJuego();
     void guardarEstadoJuego(const string &nombreArchivo);
     void guardarEstadoComprimido(const string &nombreArchivo);
@@ -27,15 +27,16 @@ public:
     void setIsGameInitialized(bool value); 
     bool getIsGameOver() const; 
     void setIsGameOver(bool value);  
-    int obtenerNuevasUnidades(int jugadorId);
+    int obtenerNuevasUnidades(Jugador jugador);
     int obtenerCantidadTerritoriosOcupados(int jugadorId, const vector<string> &territorios);
     int obtenerUnidadesPorContinentes(int jugadorId);
     int obtenerUnidadesPorCartas(int jugadorId); 
     vector <string> obtenerTerritoriosJugador(int jugadorId, const vector<string> &territorios);
     int obtenerPropietarioTerritorio(const string &territorio, const vector<string> &territorios);
     vector<int> lanzarDados(int cantidad);
-    vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados D);
+    vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados);
     void eliminarPerdidas(Territorio& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
+    void eliminarPropiedadConColor(Risk& risk, string color, string nombreTerritorio);
 };
 
 

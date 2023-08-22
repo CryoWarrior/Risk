@@ -24,7 +24,7 @@ void Jugador::setColor(const string &color) {
     Jugador::color = color;
 }
 
-const list<Territorio> &Jugador::getTerritoriosOcupados() const {
+list<Territorio> &Jugador::getTerritoriosOcupados() {
     return territoriosOcupados;
 }
 
