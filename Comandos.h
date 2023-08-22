@@ -3,7 +3,7 @@
 
 #include "string"
 #include <vector>
-#include "Risk.cpp"
+#include "Risk.h"
 
 using namespace std;
 
@@ -36,7 +36,8 @@ public:
     vector<int> lanzarDados(int cantidad);
     vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados);
     void eliminarPerdidas(Territorio& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
-    void eliminarPropiedadConColor(Risk& risk, string color, string nombreTerritorio);
+    void eliminarPropiedadConColor(Risk& risk, const string& color, string nombreTerritorio);
+    void fortificarPosicion(Jugador& jugador, Risk& risk);
 };
 
 

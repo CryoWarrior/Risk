@@ -3,8 +3,8 @@
 
 #include "string"
 #include "list"
-#include "Territorio.cpp"
-#include "Carta.cpp"
+#include "Territorio.h"
+#include "Carta.h"
 
 using namespace std;
 class Jugador {

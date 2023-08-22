@@ -3,11 +3,11 @@
 
 #include "list"
 #include "vector"
-#include "Tropa.cpp"
-#include "Continente.cpp"
-#include "Jugador.cpp"
-#include "Carta.cpp"
-#include "Territorio.cpp"
+#include "Tropa.h"
+#include "Continente.h"
+#include "Jugador.h"
+#include "Carta.h"
+#include "Territorio.h"
 
 using namespace std;
 class Risk {

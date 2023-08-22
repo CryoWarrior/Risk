@@ -2,8 +2,8 @@
 #define CARTA_H
 
 #include "string"
-#include "Territorio.cpp"
-#include "Tropa.cpp"
+#include "Territorio.h"
+#include "Tropa.h"
 
 using namespace std;
 

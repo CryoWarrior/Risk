@@ -3,7 +3,7 @@
 
 #include "string"
 #include "list"
-#include "Territorio.cpp"
+#include "Territorio.h"
 
 using namespace std;
 

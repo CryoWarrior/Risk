@@ -2,7 +2,7 @@
 #define TERRITORIO_H
 
 #include "string"
-#include "continente.cpp"
+#include "continente.h"
 #include "tropa.h"
 #include "list"
 
