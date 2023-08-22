@@ -7,14 +7,12 @@
 
 using namespace std;
 
-//PUSE ESO EN RISKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-SAasdasdasdasdDAS ARRIIBA MIRA
-void Comandos::inicializarJuego() {
-    if (isGameInitialized) {
+void Comandos::inicializarJuego(Risk& risk) {
+    if (risk.isGameInitialized1()) {
         cout << "(Juego en curso) El juego ya ha sido inicializado.\n";
     } else {
         // Realiza la inicializacion del juego aqui
-        isGameInitialized = true;
+        risk.setIsGameInitialized(true);
         cout << "(Inicializacion satisfactoria) El juego se ha inicializado "
                      "correctamente.\n";
     }
@@ -200,6 +198,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
             if(contQuitarInfanteria > 0){
                 tropasAtacantes.push_back(*iterador);
                 iterador = territorioAtacante.getTropas().erase(iterador);
+                contQuitarInfanteria--;
             }
             else{
                 iterador++;
@@ -208,6 +207,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
             if(contQuitarCaballeria > 0){
                 tropasAtacantes.push_back(*iterador);
                 iterador = territorioAtacante.getTropas().erase(iterador);
+                contQuitarCaballeria--;
             }
             else{
                 iterador++;
@@ -216,6 +216,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
             if(contQuitarArtilleria > 0){
                 tropasAtacantes.push_back(*iterador);
                 iterador = territorioAtacante.getTropas().erase(iterador);
+                contQuitarArtilleria--;
             }
             else{
                 iterador++;
@@ -328,16 +329,16 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
 }
 
 
-void Comandos::salirJuego() {
-    isGameOver = true;
+void Comandos::salirJuego(Risk& risk) {
+    risk.setIsGameOver(true);
     cout << "El juego ha terminado. ¡Hasta luego!\n";
 }
 
-void Comandos::guardarEstadoJuego(const string &nombreArchivo) {
-    if (!isGameInitialized) {
+void Comandos::guardarEstadoJuego(Risk& risk, const string &nombreArchivo) {
+    if (!risk.isGameInitialized1()) {
         cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
                      "correctamente.\n";
-    } else if (isGameOver) {
+    } else if (risk.isGameOver1()) {
         cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
     } else {
 
@@ -350,11 +351,11 @@ void Comandos::guardarEstadoJuego(const string &nombreArchivo) {
     }
 }
 
-void Comandos::guardarEstadoComprimido(const string &nombreArchivo) {
-    if (!isGameInitialized) {
+void Comandos::guardarEstadoComprimido(Risk& risk, const string &nombreArchivo) {
+    if (!risk.isGameInitialized1()) {
         cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
                      "correctamente.\n";
-    } else if (isGameOver) {
+    } else if (risk.isGameOver1()) {
         cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
     } else {
 
@@ -369,11 +370,11 @@ void Comandos::guardarEstadoComprimido(const string &nombreArchivo) {
 
 void Comandos::inicializar(string nombre_archivo) {}
 
-string Comandos::costoConquista(const string &territorio,const vector<string> &territorios) {
-    if (!isGameInitialized) {
+string Comandos::costoConquista(Risk& risk,const string &territorio,const vector<string> &territorios) {
+    if (!risk.isGameInitialized1()) {
         cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
                      "correctamente.\n";
-    } else if (isGameOver) {
+    } else if (risk.isGameOver1()) {
         cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
     } else {
         // Mostrar el mensaje con los valores calculados
@@ -395,13 +396,14 @@ string Comandos::costoConquista(const string &territorio,const vector<string> &t
         cout << ". Debe conquistar " << territorios.size()
                   << " unidades de ejercito.\n";
     }
+    return "Pronto implementado >O";
 }
 
-string Comandos::conquistaMasBarata(const vector<string> &territorios) {
-    if (!isGameInitialized) {
+string Comandos::conquistaMasBarata(Risk& risk, const vector<string> &territorios) {
+    if (!risk.isGameInitialized1()) {
         cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
                      "correctamente.\n";
-    } else if (isGameOver) {
+    } else if (risk.isGameOver1()) {
         cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
     } else {
         // Mostrar el mensaje con los valores calculados
@@ -419,23 +421,8 @@ string Comandos::conquistaMasBarata(const vector<string> &territorios) {
             }
         }
     }
-};
-
-bool Comandos::getIsGameInitialized() const {
-    return isGameInitialized;
-};
-
-void Comandos::setIsGameInitialized(bool value) {
-    isGameInitialized = value;
-};
-
-bool Comandos::getIsGameOver() const {
-    return isGameOver;
-};
-
-void Comandos::setIsGameOver(bool value) {
-    isGameOver = value;
-};
+    return "Implementado pronto :v";
+}
 
 int Comandos::obtenerNuevasUnidades(Jugador& jugador, Risk& risk) {
     int nuevasUnidades = 0;
@@ -718,6 +705,7 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
                 tropasApoyo.push_back(*iterador);
                 iterador = territorioOrigen.getTropas().erase(iterador);
                 unidadesFortificacion ++;
+                contQuitarInfanteria--;
             }
             else{
                 iterador++;
@@ -727,6 +715,7 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
                 tropasApoyo.push_back(*iterador);
                 iterador = territorioOrigen.getTropas().erase(iterador);
                 unidadesFortificacion += 5;
+                contQuitarCaballeria--;
             }
             else{
                 iterador++;
@@ -736,6 +725,7 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
                 tropasApoyo.push_back(*iterador);
                 iterador = territorioOrigen.getTropas().erase(iterador);
                 unidadesFortificacion += 10;
+                contQuitarArtilleria--;
             }
             else{
                 iterador++;

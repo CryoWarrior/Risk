@@ -8,14 +8,6 @@ void Territorio::setNombre(const string &nombre) {
     Territorio::nombre = nombre;
 }
 
-const Continente &Territorio::getContinente() const {
-    return continente;
-}
-
-void Territorio::setContinente(const Continente &continente) {
-    Territorio::continente = continente;
-}
-
 list<Tropa> &Territorio::getTropas(){
     return tropas;
 }
@@ -37,7 +29,6 @@ void Territorio::setTerritoriosColindantes(const list<Territorio> &territoriosCo
 Territorio& Territorio::operator=(const Territorio &other) {
     if (this != &other) {
         nombre = other.nombre;
-        continente = other.continente;
         tropas = other.tropas;
         territoriosColindantes = other.territoriosColindantes;
     }

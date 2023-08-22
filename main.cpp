@@ -38,7 +38,7 @@ int main() {
             string commandName = tokens[0];
 
             if (commandName == "inicializar") {
-                comandos.inicializarJuego();
+                comandos.inicializarJuego(risk);
             } else if (commandName == "turno") {
 
                 if (tokens.size() >= 2) {
@@ -48,17 +48,17 @@ int main() {
                     cout << "Falta el <id_jugador>.\n";
                 }
             } else if (commandName == "salir") {
-                comandos.salirJuego();
+                comandos.salirJuego(risk);
                 isRunning = false;
             } else if (commandName == "guardar") {
                 if (tokens.size() >= 2) {
-                    comandos.guardarEstadoJuego(tokens[1]);
+                    comandos.guardarEstadoJuego(risk, tokens[1]);
                 } else {
                     cout << "Falta el <nombre_archivo>.\n";
                 }
             } else if (commandName == "guardar_comprimido") {
                 if (tokens.size() >= 2) {
-                    comandos.guardarEstadoComprimido(tokens[1]);
+                    comandos.guardarEstadoComprimido(risk, tokens[1]);
                 } else {
                     cout << "Falta el <nombre_archivo>.\n";
                 }
@@ -69,18 +69,17 @@ int main() {
                     for (size_t i = 2; i < tokens.size(); ++i) {
                         territoriosNecesarios.push_back(tokens[i]);
                     }
-                    comandos.costoConquista(tokens[1], territoriosNecesarios);
+                    comandos.costoConquista(risk, tokens[1], territoriosNecesarios);
                 } else {
                     cout << "Comando costo_conquista requiere un territorio.\n";
                 }
             } else if (commandName == "conquista_mas_barata") {
                 vector<string> territorios(0);
-                // TO DO: Logica
 
-                comandos.conquistaMasBarata(territorios);
+                comandos.conquistaMasBarata(risk, territorios);
             } else if (commandName == "ayuda") {
                 if (tokens.size() == 1) {
-                    if (!comandos.getIsGameInitialized()) {
+                    if (!risk.isGameInitialized1()) {
                         cout << "inicializar                         Inicia un juego si el juego no esta iniciado"
                              << endl;
                         cout

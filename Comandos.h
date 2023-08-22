@@ -9,19 +9,16 @@ using namespace std;
 
 class Comandos {
 public:
-    void inicializarJuego();
+    void inicializarJuego(Risk& risk);
     void inicializar(string nombre_archivo);
     void turnoJugador(int jugadorId, Risk& risk);
-    void salirJuego();
-    void guardarEstadoJuego(const string &nombreArchivo);
-    void guardarEstadoComprimido(const string &nombreArchivo);
-    string costoConquista(const string &territorio,const vector<string> &territorios);
-    string conquistaMasBarata(const vector<string> &territorios);
+    void salirJuego(Risk& risk);
+    void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
+    void guardarEstadoComprimido(Risk& risk,const string &nombreArchivo);
+    string costoConquista(Risk& risk, const string &territorio,const vector<string> &territorios);
+    string conquistaMasBarata(Risk& risk,const vector<string> &territorios);
 
-    bool getIsGameInitialized() const; 
-    void setIsGameInitialized(bool value); 
-    bool getIsGameOver() const; 
-    void setIsGameOver(bool value);  
+
     int obtenerNuevasUnidades(Jugador& jugador, Risk& risk);
     int obtenerCantidadTerritoriosOcupados(int jugadorId, const vector<string> &territorios);
     int obtenerUnidadesPorContinentes(int jugadorId);
