@@ -16,7 +16,7 @@ void Territorio::setContinente(const Continente &continente) {
     Territorio::continente = continente;
 }
 
-const list<Tropa> &Territorio::getTropas() const {
+list<Tropa> &Territorio::getTropas(){
     return tropas;
 }
 

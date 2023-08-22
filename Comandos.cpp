@@ -7,6 +7,8 @@
 
 using namespace std;
 
+//PUSE ESO EN RISKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+SAasdasdasdasdDAS ARRIIBA MIRA
 void Comandos::inicializarJuego() {
     if (isGameInitialized) {
         cout << "(Juego en curso) El juego ya ha sido inicializado.\n";
@@ -37,7 +39,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
 
 
     // Verificar si es el turno del jugador
-    if (jugadorId != currentTurn) {
+    if (jugadorId != risk.getCurrentTurn()) {
         cout << "(Jugador fuera de turno) No es el turno del jugador " << jugadorId << ".\n";
         return;
     }
@@ -45,7 +47,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     cout << "Es el turno del jugador " << jugadorId << ".\n";
 
     // Obtener nuevas unidades para el jugador
-    int nuevasUnidades = obtenerNuevasUnidades(jugadorActual);
+    int nuevasUnidades = obtenerNuevasUnidades(jugadorActual, risk);
     cout << "El jugador " << jugadorId << " ha obtenido " << nuevasUnidades << " nuevas unidades.\n";
 
 
@@ -191,10 +193,9 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     int contQuitarCaballeria = caballeriaAtaque;
     int contQuitarArtilleria = artilleriaAtaque;
 
-    vector<Tropa> tropasAtacantes;
-    std::vector<Tropa>::iterator iterador;
+    list<Tropa> tropasAtacantes;
 
-    for(iterador = territorioAtacante.getTropas().begin(); iterador != territorioAtacante.getTropas().end();){
+    for(auto iterador = territorioAtacante.getTropas().begin(); iterador != territorioAtacante.getTropas().end();){
         if(iterador->getTipoTropa() == "Infanteria"){
             if(contQuitarInfanteria > 0){
                 tropasAtacantes.push_back(*iterador);
@@ -277,7 +278,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
         //Comprobar si la batalla esta terminada y Ajustar el estado actual de la partida dependiendo del resultado de la partida
         if(valorAtacante <= 0 || valorDefensor <= 0){
             if(valorAtacante <= 0 && valorDefensor <= 0){
-                territorioDefensor.setTropas(new list<Tropa>);
+                territorioDefensor.setTropas(list<Tropa>());
             } else if(valorAtacante <= 0){
                 cout<<"No lograste conquistar el territorio\n";
                 eliminarPerdidas(territorioDefensor, infanteriaDefensa, caballeriaDefensa, artilleriaDefensa, valorPerdidoDefensores);
@@ -285,7 +286,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
                 cout<<"Lograste controlar el territorio, felicitaciones :)\n";
                 jugadorActual.getTerritoriosOcupados().push_back(territorioDefensor);
                 auto it = territorioDefensor.getTropas().begin();
-                string color = it->color();
+                string color = it->getColor();
                 eliminarPropiedadConColor(risk, color, territorioDefensor.getNombre()); //Eliminar el pais de la lista del defensor
 
                 territorioDefensor.setTropas(tropasAtacantes);
@@ -314,12 +315,16 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     fortificarPosicion(jugadorActual, risk);
 
     // Cambiar el turno al siguiente jugador
-    currentTurn = (currentTurn % 4) + 1;
-    cout << "Turno del jugador " << currentTurn << ".\n";
+    for(auto it = risk.getListaJugadores().begin(); it != risk.getListaJugadores().end(); it++){
+        if(it->getNombre() == jugadorActual.getNombre()){
+            it++;
+            risk.setCurrentTurn(it->getIdJugador());
+            cout << "Turno del jugador " << it->getNombre() << ".\n";
+            break;
+        }
+    }
 
-    // Cambiar el turno al siguiente jugador
-    currentTurn = (currentTurn % totalPlayers) + 1;
-    cout << "Turno del jugador " << currentTurn << ".\n";
+
 }
 
 
@@ -472,7 +477,7 @@ int Comandos::obtenerNuevasUnidades(Jugador& jugador, Risk& risk) {
     int cartasTerritorio = 0;
     cartasTerritorio = jugador.getCartas().size();
 
-    nuevasUnidades += cartasTerritorio / 3; //XD
+    nuevasUnidades += cartasTerritorio / 3;
 
     return nuevasUnidades;
 
@@ -706,9 +711,8 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
     int unidadesFortificacion = 0;
 
     vector<Tropa> tropasApoyo;
-    std::vector<Tropa>::iterator iterador;
 
-    for(iterador = territorioOrigen.getTropas().begin(); iterador != territorioOrigen.getTropas().end();){
+    for(auto iterador = territorioOrigen.getTropas().begin(); iterador != territorioOrigen.getTropas().end();){
         if(iterador->getTipoTropa() == "Infanteria"){
             if(contQuitarInfanteria > 0){
                 tropasApoyo.push_back(*iterador);

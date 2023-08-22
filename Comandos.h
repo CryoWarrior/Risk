@@ -8,11 +8,6 @@
 using namespace std;
 
 class Comandos {
-private:
-    bool isGameInitialized = false;
-    bool isGameOver = false;
-    int currentTurn = 1;
-
 public:
     void inicializarJuego();
     void inicializar(string nombre_archivo);

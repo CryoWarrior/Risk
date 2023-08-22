@@ -17,6 +17,10 @@ protected:
     vector<Carta> listaCartas;
     list<Jugador> listaJugadores;
     list<Territorio> listaTerritorios;
+    int currentTurn;
+    bool isGameInitialized = false;
+    bool isGameOver = false;
+
 
 public:
     Risk();
@@ -40,6 +44,18 @@ public:
     list<Territorio> &getListaTerritorios();
 
     void setListaTerritorios(const list<Territorio> &listaTerritorios);
+
+    int getCurrentTurn() const;
+
+    void setCurrentTurn(int currentTurn);
+
+    bool isGameInitialized1() const;
+
+    void setIsGameInitialized(bool isGameInitialized);
+
+    bool isGameOver1() const;
+
+    void setIsGameOver(bool isGameOver);
 };
 
 

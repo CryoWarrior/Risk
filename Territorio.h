@@ -23,7 +23,7 @@ public:
 
     void setContinente(const Continente &continente);
 
-    const list<Tropa> &getTropas() const;
+    list<Tropa> &getTropas();
 
     void setTropas(const list<Tropa> &tropas);
 

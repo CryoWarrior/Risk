@@ -41,3 +41,27 @@ void Risk::setListaTerritorios(const list<Territorio> &listaTerritorios) {
 }
 
 Risk::Risk() {}
+
+int Risk::getCurrentTurn() const {
+    return currentTurn;
+}
+
+void Risk::setCurrentTurn(int currentTurn) {
+    Risk::currentTurn = currentTurn;
+}
+
+bool Risk::isGameInitialized1() const {
+    return isGameInitialized;
+}
+
+void Risk::setIsGameInitialized(bool isGameInitialized) {
+    Risk::isGameInitialized = isGameInitialized;
+}
+
+bool Risk::isGameOver1() const {
+    return isGameOver;
+}
+
+void Risk::setIsGameOver(bool isGameOver) {
+    Risk::isGameOver = isGameOver;
+}
