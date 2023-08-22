@@ -24,7 +24,7 @@ void Territorio::setTropas(const list<Tropa> &tropas) {
     Territorio::tropas = tropas;
 }
 
-const list<Territorio> &Territorio::getTerritoriosColindantes() const {
+list<Territorio> &Territorio::getTerritoriosColindantes() {
     return territoriosColindantes;
 }
 

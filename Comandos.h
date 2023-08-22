@@ -35,6 +35,7 @@ public:
     int obtenerPropietarioTerritorio(const string &territorio, const vector<string> &territorios);
     vector<int> lanzarDados(int cantidad);
     vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados D);
+    void eliminarPerdidas(Territorio& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
 };
 
 

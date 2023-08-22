@@ -27,7 +27,7 @@ public:
 
     void setTropas(const list<Tropa> &tropas);
 
-    const list<Territorio> &getTerritoriosColindantes() const;
+    list<Territorio> &getTerritoriosColindantes();
 
     void setTerritoriosColindantes(const list<Territorio> &territoriosColindantes);
 

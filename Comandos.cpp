@@ -160,6 +160,7 @@ void Comandos::turnoJugador(int jugadorId, Risk risk) {
         }
     }while (condicional);
 
+
     do{
         std::cout <<"Cuantas tropas de caballeria quieres atacar: ";
         std::cin >> caballeriaAtaque;
@@ -181,6 +182,38 @@ void Comandos::turnoJugador(int jugadorId, Risk risk) {
             condicional = false;
         }
     }while (condicional);
+
+    int contQuitarInfanteria = infanteriaAtaque;
+    int contQuitarCaballeria = caballeriaAtaque;
+    int contQuitarArtilleria = artilleriaAtaque;
+
+    //Quitar las tropas del pais atacante
+    std::vector<Tropa>::iterator iterador;
+
+    for(iterador = territorioAtacante.getTropas().begin(); iterador != territorioAtacante.getTropas().end();){
+        if(iterador->getTipoTropa() == "Infanteria"){
+            if(contQuitarInfanteria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }else if(iterador->getTipoTropa() == "Caballeria"){
+            if(contQuitarCaballeria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }else if(iterador->setTipoTropa() == "Artilleria"){
+            if(contQuitarArtilleria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }
+    }
 
 
 // Número de dados para atacante y defensor (Dados por el enunciado)
@@ -207,7 +240,9 @@ void Comandos::turnoJugador(int jugadorId, Risk risk) {
         }
     }
 
-    while(true){
+
+    condicional = true;
+    while(condicional){
         // Simular lanzamiento de dados y determinar resultados
         vector<int> resultadosAtacante = lanzarDados(dadosAtacante);
         vector<int> resultadosDefensor = lanzarDados(dadosDefensor);
@@ -219,12 +254,21 @@ void Comandos::turnoJugador(int jugadorId, Risk risk) {
         valorDefensor - perdidas[0];
         valorAtacante - perdidas[1];
 
-        //Comprobar si la batalla esta terminada
+        //Comprobar si la batalla esta terminada y Ajustar el estado actual de la partida dependiendo del resultado de la partida
         if(valorAtacante <= 0 || valorDefensor <= 0){
+            if(valorAtacante <= 0 && valorDefensor <= 0){
+                territorioDefensor.setTropas(new list<Tropa>);
+            } else if(valorAtacante <= 0){
+                cout<<"No lograste conquistar el territorio\n";
 
+            } else if(valorDefensor <= 0){
+                cout<<"Lograste controlar el territorio, felicitaciones :)\n";
+            }
+
+            condicional = false;
         }
-
     }
+
 
 
 
@@ -425,6 +469,35 @@ vector<int> Comandos::calcularPerdidas(const vector<int>& resultadosA, const vec
 
     return perdidas;
 }
+
+void Comandos::eliminarPerdidas(Territorio& territorio, int infanteria, int caballaria, int artilleria, int valorPerido){
+    //Organizar tropas
+    for(iterador = territorioAtacante.getTropas().begin(); iterador != territorioAtacante.getTropas().end();){
+        if(iterador->getTipoTropa() == "Infanteria"){
+            if(contQuitarInfanteria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }else if(iterador->getTipoTropa() == "Caballeria"){
+            if(contQuitarCaballeria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }else if(iterador->setTipoTropa() == "Artilleria"){
+            if(contQuitarArtilleria > 0){
+                territorioAtacante.getTropas().erase(iterador);
+            }
+            else{
+                iterador++;
+            }
+        }
+    }
+}
+
 
 // SERA QUE SI IMPLEMENTAMOS ESTA FUNCION?????????????????????
 
