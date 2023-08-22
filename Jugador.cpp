@@ -43,4 +43,12 @@ Jugador& Jugador::operator=(const Jugador &other) {
     return *this;
 }
 
+const list<Carta> &Jugador::getCartas() const {
+    return cartas;
+}
+
+void Jugador::setCartas(const list<Carta> &cartas) {
+    Jugador::cartas = cartas;
+}
+
 

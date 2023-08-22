@@ -31,6 +31,10 @@ public:
 
     void setTerritoriosOcupados(const list<Territorio> &territoriosOcupados);
 
+    const list<Carta> &getCartas() const;
+
+    void setCartas(const list<Carta> &cartas);
+
     Jugador() = default;
 
     Jugador& operator=(const Jugador &other);

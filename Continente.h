@@ -11,6 +11,14 @@ class Continente {
 protected:
     string nombre;
     list<Territorio> territorios;
+public:
+    const string &getNombre() const;
+
+    void setNombre(const string &nombre);
+
+    const list<Territorio> &getTerritorios() const;
+
+    void setTerritorios(const list<Territorio> &territorios);
 };
 
 

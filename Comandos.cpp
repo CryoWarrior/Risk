@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
+
 using namespace std;
 
 void Comandos::inicializarJuego() {
@@ -431,7 +432,7 @@ void Comandos::setIsGameOver(bool value) {
     isGameOver = value;
 };
 
-int Comandos::obtenerNuevasUnidades(Jugador jugador) {
+int Comandos::obtenerNuevasUnidades(Jugador& jugador, Risk& risk) {
     int nuevasUnidades = 0;
 
     // Obtener la cantidad de territorios ocupados por el jugador
@@ -440,13 +441,41 @@ int Comandos::obtenerNuevasUnidades(Jugador jugador) {
     // Calcular las unidades basadas en territorios ocupados
     nuevasUnidades += cantidadTerritoriosOcupados / 3;
 
-    // Calcular las unidades por continentes ocupados
-    nuevasUnidades += obtenerUnidadesPorContinentes(jugadorId);
+    // Calcular unidades por continentes ocupados
+    int continentesOcupados = 0;
+    for (const Continente& continente : risk.getListaContinentes()) {
+        int territoriosOcupadosEnContinente = 0;
+        for (const Territorio& territorio : continente.getTerritorios()) {
+            for (const Territorio& t : jugador.getTerritoriosOcupados()) {
+                if (territorio.getNombre() == t.getNombre()) {
+                    territoriosOcupadosEnContinente++;
+                    break;
+                }
+            }
+        }
+        if (territoriosOcupadosEnContinente == continente.getTerritorios().size()) {
+            if(continente.getNombre()=="America del Sur" || continente.getNombre()=="Oceania"){
+                nuevasUnidades += 2;
+            }
+            else if(continente.getNombre() == "Africa"){
+                nuevasUnidades += 3;
+            }
+            else if(continente.getNombre() == "America del norte" || continente.getNombre() == "Europa"){
+                nuevasUnidades += 5;
+            }
+            else if(continente.getNombre() == "Asia"){
+                nuevasUnidades += 7;
+            }
+        }
+    }
+    // Calcular unidades por cartas de territorios
+    int cartasTerritorio = 0;
+    cartasTerritorio = jugador.getCartas().size();
 
-    // Calcular las unidades por cartas de territorios
-    nuevasUnidades += obtenerUnidadesPorCartas(jugadorId);
+    nuevasUnidades += cartasTerritorio / 3; //XD
 
     return nuevasUnidades;
+
 }
 
 
