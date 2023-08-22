@@ -12,6 +12,10 @@ protected:
     string idCarta;
     Territorio territorio;
     Tropa tropa;
+public:
+    Carta() = default;
+
+    Carta& operator=(const Carta &other);
 };
 
 

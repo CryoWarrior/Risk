@@ -12,6 +12,30 @@ protected:
     string nombre;
     Continente continente;
     list<Tropa> tropas;
+    list<Territorio> territoriosColindantes;
+
+public:
+    const string &getNombre() const;
+
+    void setNombre(const string &nombre);
+
+    const Continente &getContinente() const;
+
+    void setContinente(const Continente &continente);
+
+    const list<Tropa> &getTropas() const;
+
+    void setTropas(const list<Tropa> &tropas);
+
+    const list<Territorio> &getTerritoriosColindantes() const;
+
+    void setTerritoriosColindantes(const list<Territorio> &territoriosColindantes);
+
+    Territorio() = default;
+
+    Territorio& operator=(const Territorio &other);
+
+
 };
 
 

@@ -4,6 +4,7 @@
 #include "string"
 #include "list"
 #include "Territorio.cpp"
+#include "Carta.cpp"
 
 using namespace std;
 class Jugador {
@@ -12,6 +13,27 @@ protected:
     int id_jugador;
     string color;
     list<Territorio> territoriosOcupados;
+    list<Carta> cartas;
+public:
+    const string &getNombre() const;
+
+    void setNombre(const string &nombre);
+
+    int getIdJugador() const;
+
+    void setIdJugador(int idJugador);
+
+    const string &getColor() const;
+
+    void setColor(const string &color);
+
+    const list<Territorio> &getTerritoriosOcupados() const;
+
+    void setTerritoriosOcupados(const list<Territorio> &territoriosOcupados);
+
+    Jugador() = default;
+
+    Jugador& operator=(const Jugador &other);
 };
 
 

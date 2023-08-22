@@ -4,13 +4,16 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Comandos.h"
+#include "Comandos.cpp"
+#include "Risk.cpp"
 
 using namespace std;
 
 int main() {
 
+    Risk risk;
     Comandos comandos;
+
 
     string command;
     bool isRunning = true;
@@ -40,7 +43,7 @@ int main() {
 
                 if (tokens.size() >= 2) {
                     int jugadorId = stoi(tokens[1]);
-                    comandos.turnoJugador(jugadorId);
+                    comandos.turnoJugador(jugadorId, risk);
                 } else {
                     cout << "Falta el <id_jugador>.\n";
                 }

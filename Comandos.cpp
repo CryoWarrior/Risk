@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -16,12 +17,23 @@ void Comandos::inicializarJuego() {
     }
 }
 
-void Comandos::turnoJugador(int jugadorId) {
-   // Verificar si el jugador es válido
-    if (jugadorId < 1 || jugadorId > 4) {
+void Comandos::turnoJugador(int jugadorId, Risk risk) {
+    bool condicional = false;
+
+    //Encontrar usuario y verificar si es valido
+    Jugador jugadorActual;
+    for(const Jugador& jugadorX: risk.getListaJugadores()){
+        if(jugadorId == jugadorX.getIdJugador()){
+            jugadorActual = jugadorX;
+            condicional = true;
+            break;
+        }
+    }
+    if(!condicional){
         cout << "(Jugador no válido) El jugador " << jugadorId << " no forma parte de esta partida.\n";
         return;
     }
+
 
     // Verificar si es el turno del jugador
     if (jugadorId != currentTurn) {
@@ -35,62 +47,187 @@ void Comandos::turnoJugador(int jugadorId) {
     int nuevasUnidades = obtenerNuevasUnidades(jugadorId);
     cout << "El jugador " << jugadorId << " ha obtenido " << nuevasUnidades << " nuevas unidades.\n";
 
-    // Atacar territorios y realizar las operaciones necesarias
-    string territorioAtacante, territorioDefensor;
-    int unidadesAtaque;
 
-    cout << "Ingrese el nombre del territorio atacante: ";
-    cin >> territorioAtacante;
+//Elegir territorio de ataque ---------------
 
-    cout << "Ingrese el nombre del territorio defensor: ";
-    cin >> territorioDefensor;
+    // Obtener nombres territorio del jugador
+    vector<string> territoriosJugador;
+    for(const Territorio& t: jugadorActual.getTerritoriosOcupados()){
+        territoriosJugador.push_back(t.getNombre());
+    }
 
-    cout << "Ingrese la cantidad de unidades para el ataque: ";
-    cin >> unidadesAtaque;
+    // Mostrar territorios del jugador
+    cout << "Territorios del jugador " << jugadorId << ": ";
+    for (const string &territorio : territoriosJugador) {
+        cout << territorio << " ";
+    }
+    cout << "\n";
 
-   
-// Obtener territorios del jugador
-vector<string> territoriosJugador = obtenerTerritoriosJugador(jugadorId);
 
-// Mostrar territorios del jugador
-cout << "Territorios del jugador " << jugadorId << ": ";
-for (const string &territorio : territoriosJugador) {
-    cout << territorio << " ";
-}
-cout << "\n";
+    // Territorio atacante
+    condicional = true;
+    Territorio territorioAtacante;
+    string SterritorioAtacante;
 
-// Seleccionar territorio atacante
-string territorioAtacante;
-cout << "Selecciona el territorio para atacar: ";
-cin >> territorioAtacante;
+    do{
+    cout << "Selecciona el territorio desde el que se ataca: ";
+    cin >> SterritorioAtacante;
+    for(Territorio& t: risk.getListaTerritorios()){
+        if(SterritorioAtacante==t.getNombre()){
+            territorioAtacante = t;
+            condicional = false;
+            break;
+        }
+    }
+    if(condicional){
+        std::cout<<"Este territorio no existe\n";
+    }
+    }while (condicional);
 
-// Seleccionar territorio defensor
-string territorioDefensor;
-cout << "Selecciona el territorio a atacar: ";
-cin >> territorioDefensor;
 
-// Obtener número de dados para atacante y defensor (simplificado)
-int dadosAtacante = 3;
-int dadosDefensor = 2;
+//Elegir territorio para atacar --------------
 
-// Simular lanzamiento de dados y determinar resultados
-vector<int> resultadosAtacante = lanzarDados(dadosAtacante);
-vector<int> resultadosDefensor = lanzarDados(dadosDefensor);
+    // Obtener nombres territorio del jugador
+    vector<string> territoriosColindantes;
+    for(const Territorio& t: territorioAtacante.getTerritoriosColindantes()){
+        territoriosColindantes.push_back(t.getNombre());
+    }
 
-// Calcular pérdidas de unidades para atacante y defensor
-int perdidasAtacante = calcularPerdidas(resultadosAtacante, resultadosDefensor);
-int perdidasDefensor = calcularPerdidas(resultadosDefensor, resultadosAtacante);
+    // Mostrar territorios colindantes
+    cout << "Territorios que puede atacar " << jugadorId << ": ";
+    for (const string &territorio : territoriosJugador) {
+        cout << territorio << " ";
+    }
+    cout << "\n";
 
-// Actualizar estado de los territorios (simplificado)
-if (perdidasDefensor > 0) {
-    // El defensor pierde unidades
-    disminuirUnidades(territorioDefensor, perdidasDefensor);
-} else {
-    // El atacante conquista el territorio
-    conquistarTerritorio(territorioDefensor, jugadorId);
-    disminuirUnidades(territorioAtacante, perdidasAtacante);
-}
-    
+    // Territorio defensor
+
+    condicional = true;
+    Territorio territorioDefensor;
+    string SterritorioDefensor;
+
+    do{
+        cout << "Selecciona el territorio a atacar: ";
+        cin >> SterritorioDefensor;
+        for(Territorio& t: territorioAtacante.getTerritoriosColindantes()){
+            if(SterritorioDefensor==t.getNombre()){
+                territorioDefensor = t;
+                condicional = false;
+                break;
+            }
+        }
+        if(condicional){
+            std::cout<<"Este territorio no colinda con su territorio atacante\n";
+        }
+    }while (condicional);
+
+// Elegir cantidad de tropas para atacar:
+
+    //Cuenta disponibilidad de tropas
+    int contInfanteria = 0;
+    int contCaballeria = 0;
+    int contArtilleria = 0;
+
+    for(Tropa tropa: territorioAtacante.getTropas()){
+        if(tropa.getTipoTropa() == "Infanteria"){
+
+        }else if(tropa.getTipoTropa() == "Caballeria"){
+
+        }else if(tropa.getTipoTropa() == "Artilleria"){
+
+        }else cout << " ñóñáñáíóú \"Hay tipos de tropa no valida :(\"\n";
+    }
+
+    //Imprime tropas disponibles
+    std::cout << "Tropas con las que puedes atacar:\n";
+    std::cout << "Infanteria: "<<contInfanteria<<endl;
+    std::cout << "Caballeria: "<<contCaballeria<<endl;
+    std::cout << "Artilleria: "<<contArtilleria<<endl;
+
+    //Pregunta por las tropas que quiere atacar
+    int infanteriaAtaque;
+    int caballeriaAtaque;
+    int artilleriaAtaque;
+
+    do{
+        std::cout <<"Cuantas tropas de infanteria quieres atacar: ";
+        std::cin >> infanteriaAtaque;
+        if(infanteriaAtaque > contInfanteria|| artilleriaAtaque < 0){
+            std::cout<<"No tienes esa cantidad de unidades de infanteria\n";
+            condicional = true;
+        } else{
+            condicional = false;
+        }
+    }while (condicional);
+
+    do{
+        std::cout <<"Cuantas tropas de caballeria quieres atacar: ";
+        std::cin >> caballeriaAtaque;
+        if(caballeriaAtaque > contCaballeria|| artilleriaAtaque < 0){
+            std::cout<<"No tienes esa cantidad de unidades de caballeria\n";
+            condicional = true;
+        } else{
+            condicional = false;
+        }
+    }while (condicional);
+
+    do{
+        std::cout <<"Cuantas tropas de artilleria quieres atacar: ";
+        std::cin >> artilleriaAtaque;
+        if(artilleriaAtaque > contArtilleria || artilleriaAtaque < 0){
+            std::cout<<"No tienes esa cantidad de unidades de artilleria\n";
+            condicional = true;
+        } else{
+            condicional = false;
+        }
+    }while (condicional);
+
+
+// Número de dados para atacante y defensor (Dados por el enunciado)
+    int dadosAtacante = 3;
+    int dadosDefensor = 2;
+
+// Ciclo de conquista
+    condicional = true;
+
+    //Cacular valor de tropas (En medidas de infateria) iniciales
+    int valorAtacante = 0;
+    valorAtacante += infanteriaAtaque;
+    valorAtacante += 5 * caballeriaAtaque;
+    valorAtacante += 10 * artilleriaAtaque;
+
+    int valorDefensor = 0;
+    for(Tropa tropa: territorioDefensor.getTropas()){
+        if(tropa.getTipoTropa() == "Infanteria"){
+            valorDefensor += 1;
+        }else if(tropa.getTipoTropa() == "Caballeria"){
+            valorDefensor += 5;
+        }else if(tropa.getTipoTropa() == "Artilleria"){
+            valorDefensor += 10;
+        }
+    }
+
+    while(true){
+        // Simular lanzamiento de dados y determinar resultados
+        vector<int> resultadosAtacante = lanzarDados(dadosAtacante);
+        vector<int> resultadosDefensor = lanzarDados(dadosDefensor);
+
+        // Calcular pérdidas de unidades para atacante y defensor (Ataque se devuelve en [1] y defensa en [0]
+        vector<int> perdidas = calcularPerdidas(resultadosAtacante, resultadosDefensor);
+
+        // Actualizar valor de tropas de la batalla (Provisional)
+        valorDefensor - perdidas[0];
+        valorAtacante - perdidas[1];
+
+        //Comprobar si la batalla esta terminada
+        if(valorAtacante <= 0 || valorDefensor <= 0){
+
+        }
+
+    }
+
+
+
     // Fortificar la posición del jugador
     string territorioOrigen, territorioDestino;
     int unidadesFortificacion;
@@ -240,16 +377,67 @@ int Comandos::obtenerNuevasUnidades(int jugadorId) {
     return nuevasUnidades;
 }
 
+
+vector<int> Comandos::lanzarDados(int cantidad){
+    vector<int> resultados;
+    //Poner los resultados en el vector
+    std::srand(std::time(nullptr));
+    for(int i=0; i< cantidad;i++){
+        resultados.push_back((std::rand() % 6) + 1);
+    }
+
+    //Ordenar los resultados de mayor a menor
+    int aux;
+    for(int i=0; i<cantidad; i++){
+        for(int j=0; j<cantidad; j++){
+            if(resultados[i]<resultados[j]){
+                aux = resultados[j];
+                resultados[j]=resultados[i];
+                resultados[i] = aux;
+            }
+        }
+    }
+
+    return resultados;
+}
+
+vector<int> Comandos::calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultadosD) {
+    int perdidasA = 0;
+    int perdidasD = 0;
+
+    //Calcula la cantidad de dados a comparar
+    int menorCantidad;
+    if(resultadosD.size() <= resultadosA.size()){
+        menorCantidad = resultadosD.size();
+    }else menorCantidad = resultadosA.size();
+
+    for(int i=0; i<menorCantidad; i++){
+        if(resultadosD[i] >= resultadosA[i]){
+            perdidasA++;
+        }
+        else perdidasD++;
+    }
+
+    //El vector de vuelta devuelve primero las perdidas del defensor y luego las del atacante
+    vector<int> perdidas;
+    perdidas.push_back(perdidasD);
+    perdidas.push_back(perdidasA);
+
+    return perdidas;
+}
+
+// SERA QUE SI IMPLEMENTAMOS ESTA FUNCION?????????????????????
+
 vector<string> Comandos::obtenerTerritoriosJugador(int jugadorId, const vector<string> &territorios) {
     vector<string> territoriosJugador;
-
+/*
     for (const auto &territorio : territorios) {
         int propietario = obtenerPropietarioTerritorio(territorio); // Implementar esta función
         if (propietario == jugadorId) {
             territoriosJugador.push_back(territorio);
         }
     }
-
+*/
     return territoriosJugador;
 }
 

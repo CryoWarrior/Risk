@@ -8,6 +8,20 @@ class Tropa {
 protected:
     string tipoTropa;
     int valorTropa;
+    string color;
+
+public:
+    const string &getTipoTropa() const;
+
+    void setTipoTropa(const string &tipoTropa);
+
+    int getValorTropa() const;
+
+    void setValorTropa(int valorTropa);
+
+    const string &getColor() const;
+
+    void setColor(const string &color);
 };
 
 
