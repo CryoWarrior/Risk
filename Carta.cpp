@@ -1,4 +1,3 @@
-using namespace std;
 #include "Carta.h"
 
 Carta& Carta::operator=(const Carta &other) {

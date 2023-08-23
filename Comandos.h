@@ -13,7 +13,7 @@ using namespace std;
 class Comandos {
 public:
     void inicializarJuego(Risk& risk);
-    void inicializar(string nombre_archivo);
+    void inicializar(const string& nombre_archivo);
     void turnoJugador(int jugadorId, Risk& risk);
     void salirJuego(Risk& risk);
     void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
@@ -31,8 +31,8 @@ public:
     vector<int> lanzarDados(int cantidad);
     vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados);
     void eliminarPerdidas(Territorio& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
-    void eliminarPropiedadConColor(Risk& risk, const string& color, string nombreTerritorio);
-    void fortificarPosicion(Jugador& jugador, Risk& risk);
+    void eliminarPropiedadConColor(Risk& risk, const string& color, const string& nombreTerritorio);
+    static void fortificarPosicion(Jugador& jugador, Risk& risk);
 };
 
 

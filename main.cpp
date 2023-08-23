@@ -9,14 +9,12 @@
 
 using namespace std;
 
-void establecerTerritoriosContinentes(Risk& risk);
-
 int main() {
 
     Risk risk;
     Comandos comandos;
 
-
+    risk.iniciarElementosJuego();
 
     string command;
     bool isRunning = true;
@@ -149,33 +147,4 @@ int main() {
 
     } while (isRunning);
     return 0;
-}
-
-void establecerTerritoriosContinentes(Risk& risk){
-    //America del norte
-    risk.getListaTerritorios().push_back(Territorio("Alaska",{}));
-    risk.getListaTerritorios().push_back(Territorio("Alberta",{}));
-    risk.getListaTerritorios().push_back(Territorio("América Central",{}));
-    risk.getListaTerritorios().push_back(Territorio("Estados Unidos Orientales",{}));
-    risk.getListaTerritorios().push_back(Territorio("Groenlandia",{}));
-    risk.getListaTerritorios().push_back(Territorio("Territorio Noroccidental",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Quebec",{}));
-    risk.getListaTerritorios().push_back(Territorio("Estados Unidos Occidentales",{}));
-
-
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-    risk.getListaTerritorios().push_back(Territorio("Ontario",{}));
-
-
-
 }

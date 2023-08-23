@@ -59,7 +59,7 @@ public:
 
     void setIsGameOver(bool isGameOver);
 
-    void elementosJuego();
+    void iniciarElementosJuego();
 };
 
 #endif //RISK_H

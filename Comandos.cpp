@@ -48,6 +48,14 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     int nuevasUnidades = obtenerNuevasUnidades(jugadorActual, risk);
     cout << "El jugador " << jugadorId << " ha obtenido " << nuevasUnidades << " nuevas unidades.\n";
 
+    while(nuevasUnidades > 0){
+        cout << "Territorios del jugador " << jugadorId << ": ";
+        for (Territorio territorio : jugadorActual.getTerritoriosOcupados()) {
+            cout <<  territorio.getNombre() << " ";
+        }
+        cout << "\n";
+
+    }
 
 //Elegir territorio de ataque ---------------
 
@@ -153,7 +161,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     do{
         std::cout <<"Con cuantas tropas de infanteria quieres atacar: ";
         std::cin >> infanteriaAtaque;
-        if(infanteriaAtaque > contInfanteria|| artilleriaAtaque < 0){
+        if(infanteriaAtaque > contInfanteria|| infanteriaAtaque < 0){
             std::cout<<"No tienes esa cantidad de unidades de infanteria\n";
             condicional = true;
         } else{
@@ -165,7 +173,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     do{
         std::cout <<"Con cuantas tropas de caballeria quieres atacar: ";
         std::cin >> caballeriaAtaque;
-        if(caballeriaAtaque > contCaballeria|| artilleriaAtaque < 0){
+        if(caballeriaAtaque > contCaballeria|| caballeriaAtaque < 0){
             std::cout<<"No tienes esa cantidad de unidades de caballeria\n";
             condicional = true;
         } else{
@@ -368,7 +376,7 @@ void Comandos::guardarEstadoComprimido(Risk& risk, const string &nombreArchivo) 
     }
 }
 
-void Comandos::inicializar(string nombre_archivo) {}
+void Comandos::inicializar(const string& nombre_archivo) {}
 
 string Comandos::costoConquista(Risk& risk,const string &territorio,const vector<string> &territorios) {
     if (!risk.isGameInitialized1()) {
@@ -547,7 +555,7 @@ void Comandos::eliminarPerdidas(Territorio& territorio, int infanteria, int caba
     }
 }
 
-void Comandos::eliminarPropiedadConColor(Risk& risk,const string& color, string nombreTerritorio){
+void Comandos::eliminarPropiedadConColor(Risk& risk,const string& color, const string& nombreTerritorio){
     for(Jugador jugador:risk.getListaJugadores()){
         if(jugador.getColor()== color){
             for(auto iterador = jugador.getTerritoriosOcupados().begin();
@@ -634,7 +642,7 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
     int contCaballeria = 0;
     int contArtilleria = 0;
 
-    for(Tropa tropa: territorioOrigen.getTropas()){
+    for(const Tropa& tropa: territorioOrigen.getTropas()){
         if(tropa.getTipoTropa() == "Infanteria"){
             contInfanteria++;
         }else if(tropa.getTipoTropa() == "Caballeria"){
