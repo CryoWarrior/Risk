@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef RISK_H
 #define RISK_H
 
@@ -56,7 +58,8 @@ public:
     bool isGameOver1() const;
 
     void setIsGameOver(bool isGameOver);
-};
 
+    void elementosJuego();
+};
 
 #endif //RISK_H

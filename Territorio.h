@@ -1,3 +1,6 @@
+#pragma once
+
+
 #ifndef TERRITORIO_H
 #define TERRITORIO_H
 
@@ -28,6 +31,8 @@ public:
     void setTerritoriosColindantes(const list<Territorio> &territoriosColindantes);
 
     Territorio() = default;
+
+    Territorio(const string &nombre, const list<Tropa> &tropas);
 
     Territorio& operator=(const Territorio &other);
 

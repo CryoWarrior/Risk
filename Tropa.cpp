@@ -23,3 +23,6 @@ const string &Tropa::getColor() const {
 void Tropa::setColor(const string &color) {
     Tropa::color = color;
 }
+
+Tropa::Tropa(const string &tipoTropa, int valorTropa, const string &color) : tipoTropa(tipoTropa),
+                                                                             valorTropa(valorTropa), color(color) {}

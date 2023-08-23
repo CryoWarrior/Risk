@@ -1,3 +1,6 @@
+#pragma once
+
+
 #ifndef MAIN_CPP_TROPA_H
 #define MAIN_CPP_TROPA_H
 
@@ -22,6 +25,10 @@ public:
     const string &getColor() const;
 
     void setColor(const string &color);
+
+    Tropa() = default;
+
+    Tropa(const string &tipoTropa, int valorTropa, const string &color);
 };
 
 

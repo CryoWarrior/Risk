@@ -1,19 +1,22 @@
+#pragma once
+
 #ifndef CARTA_H
 #define CARTA_H
 
+
 #include "string"
-#include "Territorio.h"
-#include "Tropa.h"
 
 using namespace std;
 
 class Carta {
 protected:
     string idCarta;
-    Territorio territorio;
-    Tropa tropa;
+    string territorio;
+    string tropa;
 public:
     Carta() = default;
+
+    Carta(const string &idCarta, const string &territorio, const string &tropa);
 
     Carta& operator=(const Carta &other);
 };

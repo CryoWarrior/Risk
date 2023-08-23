@@ -51,4 +51,7 @@ void Jugador::setCartas(const list<Carta> &cartas) {
     Jugador::cartas = cartas;
 }
 
+Jugador::Jugador(const string &nombre, int idJugador, const string &color) : nombre(nombre), id_jugador(idJugador),
+                                                                             color(color) {}
+
 

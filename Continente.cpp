@@ -15,3 +15,6 @@ const list<Territorio> &Continente::getTerritorios() const {
 void Continente::setTerritorios(const list<Territorio> &territorios) {
     Continente::territorios = territorios;
 }
+
+Continente::Continente(const string &nombre, const list<Territorio> &territorios) : nombre(nombre),
+                                                                                    territorios(territorios) {}

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
@@ -36,6 +38,8 @@ public:
     void setCartas(const list<Carta> &cartas);
 
     Jugador() = default;
+
+    Jugador(const string &nombre, int idJugador, const string &color);
 
     Jugador& operator=(const Jugador &other);
 };

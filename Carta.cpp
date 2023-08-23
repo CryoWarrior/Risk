@@ -9,3 +9,7 @@ Carta& Carta::operator=(const Carta &other) {
     }
     return *this;
 }
+
+Carta::Carta(const string &idCarta, const string &territorio, const string &tropa) : idCarta(idCarta),
+                                                                                        territorio(territorio),
+                                                                                        tropa(tropa) {}

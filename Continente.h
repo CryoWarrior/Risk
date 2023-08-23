@@ -1,3 +1,6 @@
+#pragma once
+
+
 #ifndef CONTINENTE_H
 #define CONTINENTE_H
 
@@ -13,6 +16,10 @@ protected:
     list<Territorio> territorios;
 public:
     const string &getNombre() const;
+
+    Continente() = default;
+
+    Continente(const string &nombre, const list<Territorio> &territorios);
 
     void setNombre(const string &nombre);
 
