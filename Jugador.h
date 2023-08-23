@@ -35,6 +35,10 @@ public:
 
     const list<Carta> &getCartas() const;
 
+    void agregarCarta(Carta& carta);
+
+    void eliminarCarta(std::list<Carta>::const_iterator iterador);
+
     void setCartas(const list<Carta> &cartas);
 
     Jugador() = default;

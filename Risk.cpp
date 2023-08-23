@@ -66,6 +66,15 @@ void Risk::setIsGameOver(bool isGameOver) {
     Risk::isGameOver = isGameOver;
 }
 
+int Risk::getCartasIntercambiadas() const {
+    return cartasIntercambiadas;
+}
+
+void Risk::setCartasIntercambiadas(int cartasIntercambiadas) {
+    Risk::cartasIntercambiadas = cartasIntercambiadas;
+}
+
+
 void Risk::iniciarElementosJuego() {
 
 // Agrega territorios a los continentes y a Risk
@@ -336,7 +345,14 @@ void Risk::iniciarElementosJuego() {
     listaCartas.emplace_back("40",nuevaGuinea.getNombre(),"Artilleria");
     listaCartas.emplace_back("41",alberta.getNombre(),"Caballeria");
     listaCartas.emplace_back("42",quebec.getNombre(),"Infanteria");
-    listaCartas.emplace_back("43",quebec.getNombre(),"Comodin");
+    listaCartas.emplace_back("43",venezuela.getNombre(),"Comodin");
     listaCartas.emplace_back("44",quebec.getNombre(),"Comodin");
 
+    //Inicializo la cantidad de cartas intercambiadas
+    cartasIntercambiadas = 0;
 }
+
+void Risk::eliminarUltimaCarta() {
+    listaCartas.pop_back();
+}
+

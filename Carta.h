@@ -19,6 +19,20 @@ public:
     Carta(const string &idCarta, const string &territorio, const string &tropa);
 
     Carta& operator=(const Carta &other);
+
+    const string &getIdCarta() const;
+
+    void setIdCarta(const string &idCarta);
+
+    const string &getTerritorio() const;
+
+    void setTerritorio(const string &territorio);
+
+    const string &getTropa() const;
+
+    void setTropa(const string &tropa);
+
+    bool operator==(const Carta& other) const;
 };
 
 

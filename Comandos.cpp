@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "algorithm"
+#include <unordered_map>
 
 
 using namespace std;
@@ -48,14 +50,93 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     int nuevasUnidades = obtenerNuevasUnidades(jugadorActual, risk);
     cout << "El jugador " << jugadorId << " ha obtenido " << nuevasUnidades << " nuevas unidades.\n";
 
+    int infanteria, caballeria, artilleria;
+    std::string Nterritorio;
+    Territorio territorioParaPoner;
+
+    //CIclo para poner las tropas
     while(nuevasUnidades > 0){
+
+        //Muestra los territorios
         cout << "Territorios del jugador " << jugadorId << ": ";
         for (Territorio territorio : jugadorActual.getTerritoriosOcupados()) {
             cout <<  territorio.getNombre() << " ";
         }
         cout << "\n";
 
+        std::cout << "Tienes " << nuevasUnidades << " unidades disponibles." << std::endl;
+
+        //Recibe y comprueba el territorio
+        std::cout<<"Introduzca el territorio donde va a poner sus tropas: ";
+        std::cin >> Nterritorio;
+
+        condicional = false;
+        for(Territorio territorio: jugadorActual.getTerritoriosOcupados()){
+            if(territorio.getNombre() == Nterritorio){
+                territorioParaPoner = territorio;
+                condicional = true;
+                break;
+            }
+        }
+        if(condicional){ //Pregunta por tropas y las añade al territorio
+
+            std::cout << "Ingresa la cantidad de artillería para ubicar en " << territorioParaPoner.getNombre() << ": ";
+            std::cin >> artilleria;
+
+            if(artilleria * 10 > nuevasUnidades){
+                cout<<"No tiene suficientes unidades para ubicar "<<artilleria<<" unidades de artilleria\n";
+            }else{
+                nuevasUnidades -= artilleria*10;
+                for (int i = 0; i < artilleria; ++i) {
+                    Tropa nuevaArtilleria;
+                    nuevaArtilleria.setTipoTropa("Artilleria");
+                    nuevaArtilleria.setValorTropa(10);
+                    nuevaArtilleria.setColor(jugadorActual.getColor());
+                    territorioParaPoner.getTropas().push_back(nuevaArtilleria);
+                }
+            }
+
+
+            std::cout << "Ingresa la cantidad de caballería para ubicar en " << territorioParaPoner.getNombre() << ": ";
+            std::cin >> caballeria;
+
+            if(caballeria * 5 > nuevasUnidades){
+                cout<<"No tiene suficientes unidades para ubicar "<<caballeria<<" unidades de caballeria\n";
+            }else {
+                nuevasUnidades -= caballeria*5;
+                for (int i = 0; i < caballeria; ++i) {
+                    Tropa nuevaCaballeria;
+                    nuevaCaballeria.setTipoTropa("Caballeria");
+                    nuevaCaballeria.setValorTropa(5);
+                    nuevaCaballeria.setColor(jugadorActual.getColor());
+                    territorioParaPoner.getTropas().push_back(nuevaCaballeria);
+                }
+            }
+
+            std::cout << "Ingresa la cantidad de infantería para ubicar en " << territorioParaPoner.getNombre() << ": ";
+            std::cin >> infanteria;
+
+            if(infanteria > nuevasUnidades){
+                cout<<"No tiene suficientes unidades para ubicar "<<infanteria<<" unidades de infanteria\n";
+            }else {
+                nuevasUnidades -= infanteria;
+                for (int i = 0; i < infanteria; ++i) {
+                    Tropa nuevaInfanteria;
+                    nuevaInfanteria.setTipoTropa("Infanteria");
+                    nuevaInfanteria.setValorTropa(1);
+                    nuevaInfanteria.setColor(jugadorActual.getColor());
+                    territorioParaPoner.getTropas().push_back(nuevaInfanteria);
+                }
+            }
+
+        }
+        else{ //Dice si no se entro un territorio valido
+            std::cout<<"El jugador no tiene este territorio";
+        }
     }
+
+    std::cout << "Unidades ubicadas exitosamente en tus territorios."<<std::endl;
+
 
 //Elegir territorio de ataque ---------------
 
@@ -301,7 +382,15 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
                 territorioDefensor.setTropas(tropasAtacantes);
                 eliminarPerdidas(territorioDefensor, infanteriaAtaque, caballeriaAtaque, artilleriaAtaque, valorPerdidoAtacantes);
 
-            }
+                //Dar carta por la victoria
+                if(!risk.getListaCartas().empty()){
+                    jugadorActual.agregarCarta(risk.getListaCartas().back());
+                    risk.eliminarUltimaCarta();
+                }
+                else {
+                    cout<<"Ya no hay mas cartas\n";
+                }
+                }
 
             condicional = false;
         }
@@ -469,14 +558,184 @@ int Comandos::obtenerNuevasUnidades(Jugador& jugador, Risk& risk) {
         }
     }
     // Calcular unidades por cartas de territorios
-    int cartasTerritorio = 0;
-    cartasTerritorio = jugador.getCartas().size();
-
-    nuevasUnidades += cartasTerritorio / 3;
+    nuevasUnidades += intercambiarCartas(jugador,risk);
 
     return nuevasUnidades;
-
 }
+
+int Comandos::intercambiarCartas(Jugador& jugadorActual, Risk& risk) {
+    const list<Carta>& cartasJugador = jugadorActual.getCartas();
+
+
+    int cartasIntercambiadas = risk.getCartasIntercambiadas();
+    int unidadesExtras = 0;
+
+    int contadorComodines = 0;
+    int contadorInfanteria = 0;
+    int contadorCaballeria = 0;
+    int contadorArtilleria = 0;
+
+    int contadorGrupo;
+
+    Comandos comandos;
+
+
+    vector<Carta> cartasAIntercambiar;
+
+    for (const Carta& carta : cartasJugador) {
+        if (carta.getTropa() == "Comodin") {
+            contadorComodines++;
+        } else if(carta.getTropa() == "Infanteria"){
+            contadorInfanteria++;
+        } else if(carta.getTropa() == "Caballeria"){
+            contadorCaballeria++;
+        } else if(carta.getTropa() == "Artilleria"){
+            contadorArtilleria++;
+        }
+
+        // Si son se encuentra de la misma tropa
+        if (contadorInfanteria == 3 || contadorCaballeria == 3 || contadorArtilleria == 3 ||
+            (contadorComodines > 0 && (contadorComodines+contadorArtilleria+contadorCaballeria+contadorInfanteria>=3))) {
+            // Determinar el tipo de intecambio
+            string tipoIntercambio;
+            if (contadorInfanteria >= 3) {
+                tipoIntercambio = "Infanteria";
+            } else if (contadorCaballeria >= 3) {
+                tipoIntercambio = "Caballeria";
+            } else if (contadorArtilleria >= 3) {
+                tipoIntercambio = "Artilleria";
+            } else if (contadorComodines > 0) {
+                tipoIntercambio = "Comodin";
+            }
+
+            //Realizar el intercambio, si hubo comodines se recibe cuantos se usaron
+            int comodinesUsados = comandos.intercambioCartasYTerritorio(risk, jugadorActual, tipoIntercambio, 3);
+
+            //Se calculan las unidades extra que puede calcular
+            unidadesExtras = comandos.calcularUnidadesExtra(cartasIntercambiadas, unidadesExtras);
+
+            // Ajustar contadores dependiendo del intercambio hecho
+            if (tipoIntercambio == "Infanteria") {
+                contadorInfanteria -= 3;
+            } else if (tipoIntercambio == "Caballeria") {
+                contadorCaballeria -= 3;
+            } else if (tipoIntercambio == "Artilleria") {
+                contadorArtilleria -= 3;
+            } else if(tipoIntercambio == "Comodin"){
+                contadorComodines -= comodinesUsados;
+            }
+
+            cartasIntercambiadas++; // Intercambio realizado
+
+        } else if (contadorInfanteria > 0 || contadorCaballeria > 0 || contadorArtilleria > 0) {
+            comandos.intercambioCartasYTerritorio(risk, jugadorActual, "Infanteria", 1);
+            comandos.intercambioCartasYTerritorio(risk, jugadorActual, "Caballeria", 1);
+            comandos.intercambioCartasYTerritorio(risk, jugadorActual, "Artilleria", 1);
+
+            unidadesExtras = comandos.calcularUnidadesExtra(cartasIntercambiadas, unidadesExtras);
+            contadorArtilleria--;
+            contadorInfanteria--;
+            contadorCaballeria--;
+            cartasIntercambiadas++; // Intercambio realizado
+        }
+    }
+    risk.setCartasIntercambiadas(cartasIntercambiadas);
+
+
+    return unidadesExtras;
+}
+
+int Comandos::calcularUnidadesExtra(int cartasIntercambiadas, int unidadesExtras){
+    if (cartasIntercambiadas == 0) {
+        unidadesExtras += 4;
+    } else if(cartasIntercambiadas == 1) {
+        unidadesExtras += 6;
+    } else if(cartasIntercambiadas == 2) {
+        unidadesExtras += 8;
+    } else if(cartasIntercambiadas == 3) {
+        unidadesExtras += 10;
+    } else if(cartasIntercambiadas == 4) {
+        unidadesExtras += 12;
+    } else if(cartasIntercambiadas == 5) {
+        unidadesExtras += 15;
+    } else {
+        unidadesExtras += 15 + (5 * (cartasIntercambiadas - 5));
+    }
+
+    return unidadesExtras;
+}
+
+int Comandos::intercambioCartasYTerritorio(Risk& risk, Jugador& jugadorActual, string tropa, int contador){
+    int contadorGrupo = 0;
+    int comodinesUsados = 0;
+    std::vector<std::list<Carta>::const_iterator > cartasAIntercambiar;
+
+    if(tropa == "Comodin"){
+        bool comodinUsado = false;
+        for (auto it = jugadorActual.getCartas().begin(); it != jugadorActual.getCartas().end(); ++it) {
+            if(it->getTropa()=="Comodin"){
+                comodinesUsados++;
+                comodinesUsados = true;
+            }
+            contadorGrupo++;
+
+            if (comodinesUsados || contadorGrupo < 3) {
+                //Agregar carta a las que se van a intercambiar
+                cartasAIntercambiar.push_back(it);
+
+                //Evaluar si el territorio de la carta pertenece al jugador, darle las unidades adicionales
+                for (Territorio &territorio: jugadorActual.getTerritoriosOcupados()) {
+                    if (it->getTerritorio() == territorio.getNombre()) {
+                        Tropa nuevaInfanteria;
+                        nuevaInfanteria.setTipoTropa("Infanteria");
+                        nuevaInfanteria.setValorTropa(1);
+                        nuevaInfanteria.setColor(jugadorActual.getColor());
+                        territorio.getTropas().push_back(nuevaInfanteria);
+                        territorio.getTropas().push_back(nuevaInfanteria);
+                    }
+                }
+            }
+
+            if(contadorGrupo>=contador&&comodinUsado){
+                break;
+            }
+        }
+    } else {
+        for (auto it = jugadorActual.getCartas().begin(); it != jugadorActual.getCartas().end(); ++it) {
+            if(it->getTropa() == tropa){
+                contadorGrupo++;
+
+                //Agregar carta a las que se van a intercambiar
+                cartasAIntercambiar.push_back(it);
+
+                //Evaluar si el territorio de la carta pertenece al jugador, darle las unidades adicionales
+                for(Territorio& territorio: jugadorActual.getTerritoriosOcupados()){
+                    if(it->getTerritorio()==territorio.getNombre()){
+                        Tropa nuevaInfanteria;
+                        nuevaInfanteria.setTipoTropa("Infanteria");
+                        nuevaInfanteria.setValorTropa(1);
+                        nuevaInfanteria.setColor(jugadorActual.getColor());
+                        territorio.getTropas().push_back(nuevaInfanteria);
+                        territorio.getTropas().push_back(nuevaInfanteria);
+                    }
+                }
+            }
+            if(contadorGrupo==contador){
+                break;
+            }
+        }
+    }
+
+
+    //Realizar el intercambio de cartas
+    for (auto it : cartasAIntercambiar) {
+        risk.getListaCartas().push_back(*it);
+        jugadorActual.eliminarCarta(it);
+    }
+
+    return comodinesUsados;
+}
+
 
 
 vector<int> Comandos::lanzarDados(int cantidad){

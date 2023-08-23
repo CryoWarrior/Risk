@@ -20,6 +20,7 @@ protected:
     list<Jugador> listaJugadores;
     list<Territorio> listaTerritorios;
     int currentTurn;
+    int cartasIntercambiadas;
     bool isGameInitialized = false;
     bool isGameOver = false;
 
@@ -58,6 +59,12 @@ public:
     bool isGameOver1() const;
 
     void setIsGameOver(bool isGameOver);
+
+    int getCartasIntercambiadas() const;
+
+    void setCartasIntercambiadas(int cartasIntercambiadas);
+
+    void eliminarUltimaCarta();
 
     void iniciarElementosJuego();
 };

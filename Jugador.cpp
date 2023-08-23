@@ -54,4 +54,12 @@ void Jugador::setCartas(const list<Carta> &cartas) {
 Jugador::Jugador(const string &nombre, int idJugador, const string &color) : nombre(nombre), id_jugador(idJugador),
                                                                              color(color) {}
 
+void Jugador::agregarCarta(Carta &carta) {
+    cartas.push_back(carta);
+}
+
+void Jugador::eliminarCarta(std::list<Carta>::const_iterator iterator) {
+    cartas.erase(iterator);
+}
+
 
