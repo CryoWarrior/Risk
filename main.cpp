@@ -14,11 +14,11 @@ int main() {
     Risk risk;
     Comandos comandos;
 
-    risk.iniciarElementosJuego();
 
     string command;
     bool isRunning = true;
 
+    cout << "Digite 'ayuda', para conocer los comandos que puede ejecutar\n";
     do {
         // Imprimir el indicador de linea de comando
         cout << "$ ";

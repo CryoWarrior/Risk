@@ -78,13 +78,13 @@ void Risk::iniciarElementosJuego() {
 
     Territorio alaska("Alaska", {});
     Territorio alberta("Alberta", {});
-    Territorio americaCentral("America Central", {});
-    Territorio estadosUnidosOrientales("Estados Unidos Orientales", {});
+    Territorio americaCentral("America_Central", {});
+    Territorio estadosUnidosOrientales("Estados_Unidos_Orientales", {});
     Territorio groenlandia("Groenlandia", {});
-    Territorio territorioNoroccidental("Territorio Noroccidental", {});
+    Territorio territorioNoroccidental("Territorio_Noroccidental", {});
     Territorio ontario("Ontario", {});
     Territorio quebec("Quebec", {});
-    Territorio estadosUnidosOccidentales("Estados Unidos Occidentales", {});
+    Territorio estadosUnidosOccidentales("Estados_Unidos_Occidentales", {});
 
     listaTerritorios.push_back(alaska);
     listaProvANorte.push_back(alaska);
@@ -105,7 +105,7 @@ void Risk::iniciarElementosJuego() {
     listaTerritorios.push_back(estadosUnidosOccidentales);
     listaProvANorte.push_back(estadosUnidosOccidentales);
 
-    Continente AmericaNorte("America del norte", listaProvANorte);
+    Continente AmericaNorte("America_del_Norte", listaProvANorte);
 
     // Asia
     list<Territorio> listaProvAsia;
@@ -116,7 +116,7 @@ void Risk::iniciarElementosJuego() {
     Territorio irkutsk("Irkutsk", {});
     Territorio japon("Japon", {});
     Territorio kamchatka("Kamchatka", {});
-    Territorio mediooriente("Medio Oriente", {});
+    Territorio mediooriente("Medio_Oriente", {});
     Territorio mongolia("Mongolia", {});
     Territorio siam("Siam", {});
     Territorio siberia("Siberia", {});
@@ -153,13 +153,13 @@ void Risk::iniciarElementosJuego() {
     //Europa
     list<Territorio> listaProvEuropa;
 
-    Territorio granBretana("Gran Bretana", {});\
+    Territorio granBretana("Gran_Bretana", {});\
     Territorio islandia("Islandia", {});
-    Territorio europaDelNorte("Europa del Norte", {});
+    Territorio europaDelNorte("Europa_del_Norte", {});
     Territorio escandinavia("Escandinavia", {});
-    Territorio europaDelSur("Europa del Sur", {});
+    Territorio europaDelSur("Europa_del_Sur", {});
     Territorio ucrania("Ucrania", {});
-    Territorio europaOccidental(" Europa Occidental", {});
+    Territorio europaOccidental("Europa_Occidental", {});
 
     listaTerritorios.push_back(granBretana);
     listaProvEuropa.push_back(granBretana);
@@ -183,11 +183,11 @@ void Risk::iniciarElementosJuego() {
     list<Territorio> listaProvAfrica;
 
     Territorio congo("Congo", {});
-    Territorio africaOriental("Africa Oriental", {});
+    Territorio africaOriental("Africa_Oriental", {});
     Territorio egipto("Egipto", {});
     Territorio madagascar("Madagascar", {});
-    Territorio africaDelNorte("Africa del Norte", {});
-    Territorio africaDelSur("Africa del Sur", {});
+    Territorio africaDelNorte("Africa_del_Norte", {});
+    Territorio africaDelSur("Africa_del_Sur", {});
 
     listaTerritorios.push_back(congo);
     listaProvAfrica.push_back(congo);
@@ -207,10 +207,10 @@ void Risk::iniciarElementosJuego() {
     //Australia
     list<Territorio> listProvAustralia;
 
-    Territorio australiaOriental("Australia Oriental", {});
+    Territorio australiaOriental("Australia_Oriental", {});
     Territorio indonesia("Indonesia", {});
-    Territorio nuevaGuinea("Nueva Guinea", {});
-    Territorio australiaOccidental("Australia Occidental", {});
+    Territorio nuevaGuinea("Nueva_Guinea", {});
+    Territorio australiaOccidental("Australia_Occidental", {});
 
     listaTerritorios.push_back(australiaOriental);
     listProvAustralia.push_back(australiaOriental);
@@ -240,7 +240,7 @@ void Risk::iniciarElementosJuego() {
     listaTerritorios.push_back(venezuela);
     listProvAustralia.push_back(venezuela);
 
-    Continente AmericaDelSur("America del Sur", listProvASur);
+    Continente AmericaDelSur("America_del_Sur", listProvASur);
 
     //Agregar continentes
     listaContinentes.push_back(AmericaNorte);
