@@ -3,7 +3,6 @@
 #ifndef COMANDOS_H
 #define COMANDOS_H
 
-
 #include "string"
 #include <vector>
 #include "Risk.h"

@@ -14,9 +14,144 @@ void Comandos::inicializarJuego(Risk& risk) {
         cout << "(Juego en curso) El juego ya ha sido inicializado.\n";
     } else {
         // Realiza la inicializacion del juego aqui
+
         risk.setIsGameInitialized(true);
+
+        bool condicional = true;
+        int cantidad_jugadores;
+        list<Jugador> jugadores;
+        std::vector<std::string> identificadores;
+        std::vector<std::string> territorios_jugadores;
+
+        std::string color;
+        std::string nombre;
+
+
+        std::cout << "Cantidad de jugadores: ";
+        std::cin >> cantidad_jugadores;
+
+        //Ver infanterias totales por jugadoor
+        int infanteriaPorJugador;
+        if (cantidad_jugadores == 3) {
+            infanteriaPorJugador = 35;
+        } else if (cantidad_jugadores == 4) {
+            infanteriaPorJugador = 30;
+        } else if (cantidad_jugadores == 5) {
+            infanteriaPorJugador = 25;
+        } else if (cantidad_jugadores == 6) {
+            infanteriaPorJugador = 20;
+        } else {
+            cout << "Número de jugadores no válido.\n";
+            return;
+        }
+
+        //Añadir jugadores a risk
+        for (int i = 1; i <= cantidad_jugadores; i++) {
+            std::cout << "Nombre del jugador: ";
+            std::cin >> nombre;
+
+            condicional = true;
+            do{
+                std::cout << "Elija un color en minuscula (verde, azul, rojo, amarillo, negro o gris): ";
+                std::cin >> color;
+
+                if(color == "verde" || color == "azul" || color == "rojo" || color == "amarillo" || color == "negro" ||
+                color == "gris" ){
+                    condicional = false;
+                }else {
+                    cout<<"Colo no valido\n";
+                }
+            } while (condicional);
+
+            Jugador jugador;
+            jugador.setColor(color);
+            jugador.setNombre(nombre);
+            jugador.setIdJugador(i);
+            risk.getListaJugadores().push_back(jugador);
+        }
+
+
+        list<Territorio> territoriosDisponibles = risk.getListaTerritorios();
+
+        std::string territorioNombre;
+        //Poner unidades en todos los territorios
+        auto iterJugadorActual = jugadores.begin();
+        while (!territoriosDisponibles.empty()) {
+            Jugador& jugadorActual = *iterJugadorActual;
+            condicional = true;
+
+            //Imprimir territorios disponibles
+            for(const Territorio& territorio: territoriosDisponibles){
+                cout<<territorio.getNombre()<<endl;
+            }
+
+            std::cout << "Turno de " << jugadorActual.getNombre() << ". Elija un territorio para ubicar la infantería: ";
+
+            //Encontar el territorio y asignarle las tropas
+            auto iterTerritorio = territoriosDisponibles.begin();
+            while (iterTerritorio != territoriosDisponibles.end()) {
+                if (iterTerritorio->getNombre() == territorioNombre) {
+                    Tropa infanteria("Infanteria", 1, jugadorActual.getColor());
+                    iterTerritorio->getTropas().push_back(infanteria);
+                    jugadorActual.getTerritoriosOcupados().push_back(*iterTerritorio);
+                    territoriosDisponibles.erase(iterTerritorio);
+                    condicional = false;
+                    break;
+                }
+                ++iterTerritorio;
+            }
+            if(condicional){
+                cout<<"Este territorio no existe o ya esta ocupado\n";
+            }
+
+            ++iterJugadorActual;
+            if (iterJugadorActual == jugadores.end()) {
+                infanteriaPorJugador --;
+                iterJugadorActual = jugadores.begin();
+            }
+        }
+
+        int copiaInfanteriaPorJugador = infanteriaPorJugador;
+        //Poner las unidades restantes
+        for (Jugador& jugador : jugadores) {
+            while (infanteriaPorJugador > 0) {
+                int cantidadTropas;
+                cout << "Turno de " << jugador.getNombre() << ". Elija un territorio para ubicar la infantería restante: ";
+                std::cin >> territorioNombre;
+
+                condicional = true;
+                do{
+                    cout << "Escriba la cantidad de infanteria que quiere ubicar: ";
+                    std::cin >> cantidadTropas;
+                    if(cantidadTropas<=infanteriaPorJugador){
+                        condicional = false;
+                    }
+                    else{
+                        cout<<"No puede poner esa cantidad, tiene "<<infanteriaPorJugador<< "disponibles";
+                    }
+                } while (condicional);
+
+                condicional = true;
+                for (Territorio& territorio : jugador.getTerritoriosOcupados()) {
+                    if (territorio.getNombre() == territorioNombre) {
+                        Tropa infanteria("Infanteria", 1, jugador.getColor());
+                        for(int i = 0; i<cantidadTropas;i++){
+                            territorio.getTropas().push_back(infanteria);
+                        }
+                        infanteriaPorJugador-=cantidadTropas;
+                        condicional = false;
+                        break;
+                    }
+                }
+                if(condicional){
+                    cout<<"Este territorio no existe o no pertenece al juagador\n";
+                }
+            }
+            infanteriaPorJugador = copiaInfanteriaPorJugador;
+        }
         cout << "(Inicializacion satisfactoria) El juego se ha inicializado "
                      "correctamente.\n";
+
     }
 }
 

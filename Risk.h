@@ -15,7 +15,6 @@ using namespace std;
 class Risk {
 protected:
     vector<Continente> listaContinentes;
-    vector<Tropa> listaTropas;
     vector<Carta> listaCartas;
     list<Jugador> listaJugadores;
     list<Territorio> listaTerritorios;
@@ -31,10 +30,6 @@ public:
     vector<Continente> &getListaContinentes();
 
     void setListaContinentes(const vector<Continente> &listaContinentes);
-
-    vector<Tropa> &getListaTropas();
-
-    void setListaTropas(const vector<Tropa> &listaTropas);
 
     vector<Carta> &getListaCartas();
 

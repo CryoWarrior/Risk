@@ -8,13 +8,6 @@ void Risk::setListaContinentes(const vector<Continente> &listaContinentes) {
     Risk::listaContinentes = listaContinentes;
 }
 
- vector<Tropa> &Risk::getListaTropas()  {
-    return listaTropas;
-}
-
-void Risk::setListaTropas(const vector<Tropa> &listaTropas) {
-    Risk::listaTropas = listaTropas;
-}
 
  vector<Carta> &Risk::getListaCartas()  {
     return listaCartas;

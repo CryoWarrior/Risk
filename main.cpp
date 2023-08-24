@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "Comandos.cpp"
-#include "Risk.cpp"
+#include "Comandos.h"
+#include "Risk.h"
 
 using namespace std;
 

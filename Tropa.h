@@ -1,8 +1,8 @@
 #pragma once
 
 
-#ifndef MAIN_CPP_TROPA_H
-#define MAIN_CPP_TROPA_H
+#ifndef TROPA_H
+#define TROPA_H
 
 #include "string"
 
@@ -32,4 +32,4 @@ public:
 };
 
 
-#endif //MAIN_CPP_TROPA_H
+#endif //TROPA_H
