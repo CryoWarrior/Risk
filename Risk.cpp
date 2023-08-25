@@ -343,6 +343,51 @@ void Risk::iniciarElementosJuego() {
 
     //Inicializo la cantidad de cartas intercambiadas
     cartasIntercambiadas = 0;
+
+    //ELMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
+    list<Jugador> iniJugadores;
+
+    Jugador jugador1("Juan",1,"azul");
+    Jugador jugador2("Pedro",2,"rojo");
+    Jugador jugador3("Aleja",3,"gris");
+
+
+    jugador1.setTerritoriosOcupados(list<Territorio>{alberta,alaska,yakutsk,china,congo,venezuela});
+    Tropa infanteria1("Infanteria",1,jugador1.getColor());
+    alberta.setTropas(list<Tropa>{infanteria1});
+    alaska.setTropas(list<Tropa>{infanteria1});
+    yakutsk.setTropas(list<Tropa>{infanteria1});
+    china.setTropas(list<Tropa>{infanteria1});
+    congo.setTropas(list<Tropa>{infanteria1});
+    venezuela.setTropas(list<Tropa>{infanteria1});
+
+    jugador2.setTerritoriosOcupados(list<Territorio>{brasil,africaOriental,argentina,peru,egipto,mediooriente});
+    Tropa infanteria2("Infanteria",1,jugador2.getColor());
+    brasil.setTropas(list<Tropa>{infanteria2});
+    africaOriental.setTropas(list<Tropa>{infanteria2});
+    argentina.setTropas(list<Tropa>{infanteria2});
+    peru.setTropas(list<Tropa>{infanteria2});
+    mediooriente.setTropas(list<Tropa>{infanteria2});
+    egipto.setTropas(list<Tropa>{infanteria2});
+
+
+    jugador3.setTerritoriosOcupados(list<Territorio>{indonesia,australiaOccidental,australiaOriental,europaDelSur,europaDelNorte});
+    Tropa infanteria3("Infanteria",1,jugador3.getColor());
+    indonesia.setTropas(list<Tropa>{infanteria3});
+    australiaOccidental.setTropas(list<Tropa>{infanteria3});
+    australiaOriental.setTropas(list<Tropa>{infanteria3});
+    europaDelSur.setTropas(list<Tropa>{infanteria3});
+    europaDelNorte.setTropas(list<Tropa>{infanteria3});
+
+    iniJugadores.push_back(jugador1);
+    iniJugadores.push_back(jugador2);
+    iniJugadores.push_back(jugador3);
+
+    setListaJugadores(iniJugadores);
+
+    setCurrentTurn(jugador1.getIdJugador());
+    setIsGameInitialized(true);
+    //HAZTA AQUIII ELIMINAAARA E LIMIANRANA ELIMINARRRARREARARAARAR
 }
 
 void Risk::eliminarUltimaCarta() {

@@ -5,7 +5,7 @@
 #define TERRITORIO_H
 
 #include "string"
-#include "tropa.h"
+#include "Tropa.h"
 #include "list"
 
 using namespace std;

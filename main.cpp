@@ -26,6 +26,9 @@ int main() {
         // Leer la entrada del usuario
         getline(cin, command);
 
+        ///ELIMINAR IMPORTANTEEEE
+        risk.iniciarElementosJuego();
+
         if(command != "") {
 
             vector<string> tokens;

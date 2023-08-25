@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 #include "algorithm"
-#include <unordered_map>
 
 
 using namespace std;
@@ -85,6 +84,7 @@ void Comandos::inicializarJuego(Risk& risk) {
             jugador.setNombre(nombre);
             jugador.setIdJugador(i);
             risk.getListaJugadores().push_back(jugador);
+            cout<<nombre<<" fue agregado correctamente, RECUERDE!!! Su ID es: "<<i<<endl;
         }
 
 
@@ -120,7 +120,7 @@ void Comandos::inicializarJuego(Risk& risk) {
                     Tropa infanteria("Infanteria", 1, jugadorActual.getColor());
                     iterTerritorio->getTropas().push_back(infanteria);
                     jugadorActual.getTerritoriosOcupados().push_back(*iterTerritorio);
-                    territoriosDisponibles.erase(iterTerritorio);
+                    iterTerritorio = territoriosDisponibles.erase(iterTerritorio);
                     condicional = false;
                     cout<<"Territorio concedido correctamente\n";
                     break;
@@ -232,7 +232,6 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
         return;
     }
 
-
     // Verificar si es el turno del jugador
     if (jugadorId != risk.getCurrentTurn()) {
         cout << "(Jugador fuera de turno) No es el turno del jugador " << jugadorId << ".\n";
@@ -240,6 +239,8 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     }
 
     cout << "Es el turno del jugador " << jugadorId << ".\n";
+
+    std::cout<<"\n FASE DE PONER TROPAS\n\n";
 
     // Obtener nuevas unidades para el jugador
     int nuevasUnidades = obtenerNuevasUnidades(jugadorActual, risk);
@@ -266,7 +267,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
         std::cin >> Nterritorio;
 
         condicional = false;
-        for(Territorio territorio: jugadorActual.getTerritoriosOcupados()){
+        for(Territorio& territorio: jugadorActual.getTerritoriosOcupados()){
             if(territorio.getNombre() == Nterritorio){
                 territorioParaPoner = territorio;
                 condicional = true;
@@ -335,6 +336,8 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
 
 //Elegir territorio de ataque ---------------
 
+    std::cout<<"\n FASE DE ATAQUE\n\n";
+
     // Obtener nombres territorio del jugador
     vector<string> territoriosJugador;
     for(const Territorio& t: jugadorActual.getTerritoriosOcupados()){
@@ -388,10 +391,14 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     // Territorio defensor
 
     condicional = true;
+    bool condicionalRepetido = false;
     Territorio territorioDefensor;
     string SterritorioDefensor;
 
     do{
+        condicional = true;
+        condicionalRepetido = false;
+
         cout << "Selecciona el territorio a atacar: ";
         cin >> SterritorioDefensor;
         for(Territorio& t: territorioAtacante.getTerritoriosColindantes()){
@@ -401,9 +408,18 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
                 break;
             }
         }
-        if(condicional){
+        for(Territorio& t1: jugadorActual.getTerritoriosOcupados()){
+            if(SterritorioDefensor==t1.getNombre()){
+                condicional = true;
+                condicionalRepetido = true;
+            }
+        }
+        if(condicionalRepetido){
+            std::cout<<"Este territorio es suyo\n";
+        }else if(condicional){
             std::cout<<"Este territorio no colinda con su territorio atacante\n";
         }
+
     }while (condicional);
 
 // Elegir de tropas para atacar:
@@ -591,6 +607,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
         }
     }
 
+    std::cout<<"\n FASE DE FORTIFICACION\n\n";
 
     // Fortificar la posicion del jugador
     string territorioOrigen, territorioDestino;
@@ -1052,7 +1069,7 @@ void Comandos::fortificarPosicion(Jugador& jugadorActual, Risk& risk) {
 //Obtener territorio origen
     condicional = true;
     do{
-        cout << "Selecciona el territorio desde el que se ataca: ";
+        cout << "Selecciona el territorio desde el que se traslada: ";
         cin >> SterritorioOrigen;
         for(Territorio& t: jugadorActual.getTerritoriosOcupados()){
             if(SterritorioOrigen==t.getNombre()){
