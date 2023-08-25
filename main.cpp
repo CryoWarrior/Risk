@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
 
-    Risk risk;
+    Risk risk = Risk();
     Comandos comandos;
 
 
@@ -26,8 +26,6 @@ int main() {
         // Leer la entrada del usuario
         getline(cin, command);
 
-        ///ELIMINAR IMPORTANTEEEE
-        risk.iniciarElementosJuego();
 
         if(command != "") {
 

@@ -1,78 +1,47 @@
 #include "Risk.h"
 
- vector<Continente> &Risk::getListaContinentes()  {
+vector<Continente> &Risk::getListaContinentes()
+{
     return listaContinentes;
 }
 
-void Risk::setListaContinentes(const vector<Continente> &listaContinentes) {
+void Risk::setListaContinentes(const vector<Continente> &listaContinentes)
+{
     Risk::listaContinentes = listaContinentes;
 }
 
-
- vector<Carta> &Risk::getListaCartas()  {
+vector<Carta> &Risk::getListaCartas()
+{
     return listaCartas;
 }
 
-void Risk::setListaCartas(const vector<Carta> &listaCartas) {
+void Risk::setListaCartas(const vector<Carta> &listaCartas)
+{
     Risk::listaCartas = listaCartas;
 }
 
- list<Jugador> &Risk::getListaJugadores()  {
+list<Jugador> &Risk::getListaJugadores()
+{
     return listaJugadores;
 }
 
-void Risk::setListaJugadores(const list<Jugador> &listaJugadores) {
+void Risk::setListaJugadores(const list<Jugador> &listaJugadores)
+{
     Risk::listaJugadores = listaJugadores;
 }
 
-list<Territorio> &Risk::getListaTerritorios() {
+list<Territorio> &Risk::getListaTerritorios()
+{
     return listaTerritorios;
 }
 
-void Risk::setListaTerritorios(const list<Territorio> &listaTerritorios) {
+void Risk::setListaTerritorios(const list<Territorio> &listaTerritorios)
+{
     Risk::listaTerritorios = listaTerritorios;
 }
 
-Risk::Risk() {}
-
-int Risk::getCurrentTurn() const {
-    return currentTurn;
-}
-
-void Risk::setCurrentTurn(int currentTurn) {
-    Risk::currentTurn = currentTurn;
-}
-
-bool Risk::isGameInitialized1() const {
-    return isGameInitialized;
-}
-
-void Risk::setIsGameInitialized(bool isGameInitialized) {
-    Risk::isGameInitialized = isGameInitialized;
-}
-
-bool Risk::isGameOver1() const {
-    return isGameOver;
-}
-
-void Risk::setIsGameOver(bool isGameOver) {
-    Risk::isGameOver = isGameOver;
-}
-
-int Risk::getCartasIntercambiadas() const {
-    return cartasIntercambiadas;
-}
-
-void Risk::setCartasIntercambiadas(int cartasIntercambiadas) {
-    Risk::cartasIntercambiadas = cartasIntercambiadas;
-}
-
-
-void Risk::iniciarElementosJuego() {
-
-// Agrega territorios a los continentes y a Risk
-    listaTerritorios ;
-
+Risk::Risk()
+{
     // América del Norte
     list<Territorio> listaProvANorte;
 
@@ -86,31 +55,11 @@ void Risk::iniciarElementosJuego() {
     Territorio quebec("Quebec", {});
     Territorio estadosUnidosOccidentales("Estados_Unidos_Occidentales", {});
 
-    listaTerritorios.push_back(alaska);
-    listaProvANorte.push_back(alaska);
-    listaTerritorios.push_back(alberta);
-    listaProvANorte.push_back(alberta);
-    listaTerritorios.push_back(americaCentral);
-    listaProvANorte.push_back(americaCentral);
-    listaTerritorios.push_back(estadosUnidosOrientales);
-    listaProvANorte.push_back(estadosUnidosOrientales);
-    listaTerritorios.push_back(groenlandia);
-    listaProvANorte.push_back(groenlandia);
-    listaTerritorios.push_back(territorioNoroccidental);
-    listaProvANorte.push_back(territorioNoroccidental);
-    listaTerritorios.push_back(ontario);
-    listaProvANorte.push_back(ontario);
-    listaTerritorios.push_back(quebec);
-    listaProvANorte.push_back(quebec);
-    listaTerritorios.push_back(estadosUnidosOccidentales);
-    listaProvANorte.push_back(estadosUnidosOccidentales);
-
-    Continente AmericaNorte("America_del_Norte", listaProvANorte);
 
     // Asia
     list<Territorio> listaProvAsia;
 
-    Territorio afghanistan("Afghanistan", {});\
+    Territorio afghanistan("Afghanistan", {});
     Territorio china("China", {});
     Territorio india("India", {});
     Territorio irkutsk("Irkutsk", {});
@@ -123,37 +72,12 @@ void Risk::iniciarElementosJuego() {
     Territorio ural("Ural", {});
     Territorio yakutsk("Yakutsk", {});
 
-    listaTerritorios.push_back(afghanistan);
-    listaProvAsia.push_back(afghanistan);
-    listaTerritorios.push_back(china);
-    listaProvAsia.push_back(china);
-    listaTerritorios.push_back(india);
-    listaProvAsia.push_back(india);
-    listaTerritorios.push_back(irkutsk);
-    listaProvAsia.push_back(irkutsk);
-    listaTerritorios.push_back(japon);
-    listaProvAsia.push_back(japon);
-    listaTerritorios.push_back(kamchatka);
-    listaProvAsia.push_back(kamchatka);
-    listaTerritorios.push_back(mediooriente);
-    listaProvAsia.push_back(mediooriente);
-    listaTerritorios.push_back(mongolia);
-    listaProvAsia.push_back(mongolia);
-    listaTerritorios.push_back(siam);
-    listaProvAsia.push_back(siam);
-    listaTerritorios.push_back(siberia);
-    listaProvAsia.push_back(siberia);
-    listaTerritorios.push_back(ural);
-    listaProvAsia.push_back(ural);
-    listaTerritorios.push_back(yakutsk);
-    listaProvAsia.push_back(yakutsk);
 
-    Continente Asia("Asia", listaProvAsia);
 
-    //Europa
+    // Europa
     list<Territorio> listaProvEuropa;
 
-    Territorio granBretana("Gran_Bretana", {});\
+    Territorio granBretana("Gran_Bretana", {});
     Territorio islandia("Islandia", {});
     Territorio europaDelNorte("Europa_del_Norte", {});
     Territorio escandinavia("Escandinavia", {});
@@ -161,24 +85,8 @@ void Risk::iniciarElementosJuego() {
     Territorio ucrania("Ucrania", {});
     Territorio europaOccidental("Europa_Occidental", {});
 
-    listaTerritorios.push_back(granBretana);
-    listaProvEuropa.push_back(granBretana);
-    listaTerritorios.push_back(islandia);
-    listaProvEuropa.push_back(islandia);
-    listaTerritorios.push_back(europaDelNorte);
-    listaProvEuropa.push_back(europaDelNorte);
-    listaTerritorios.push_back(escandinavia);
-    listaProvEuropa.push_back(escandinavia);
-    listaTerritorios.push_back(europaDelSur);
-    listaProvEuropa.push_back(europaDelSur);
-    listaTerritorios.push_back(ucrania);
-    listaProvEuropa.push_back(ucrania);
-    listaTerritorios.push_back(europaOccidental);
-    listaProvEuropa.push_back(europaOccidental);
 
-    Continente Europa("Europa", listaProvEuropa);
-
-    //Africa
+    // Africa
 
     list<Territorio> listaProvAfrica;
 
@@ -189,22 +97,8 @@ void Risk::iniciarElementosJuego() {
     Territorio africaDelNorte("Africa_del_Norte", {});
     Territorio africaDelSur("Africa_del_Sur", {});
 
-    listaTerritorios.push_back(congo);
-    listaProvAfrica.push_back(congo);
-    listaTerritorios.push_back(africaOriental);
-    listaProvAfrica.push_back(africaOriental);
-    listaTerritorios.push_back(egipto);
-    listaProvAfrica.push_back(egipto);
-    listaTerritorios.push_back(madagascar);
-    listaProvAfrica.push_back(madagascar);
-    listaTerritorios.push_back(africaDelNorte);
-    listaProvAfrica.push_back(africaDelNorte);
-    listaTerritorios.push_back(africaDelSur);
-    listaProvAfrica.push_back(africaDelSur);
 
-    Continente Africa("Africa", listaProvAfrica);
-
-    //Australia
+    // Australia
     list<Territorio> listProvAustralia;
 
     Territorio australiaOriental("Australia_Oriental", {});
@@ -212,18 +106,8 @@ void Risk::iniciarElementosJuego() {
     Territorio nuevaGuinea("Nueva_Guinea", {});
     Territorio australiaOccidental("Australia_Occidental", {});
 
-    listaTerritorios.push_back(australiaOriental);
-    listProvAustralia.push_back(australiaOriental);
-    listaTerritorios.push_back(indonesia);
-    listProvAustralia.push_back(indonesia);
-    listaTerritorios.push_back(nuevaGuinea);
-    listProvAustralia.push_back(nuevaGuinea);
-    listaTerritorios.push_back(australiaOccidental);
-    listProvAustralia.push_back(australiaOccidental);
 
-    Continente Australia("Australia", listProvAustralia);
-
-    //America del sur
+    // America del sur
     list<Territorio> listProvASur;
 
     Territorio argentina("Argentina", {});
@@ -231,118 +115,212 @@ void Risk::iniciarElementosJuego() {
     Territorio peru("Peru", {});
     Territorio venezuela("Venezuela", {});
 
+
+    // Agregar continentes
+
+    // Poniendo territorios colindantes
+    alaska.setTerritoriosColindantes(list<Territorio>{kamchatka, territorioNoroccidental, alberta});
+    alberta.setTerritoriosColindantes(list<Territorio>{alaska, territorioNoroccidental, ontario, estadosUnidosOccidentales});
+    americaCentral.setTerritoriosColindantes(list<Territorio>{estadosUnidosOccidentales, estadosUnidosOrientales, venezuela});
+    estadosUnidosOrientales.setTerritoriosColindantes(list<Territorio>{americaCentral, estadosUnidosOccidentales, ontario, quebec});
+    groenlandia.setTerritoriosColindantes(list<Territorio>{islandia, territorioNoroccidental, ontario, quebec});
+    territorioNoroccidental.setTerritoriosColindantes(list<Territorio>{alaska, groenlandia, alberta, ontario});
+    ontario.setTerritoriosColindantes(list<Territorio>{quebec, territorioNoroccidental, groenlandia, alberta, estadosUnidosOccidentales, estadosUnidosOrientales});
+    quebec.setTerritoriosColindantes(list<Territorio>{groenlandia, ontario, estadosUnidosOrientales});
+    estadosUnidosOccidentales.setTerritoriosColindantes(list<Territorio>{americaCentral, estadosUnidosOrientales, alberta, ontario});
+    venezuela.setTerritoriosColindantes(list<Territorio>{americaCentral, brasil, peru});
+    peru.setTerritoriosColindantes(list<Territorio>{venezuela, brasil, argentina});
+    argentina.setTerritoriosColindantes(list<Territorio>{brasil, peru});
+    brasil.setTerritoriosColindantes(list<Territorio>{venezuela, argentina, peru, africaDelNorte});
+    africaDelNorte.setTerritoriosColindantes(list<Territorio>{europaOccidental, europaDelSur, brasil, egipto, congo, africaOriental});
+    congo.setTerritoriosColindantes(list<Territorio>{africaDelNorte, africaOriental, africaDelSur});
+    africaOriental.setTerritoriosColindantes(list<Territorio>{madagascar, congo, africaDelSur, africaDelNorte, egipto});
+    africaDelSur.setTerritoriosColindantes(list<Territorio>{congo, madagascar, africaOriental});
+    madagascar.setTerritoriosColindantes(list<Territorio>{africaOriental, africaDelSur});
+    egipto.setTerritoriosColindantes(list<Territorio>{africaDelNorte, africaOriental, europaDelSur, mediooriente});
+    granBretana.setTerritoriosColindantes(list<Territorio>{islandia, europaOccidental, europaDelNorte, escandinavia});
+    islandia.setTerritoriosColindantes(list<Territorio>{groenlandia, granBretana, escandinavia});
+    europaDelNorte.setTerritoriosColindantes(list<Territorio>{granBretana, europaOccidental, europaDelSur, ucrania, escandinavia});
+    escandinavia.setTerritoriosColindantes(list<Territorio>{islandia, granBretana, europaDelNorte, ucrania});
+    europaDelSur.setTerritoriosColindantes(list<Territorio>{africaDelNorte, europaOccidental, europaDelNorte, egipto, ucrania, mediooriente});
+    europaOccidental.setTerritoriosColindantes(list<Territorio>{granBretana, africaDelNorte, europaDelNorte, europaDelSur});
+    ucrania.setTerritoriosColindantes(list<Territorio>{europaDelSur, mediooriente, europaDelNorte, escandinavia, ural, escandinavia});
+    afghanistan.setTerritoriosColindantes(list<Territorio>{ural, ucrania, mediooriente, india, china});
+    china.setTerritoriosColindantes(list<Territorio>{afghanistan, india, siam, mongolia, ural, siberia});
+    india.setTerritoriosColindantes(list<Territorio>{afghanistan, mediooriente, china, siam});
+    irkutsk.setTerritoriosColindantes(list<Territorio>{mongolia, siberia, yakutsk, kamchatka});
+    japon.setTerritoriosColindantes(list<Territorio>{kamchatka, mongolia});
+    kamchatka.setTerritoriosColindantes(list<Territorio>{japon, alaska, mongolia, irkutsk, yakutsk});
+    mediooriente.setTerritoriosColindantes(list<Territorio>{egipto, europaDelSur, ucrania, afghanistan, india});
+    mongolia.setTerritoriosColindantes(list<Territorio>{japon, china, kamchatka, irkutsk, siberia});
+    siam.setTerritoriosColindantes(list<Territorio>{india, china, indonesia});
+    siberia.setTerritoriosColindantes(list<Territorio>{ural, china, mongolia, irkutsk, yakutsk});
+    ural.setTerritoriosColindantes(list<Territorio>{ucrania, afghanistan, china, siberia});
+    yakutsk.setTerritoriosColindantes(list<Territorio>{siberia, kamchatka, irkutsk});
+    australiaOriental.setTerritoriosColindantes(list<Territorio>{australiaOccidental, nuevaGuinea});
+    indonesia.setTerritoriosColindantes(list<Territorio>{siam, nuevaGuinea, australiaOccidental});
+    nuevaGuinea.setTerritoriosColindantes(list<Territorio>{indonesia, australiaOccidental, australiaOriental});
+    australiaOccidental.setTerritoriosColindantes(list<Territorio>{indonesia, australiaOriental, nuevaGuinea});
+
+    listaTerritorios.push_back(alaska);
+    listaTerritorios.push_back(alberta);
+    listaTerritorios.push_back(americaCentral);
+    listaTerritorios.push_back(estadosUnidosOrientales);
+    listaTerritorios.push_back(groenlandia);
+    listaTerritorios.push_back(territorioNoroccidental);
+    listaTerritorios.push_back(ontario);
+    listaTerritorios.push_back(quebec);
+    listaTerritorios.push_back(estadosUnidosOccidentales);
+
+    listaTerritorios.push_back(afghanistan);
+    listaTerritorios.push_back(china);
+    listaTerritorios.push_back(india);
+    listaTerritorios.push_back(japon);
+    listaTerritorios.push_back(irkutsk);
+    listaTerritorios.push_back(kamchatka);
+    listaTerritorios.push_back(mongolia);
+    listaTerritorios.push_back(siam);
+    listaTerritorios.push_back(siberia);
+    listaTerritorios.push_back(ural);
+    listaTerritorios.push_back(yakutsk);
+    listaTerritorios.push_back(mediooriente);
+
+    listaTerritorios.push_back(indonesia);
+    listaTerritorios.push_back(granBretana);
+    listaTerritorios.push_back(islandia);
+    listaTerritorios.push_back(europaDelNorte);
+    listaTerritorios.push_back(europaDelSur);
+    listaTerritorios.push_back(ucrania);
+    listaTerritorios.push_back(europaOccidental);
+    listaTerritorios.push_back(escandinavia);
+
+    listaTerritorios.push_back(africaOriental);
+    listaTerritorios.push_back(congo);
+    listaTerritorios.push_back(egipto);
+    listaTerritorios.push_back(madagascar);
+    listaTerritorios.push_back(africaDelNorte);
+    listaTerritorios.push_back(africaDelSur);
+    listaTerritorios.push_back(australiaOriental);
+    listaTerritorios.push_back(nuevaGuinea);
+    listaTerritorios.push_back(australiaOccidental);
     listaTerritorios.push_back(argentina);
-    listProvAustralia.push_back(argentina);
     listaTerritorios.push_back(brasil);
-    listProvAustralia.push_back(brasil);
     listaTerritorios.push_back(peru);
-    listProvAustralia.push_back(peru);
     listaTerritorios.push_back(venezuela);
+
+    listaProvANorte.push_back(alaska);
+    listaProvANorte.push_back(alberta);
+    listaProvANorte.push_back(americaCentral);
+    listaProvANorte.push_back(estadosUnidosOrientales);
+    listaProvANorte.push_back(groenlandia);
+    listaProvANorte.push_back(territorioNoroccidental);
+    listaProvANorte.push_back(ontario);
+    listaProvANorte.push_back(quebec);
+    listaProvANorte.push_back(estadosUnidosOccidentales);
+
+    Continente AmericaNorte("America_del_Norte", listaProvANorte);
+
+    listaProvEuropa.push_back(granBretana);
+    listaProvEuropa.push_back(islandia);
+    listaProvEuropa.push_back(europaDelNorte);
+    listaProvEuropa.push_back(escandinavia);
+    listaProvEuropa.push_back(europaDelSur);
+    listaProvEuropa.push_back(ucrania);
+    listaProvEuropa.push_back(europaOccidental);
+
+    Continente Europa("Europa", listaProvEuropa);
+
+    listaProvAfrica.push_back(congo);
+    listaProvAfrica.push_back(africaOriental);
+    listaProvAfrica.push_back(egipto);
+    listaProvAfrica.push_back(madagascar);
+    listaProvAfrica.push_back(africaDelNorte);
+    listaProvAfrica.push_back(africaDelSur);
+
+    Continente Africa("Africa", listaProvAfrica);
+
+    listaProvAsia.push_back(afghanistan);
+    listaProvAsia.push_back(china);
+    listaProvAsia.push_back(india);
+    listaProvAsia.push_back(irkutsk);
+    listaProvAsia.push_back(japon);
+    listaProvAsia.push_back(kamchatka);
+    listaProvAsia.push_back(mediooriente);
+    listaProvAsia.push_back(mongolia);
+    listaProvAsia.push_back(siam);
+    listaProvAsia.push_back(siberia);
+    listaProvAsia.push_back(ural);
+    listaProvAsia.push_back(yakutsk);
+
+
+    Continente Asia("Asia", listaProvAsia);
+
+    listProvAustralia.push_back(australiaOriental);
+    listProvAustralia.push_back(indonesia);
+    listProvAustralia.push_back(nuevaGuinea);
+    listProvAustralia.push_back(australiaOccidental);
+
+    Continente Australia("Australia", listProvAustralia);
+
+    listProvAustralia.push_back(argentina);
+    listProvAustralia.push_back(brasil);
+    listProvAustralia.push_back(peru);
     listProvAustralia.push_back(venezuela);
 
     Continente AmericaDelSur("America_del_Sur", listProvASur);
 
-    //Agregar continentes
     listaContinentes.push_back(AmericaNorte);
     listaContinentes.push_back(Asia);
     listaContinentes.push_back(Europa);
     listaContinentes.push_back(Australia);
     listaContinentes.push_back(AmericaDelSur);
 
-    //Poniendo territorios colindantes
-    alaska.setTerritoriosColindantes(list<Territorio>{kamchatka,territorioNoroccidental,alberta});
-    alberta.setTerritoriosColindantes(list<Territorio>{alaska,territorioNoroccidental,ontario,estadosUnidosOccidentales});
-    americaCentral.setTerritoriosColindantes(list<Territorio>{estadosUnidosOccidentales, estadosUnidosOrientales, venezuela});
-    estadosUnidosOrientales.setTerritoriosColindantes(list<Territorio>{americaCentral, estadosUnidosOccidentales, ontario, quebec});
-    groenlandia.setTerritoriosColindantes(list<Territorio>{islandia,territorioNoroccidental,ontario, quebec});
-    territorioNoroccidental.setTerritoriosColindantes(list<Territorio>{alaska,groenlandia,alberta, ontario});
-    ontario.setTerritoriosColindantes(list<Territorio>{quebec,territorioNoroccidental,groenlandia, alberta, estadosUnidosOccidentales, estadosUnidosOrientales});
-    quebec.setTerritoriosColindantes(list<Territorio>{groenlandia,ontario,estadosUnidosOrientales});
-    estadosUnidosOccidentales.setTerritoriosColindantes(list<Territorio>{americaCentral,estadosUnidosOrientales,alberta, ontario});
-    venezuela.setTerritoriosColindantes(list<Territorio>{americaCentral,brasil,peru});
-    peru.setTerritoriosColindantes(list<Territorio>{venezuela,brasil,argentina});
-    argentina.setTerritoriosColindantes(list<Territorio>{brasil,peru});
-    brasil.setTerritoriosColindantes(list<Territorio>{venezuela,argentina,peru, africaDelNorte});
-    africaDelNorte.setTerritoriosColindantes(list<Territorio>{europaOccidental,europaDelSur,brasil, egipto, congo, africaOriental});
-    congo.setTerritoriosColindantes(list<Territorio>{africaDelNorte,africaOriental,africaDelSur});
-    africaOriental.setTerritoriosColindantes(list<Territorio>{madagascar,congo,africaDelSur, africaDelNorte,egipto});
-    africaDelSur.setTerritoriosColindantes(list<Territorio>{congo,madagascar,africaOriental});
-    madagascar.setTerritoriosColindantes(list<Territorio>{africaOriental,africaDelSur});
-    egipto.setTerritoriosColindantes(list<Territorio>{africaDelNorte,africaOriental,europaDelSur, mediooriente});
-    granBretana.setTerritoriosColindantes(list<Territorio>{islandia,europaOccidental,europaDelNorte, escandinavia});
-    islandia.setTerritoriosColindantes(list<Territorio>{groenlandia,granBretana,escandinavia});
-    europaDelNorte.setTerritoriosColindantes(list<Territorio>{granBretana,europaOccidental,europaDelSur, ucrania, escandinavia});
-    escandinavia.setTerritoriosColindantes(list<Territorio>{islandia,granBretana,europaDelNorte, ucrania});
-    europaDelSur.setTerritoriosColindantes(list<Territorio>{africaDelNorte,europaOccidental,europaDelNorte, egipto, ucrania, mediooriente});
-    europaOccidental.setTerritoriosColindantes(list<Territorio>{granBretana,africaDelNorte,europaDelNorte, europaDelSur});
-    ucrania.setTerritoriosColindantes(list<Territorio>{europaDelSur,mediooriente,europaDelNorte, escandinavia, ural, escandinavia});
-    afghanistan.setTerritoriosColindantes(list<Territorio>{ural,ucrania,mediooriente, india, china});
-    china.setTerritoriosColindantes(list<Territorio>{afghanistan,india,siam, mongolia, ural, siberia});
-    india.setTerritoriosColindantes(list<Territorio>{afghanistan,mediooriente,china, siam});
-    irkutsk.setTerritoriosColindantes(list<Territorio>{mongolia,siberia,yakutsk, kamchatka});
-    japon.setTerritoriosColindantes(list<Territorio>{kamchatka,mongolia});
-    kamchatka.setTerritoriosColindantes(list<Territorio>{japon,alaska,mongolia, irkutsk, yakutsk});
-    mediooriente.setTerritoriosColindantes(list<Territorio>{egipto,europaDelSur,ucrania, afghanistan, india});
-    mongolia.setTerritoriosColindantes(list<Territorio>{japon,china,kamchatka, irkutsk, siberia});
-    siam.setTerritoriosColindantes(list<Territorio>{india,china,indonesia});
-    siberia.setTerritoriosColindantes(list<Territorio>{ural,china,mongolia, irkutsk, yakutsk});
-    ural.setTerritoriosColindantes(list<Territorio>{ucrania,afghanistan,china, siberia});
-    yakutsk.setTerritoriosColindantes(list<Territorio>{siberia,kamchatka, irkutsk});
-    australiaOriental.setTerritoriosColindantes(list<Territorio>{australiaOccidental,nuevaGuinea});
-    indonesia.setTerritoriosColindantes(list<Territorio>{siam,nuevaGuinea,australiaOccidental});
-    nuevaGuinea.setTerritoriosColindantes(list<Territorio>{indonesia,australiaOccidental,australiaOriental});
-    australiaOccidental.setTerritoriosColindantes(list<Territorio>{indonesia,australiaOriental,nuevaGuinea});
 
-
-
-//Inicialización de Cartas ---------------
-    listaCartas.emplace_back("01",alaska.getNombre(),"Artilleria");
-    listaCartas.emplace_back("02",americaCentral.getNombre(),"Caballeria");
-    listaCartas.emplace_back("03",estadosUnidosOrientales.getNombre(),"Infanteria");
-    listaCartas.emplace_back("04",groenlandia.getNombre(),"Artilleria");
-    listaCartas.emplace_back("05",territorioNoroccidental.getNombre(),"Caballeria");
-    listaCartas.emplace_back("06",ontario.getNombre(),"Infanteria");
-    listaCartas.emplace_back("07",estadosUnidosOccidentales.getNombre(),"Artilleria");
-    listaCartas.emplace_back("08",argentina.getNombre(),"Caballeria");
-    listaCartas.emplace_back("09",brasil.getNombre(),"Infanteria");
-    listaCartas.emplace_back("10",peru.getNombre(),"Artilleria");
-    listaCartas.emplace_back("11",venezuela.getNombre(),"Caballeria");
-    listaCartas.emplace_back("12",granBretana.getNombre(),"Infanteria");
-    listaCartas.emplace_back("13",islandia.getNombre(),"Artilleria");
-    listaCartas.emplace_back("14",europaDelNorte.getNombre(),"Caballeria");
-    listaCartas.emplace_back("15",escandinavia.getNombre(),"Infanteria");
-    listaCartas.emplace_back("16",europaDelSur.getNombre(),"Artilleria");
-    listaCartas.emplace_back("17",ucrania.getNombre(),"Caballeria");
-    listaCartas.emplace_back("18",europaOccidental.getNombre(),"Infanteria");
-    listaCartas.emplace_back("19",congo.getNombre(),"Artilleria");
-    listaCartas.emplace_back("20",africaOriental.getNombre(),"Caballeria");
-    listaCartas.emplace_back("21",egipto.getNombre(),"Infanteria");
-    listaCartas.emplace_back("22",madagascar.getNombre(),"Artilleria");
-    listaCartas.emplace_back("23",africaDelNorte.getNombre(),"Caballeria");
-    listaCartas.emplace_back("24",africaDelSur.getNombre(),"Infanteria");
-    listaCartas.emplace_back("25",afghanistan.getNombre(),"Artilleria");
-    listaCartas.emplace_back("26",china.getNombre(),"Caballeria");
-    listaCartas.emplace_back("27",india.getNombre(),"Infanteria");
-    listaCartas.emplace_back("28",irkutsk.getNombre(),"Artilleria");
-    listaCartas.emplace_back("29",japon.getNombre(),"Caballeria");
-    listaCartas.emplace_back("30",kamchatka.getNombre(),"Infanteria");
-    listaCartas.emplace_back("31",mediooriente.getNombre(),"Artilleria");
-    listaCartas.emplace_back("32",mongolia.getNombre(),"Caballeria");
-    listaCartas.emplace_back("33",siam.getNombre(),"Infanteria");
-    listaCartas.emplace_back("34",siberia.getNombre(),"Artilleria");
-    listaCartas.emplace_back("35",ural.getNombre(),"Caballeria");
-    listaCartas.emplace_back("36",yakutsk.getNombre(),"Infanteria");
-    listaCartas.emplace_back("37",australiaOccidental.getNombre(),"Artilleria");
-    listaCartas.emplace_back("38",australiaOriental.getNombre(),"Caballeria");
-    listaCartas.emplace_back("39",indonesia.getNombre(),"Infanteria");
-    listaCartas.emplace_back("40",nuevaGuinea.getNombre(),"Artilleria");
-    listaCartas.emplace_back("41",alberta.getNombre(),"Caballeria");
-    listaCartas.emplace_back("42",quebec.getNombre(),"Infanteria");
-    listaCartas.emplace_back("43",venezuela.getNombre(),"Comodin");
-    listaCartas.emplace_back("44",quebec.getNombre(),"Comodin");
-
-    //Inicializo la cantidad de cartas intercambiadas
-    cartasIntercambiadas = 0;
+    // Inicialización de Cartas ---------------
+    listaCartas.emplace_back("01", alaska.getNombre(), "Artilleria");
+    listaCartas.emplace_back("02", americaCentral.getNombre(), "Caballeria");
+    listaCartas.emplace_back("03", estadosUnidosOrientales.getNombre(), "Infanteria");
+    listaCartas.emplace_back("04", groenlandia.getNombre(), "Artilleria");
+    listaCartas.emplace_back("05", territorioNoroccidental.getNombre(), "Caballeria");
+    listaCartas.emplace_back("06", ontario.getNombre(), "Infanteria");
+    listaCartas.emplace_back("07", estadosUnidosOccidentales.getNombre(), "Artilleria");
+    listaCartas.emplace_back("08", argentina.getNombre(), "Caballeria");
+    listaCartas.emplace_back("09", brasil.getNombre(), "Infanteria");
+    listaCartas.emplace_back("10", peru.getNombre(), "Artilleria");
+    listaCartas.emplace_back("11", venezuela.getNombre(), "Caballeria");
+    listaCartas.emplace_back("12", granBretana.getNombre(), "Infanteria");
+    listaCartas.emplace_back("13", islandia.getNombre(), "Artilleria");
+    listaCartas.emplace_back("14", europaDelNorte.getNombre(), "Caballeria");
+    listaCartas.emplace_back("15", escandinavia.getNombre(), "Infanteria");
+    listaCartas.emplace_back("16", europaDelSur.getNombre(), "Artilleria");
+    listaCartas.emplace_back("17", ucrania.getNombre(), "Caballeria");
+    listaCartas.emplace_back("18", europaOccidental.getNombre(), "Infanteria");
+    listaCartas.emplace_back("19", congo.getNombre(), "Artilleria");
+    listaCartas.emplace_back("20", africaOriental.getNombre(), "Caballeria");
+    listaCartas.emplace_back("21", egipto.getNombre(), "Infanteria");
+    listaCartas.emplace_back("22", madagascar.getNombre(), "Artilleria");
+    listaCartas.emplace_back("23", africaDelNorte.getNombre(), "Caballeria");
+    listaCartas.emplace_back("24", africaDelSur.getNombre(), "Infanteria");
+    listaCartas.emplace_back("25", afghanistan.getNombre(), "Artilleria");
+    listaCartas.emplace_back("26", china.getNombre(), "Caballeria");
+    listaCartas.emplace_back("27", india.getNombre(), "Infanteria");
+    listaCartas.emplace_back("28", irkutsk.getNombre(), "Artilleria");
+    listaCartas.emplace_back("29", japon.getNombre(), "Caballeria");
+    listaCartas.emplace_back("30", kamchatka.getNombre(), "Infanteria");
+    listaCartas.emplace_back("31", mediooriente.getNombre(), "Artilleria");
+    listaCartas.emplace_back("32", mongolia.getNombre(), "Caballeria");
+    listaCartas.emplace_back("33", siam.getNombre(), "Infanteria");
+    listaCartas.emplace_back("34", siberia.getNombre(), "Artilleria");
+    listaCartas.emplace_back("35", ural.getNombre(), "Caballeria");
+    listaCartas.emplace_back("36", yakutsk.getNombre(), "Infanteria");
+    listaCartas.emplace_back("37", australiaOccidental.getNombre(), "Artilleria");
+    listaCartas.emplace_back("38", australiaOriental.getNombre(), "Caballeria");
+    listaCartas.emplace_back("39", indonesia.getNombre(), "Infanteria");
+    listaCartas.emplace_back("40", nuevaGuinea.getNombre(), "Artilleria");
+    listaCartas.emplace_back("41", alberta.getNombre(), "Caballeria");
+    listaCartas.emplace_back("42", quebec.getNombre(), "Infanteria");
+    listaCartas.emplace_back("43", venezuela.getNombre(), "Comodin");
+    listaCartas.emplace_back("44", quebec.getNombre(), "Comodin");
 
     //ELMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
     list<Jugador> iniJugadores;
@@ -352,7 +330,7 @@ void Risk::iniciarElementosJuego() {
     Jugador jugador3("Aleja",3,"gris");
 
 
-    jugador1.setTerritoriosOcupados(list<Territorio>{alberta,alaska,yakutsk,china,congo,venezuela});
+
     Tropa infanteria1("Infanteria",1,jugador1.getColor());
     alberta.setTropas(list<Tropa>{infanteria1});
     alaska.setTropas(list<Tropa>{infanteria1});
@@ -360,8 +338,8 @@ void Risk::iniciarElementosJuego() {
     china.setTropas(list<Tropa>{infanteria1});
     congo.setTropas(list<Tropa>{infanteria1});
     venezuela.setTropas(list<Tropa>{infanteria1});
+    jugador1.setTerritoriosOcupados(list<Territorio>{alberta,alaska,yakutsk,china,congo,venezuela});
 
-    jugador2.setTerritoriosOcupados(list<Territorio>{brasil,africaOriental,argentina,peru,egipto,mediooriente});
     Tropa infanteria2("Infanteria",1,jugador2.getColor());
     brasil.setTropas(list<Tropa>{infanteria2});
     africaOriental.setTropas(list<Tropa>{infanteria2});
@@ -369,15 +347,17 @@ void Risk::iniciarElementosJuego() {
     peru.setTropas(list<Tropa>{infanteria2});
     mediooriente.setTropas(list<Tropa>{infanteria2});
     egipto.setTropas(list<Tropa>{infanteria2});
+    jugador2.setTerritoriosOcupados(list<Territorio>{brasil,africaOriental,argentina,peru,egipto,mediooriente});
 
 
-    jugador3.setTerritoriosOcupados(list<Territorio>{indonesia,australiaOccidental,australiaOriental,europaDelSur,europaDelNorte});
     Tropa infanteria3("Infanteria",1,jugador3.getColor());
     indonesia.setTropas(list<Tropa>{infanteria3});
     australiaOccidental.setTropas(list<Tropa>{infanteria3});
     australiaOriental.setTropas(list<Tropa>{infanteria3});
     europaDelSur.setTropas(list<Tropa>{infanteria3});
     europaDelNorte.setTropas(list<Tropa>{infanteria3});
+    jugador3.setTerritoriosOcupados(list<Territorio>{indonesia,australiaOccidental,australiaOriental,europaDelSur,europaDelNorte});
+
 
     iniJugadores.push_back(jugador1);
     iniJugadores.push_back(jugador2);
@@ -388,9 +368,53 @@ void Risk::iniciarElementosJuego() {
     setCurrentTurn(jugador1.getIdJugador());
     setIsGameInitialized(true);
     //HAZTA AQUIII ELIMINAAARA E LIMIANRANA ELIMINARRRARREARARAARAR
+
+    // Inicializo la cantidad de cartas intercambiadas
+    cartasIntercambiadas = 0;
 }
 
-void Risk::eliminarUltimaCarta() {
+int Risk::getCurrentTurn() const
+{
+    return currentTurn;
+}
+
+void Risk::setCurrentTurn(int currentTurn)
+{
+    Risk::currentTurn = currentTurn;
+}
+
+bool Risk::isGameInitialized1() const
+{
+    return isGameInitialized;
+}
+
+void Risk::setIsGameInitialized(bool isGameInitialized)
+{
+    Risk::isGameInitialized = isGameInitialized;
+}
+
+bool Risk::isGameOver1() const
+{
+    return isGameOver;
+}
+
+void Risk::setIsGameOver(bool isGameOver)
+{
+    Risk::isGameOver = isGameOver;
+}
+
+int Risk::getCartasIntercambiadas() const
+{
+    return cartasIntercambiadas;
+}
+
+void Risk::setCartasIntercambiadas(int cartasIntercambiadas)
+{
+    Risk::cartasIntercambiadas = cartasIntercambiadas;
+}
+
+
+void Risk::eliminarUltimaCarta()
+{
     listaCartas.pop_back();
 }
-

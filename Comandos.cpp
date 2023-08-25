@@ -1,10 +1,9 @@
-#include "Comandos.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include "algorithm"
-
+#include "Comandos.h"
 
 using namespace std;
 
@@ -16,8 +15,6 @@ void Comandos::inicializarJuego(Risk& risk) {
 
         risk.setIsGameInitialized(true);
 
-        //Se incluyen todos los territorios, continentes, cartas y relaciones
-        risk.iniciarElementosJuego();
 
         bool condicional = true;
         int cantidad_jugadores;
@@ -109,6 +106,25 @@ void Comandos::inicializarJuego(Risk& risk) {
                 contador++;
                 cout<< contador <<" "<<territorio.getNombre()<<endl;
             }
+
+/*      IMPLEMENTACION ENUMMM
+            // Obtener el territorio atacante
+            TerritorioEnum territorioAtacanteEnum;
+            int numeroTerritorioAtacante;
+
+            do {
+                cout << "Selecciona el número del territorio desde el que se ataca: ";
+                cin >> numeroTerritorioAtacante;
+                territorioAtacanteEnum = static_cast<TerritorioEnum>(numeroTerritorioAtacante);
+                if (territorioMap.find(territorioAtacanteEnum) == territorioMap.end()) {
+                    std::cout << "Número de territorio no válido\n";
+                }
+            } while (territorioMap.find(territorioAtacanteEnum) == territorioMap.end());
+
+
+            Territorio& territorioAtacante = *(territorioMap[territorioAtacanteEnum]);
+*/
+
 
             cout<<"Escriba el nombre del territorio para ubicar una infanteria: ";
             std::cin >> territorioNombre;
@@ -274,6 +290,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
                 break;
             }
         }
+
         if(condicional){ //Pregunta por tropas y las añade al territorio
 
             std::cout << "Ingresa la cantidad de artilleria para ubicar en " << territorioParaPoner.getNombre() << ": ";
@@ -324,7 +341,6 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
                     territorioParaPoner.getTropas().push_back(nuevaInfanteria);
                 }
             }
-
         }
         else{ //Dice si no se entro un territorio valido
             std::cout<<"El jugador no tiene este territorio";
@@ -332,6 +348,22 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
     }
 
     std::cout << "Unidades ubicadas exitosamente en tus territorios."<<std::endl;
+
+    std::cout << "Imprimir informacion basica del jugador: "<<std::endl;
+    std::cout << "ID: "<< jugadorActual.getIdJugador()<<endl<<"Nombre: "<<jugadorActual.getNombre()<<endl;
+    std::cout << "Color: "<< jugadorActual.getColor() << endl;
+    std::cout << "Paises: "<<endl;
+    for(Territorio territorio : jugadorActual.getTerritoriosOcupados()){
+        std::cout << territorio.getNombre()<<endl<<"Territorios colidantes: ";
+        for(Territorio t: territorio.getTerritoriosColindantes()){
+            std::cout<<t.getNombre()<<" ";
+        }
+        std::cout<<endl<<"Tropas: ";
+        for(Tropa tropa : territorio.getTropas()){
+            std::cout<<tropa.getTipoTropa()<<" ";
+        }
+        std::cout<<endl;
+    }
 
 
 //Elegir territorio de ataque ---------------
@@ -436,7 +468,7 @@ void Comandos::turnoJugador(int jugadorId, Risk& risk) {
             contCaballeria++;
         }else if(tropa.getTipoTropa() == "Artilleria"){
             contArtilleria++;
-        }else cout << " ñoñañaiou \"Hay tipos de tropa no valida :(\"\n";
+        }else cout << " ñoñañaióu \"Hay tipos de tropa no valida :(\"\n";
     }
 
     //Imprime tropas disponibles

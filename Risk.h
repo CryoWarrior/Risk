@@ -60,8 +60,6 @@ public:
     void setCartasIntercambiadas(int cartasIntercambiadas);
 
     void eliminarUltimaCarta();
-
-    void iniciarElementosJuego();
 };
 
 #endif //RISK_H

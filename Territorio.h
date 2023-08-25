@@ -4,6 +4,8 @@
 #ifndef TERRITORIO_H
 #define TERRITORIO_H
 
+#include "TerritoriosEnum.h"
+
 #include "string"
 #include "Tropa.h"
 #include "list"
@@ -16,6 +18,7 @@ protected:
     string nombre;
     list<Tropa> tropas;
     list<Territorio> territoriosColindantes;
+    TerritorioEnum territorioEnum;
 
 public:
     const string &getNombre() const;
@@ -33,6 +36,8 @@ public:
     Territorio() = default;
 
     Territorio(const string &nombre, const list<Tropa> &tropas);
+
+    Territorio(const string &nombre, const list<Tropa> &tropas, TerritorioEnum territorioEnum);
 
     Territorio& operator=(const Territorio &other);
 
