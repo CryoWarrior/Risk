@@ -323,7 +323,7 @@ Risk::Risk()
     listaCartas.emplace_back("44", quebec.getNombre(), "Comodin");
 
     //ELMINAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-    list<Jugador> iniJugadores;
+    /*list<Jugador> iniJugadores;
 
     Jugador jugador1("Juan",1,"azul");
     Jugador jugador2("Pedro",2,"rojo");
@@ -366,7 +366,7 @@ Risk::Risk()
     setListaJugadores(iniJugadores);
 
     setCurrentTurn(jugador1.getIdJugador());
-    setIsGameInitialized(true);
+    setIsGameInitialized(true);*/
     //HAZTA AQUIII ELIMINAAARA E LIMIANRANA ELIMINARRRARREARARAARAR
 
     // Inicializo la cantidad de cartas intercambiadas

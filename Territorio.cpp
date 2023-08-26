@@ -26,7 +26,6 @@ void Territorio::setTerritoriosColindantes(const list<Territorio> &territoriosCo
 
 
 
-
 Territorio& Territorio::operator=(const Territorio &other) {
     if (this != &other) {
         nombre = other.nombre;
@@ -39,8 +38,7 @@ Territorio& Territorio::operator=(const Territorio &other) {
 Territorio::Territorio(const string &nombre, const list<Tropa> &tropas) : nombre(nombre), tropas(tropas) {}
 
 
-Territorio::Territorio(const string &nombre, const list<Tropa> &tropas, TerritorioEnum territorioEnum)
-        : nombre(nombre), tropas(tropas), territorioEnum(territorioEnum){}
+
 
 
 
