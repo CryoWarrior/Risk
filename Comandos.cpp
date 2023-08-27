@@ -712,13 +712,17 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
     int valorPerdidoDefensores = 0;
 
     condicional = true;
+    int contador = 0;
     while (condicional)
     {
-        cout<<"Ocurrio un loop\n";
+        contador++;
+        cout<<"Loop "<< contador<<endl;
 
         // Simular lanzamiento de dados y determinar resultados
         vector<int> resultadosAtacante = lanzarDados(dadosAtacante);
         vector<int> resultadosDefensor = lanzarDados(dadosDefensor);
+        cout<<"Resultado atacante - Dado 1: "<<resultadosAtacante[0]<< ", Dado 2: "<<resultadosAtacante[1]<<", Dado 3: "<<resultadosAtacante[2]<<endl;
+        cout<<"Resultado defensor - Dado 1: "<<resultadosDefensor[0]<< ", Dado 2: "<<resultadosDefensor[1]<<endl<<endl;
 
 
         // Calcular perdidas de unidades para atacante y defensor (Ataque se devuelve en [1] y defensa en [0]
@@ -730,8 +734,6 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
         valorDefensor -= perdidas[0];
         valorAtacante -= perdidas[1];
 
-        valorPerdidoAtacantes = 0;
-        valorPerdidoDefensores = 0;
 
         // Comprobar si la batalla esta terminada y Ajustar el estado actual de la partida dependiendo del resultado de la partida
         if (valorAtacante <= 0 || valorDefensor <= 0)
@@ -748,6 +750,7 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
             else if (valorAtacante <= 0)
             {
                 cout << "No lograste conquistar el territorio\n";
+                cout << "Tropas del defensor perdidas: "<<valorPerdidoDefensores<<endl;
                 eliminarPerdidas(territorioDefensor, infanteriaDefensa, caballeriaDefensa, artilleriaDefensa, valorPerdidoDefensores);
             }
             else if (valorDefensor <= 0)
@@ -770,9 +773,13 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                 }
 
                 cout << "Lograste controlar el territorio, felicitaciones :)\n";
+                cout << "Tropas perdidas: "<<valorPerdidoAtacantes<<endl;
 
             }
             condicional = false;
+            cout << "Presione Enter para continuar...";
+            std::cin.ignore();
+            std::cin.get();
         }
     }
 
