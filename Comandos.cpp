@@ -105,7 +105,12 @@ void Comandos::inicializarJuego(Risk &risk)
             cout<<nombre<<" fue agregado correctamente, RECUERDE!!! Su ID es: "<<i<<endl;
         }
 
-        list<Territorio> territoriosDisponibles = risk.getListaTerritorios();
+        //Crea la lista de apuntadores territoriosDisponibles, los cuales referencias elementos de la lista original de paises
+        list<Territorio*> territoriosDisponibles;
+
+        for (auto territorio : risk.getListaTerritorios()) {
+            territoriosDisponibles.push_back(territorio.get());
+        }
 
         std::string territorioNombre;
         // Poner unidades en todos los territorios
@@ -124,10 +129,10 @@ void Comandos::inicializarJuego(Risk &risk)
             // Imprimir territorios disponibles
             int contador = 0;
             cout << "Territorios disponibles: " << endl;
-            for (const Territorio &territorio : territoriosDisponibles)
+            for (Territorio* & territorio : territoriosDisponibles)
             {
                 contador++;
-                cout << contador << " " << territorio.getNombre() << endl;
+                cout << contador << " " << territorio->getNombre() << endl;
             }
 
             int territorioNumero;
@@ -137,12 +142,12 @@ void Comandos::inicializarJuego(Risk &risk)
 
             //covertir el numero que digita el usuario a un string (el nombre del pais que quiere el usuario)
             contador = 0;
-            for(const Territorio &territorio : territoriosDisponibles)
+            for(Territorio* &territorio : territoriosDisponibles)
             {
                 contador ++;
                 if (territorioNumero == contador )
                 {
-                    territorioNombre = territorio.getNombre();
+                    territorioNombre = territorio->getNombre();
                 }
 
             }
@@ -153,12 +158,12 @@ void Comandos::inicializarJuego(Risk &risk)
             auto iterTerritorio = territoriosDisponibles.begin();
             while (iterTerritorio != territoriosDisponibles.end())
             {
-                if (iterTerritorio->getNombre() == territorioNombre)
+                if ((*iterTerritorio)->getNombre() == territorioNombre)
                 {
                     Tropa infanteria("Infanteria", 1, jugadorActual.getColor());
-                    iterTerritorio->getTropas().push_back(infanteria);
+                    (*iterTerritorio)->getTropas().push_back(infanteria);
                     jugadorActual.getTerritoriosOcupados().push_back(*iterTerritorio);
-                    iterTerritorio == territoriosDisponibles.erase(iterTerritorio);
+                    iterTerritorio = territoriosDisponibles.erase(iterTerritorio);
                     condicional = false;
                     cout << "Territorio concedido correctamente\n";
                     break;
@@ -202,10 +207,10 @@ void Comandos::inicializarJuego(Risk &risk)
                 // Imprimir territorios del jugador
                 int contador = 0;
                 cout << "Territorios disponibles: " << endl;
-                for (const Territorio &territorio : jugador.getTerritoriosOcupados())
+                for (Territorio* &territorio : jugador.getTerritoriosOcupados())
                 {
                     contador++;
-                    cout << " " << territorio.getNombre() << endl;
+                    cout << " " << territorio->getNombre() << endl;
                 }
 
                 cout << "Ponga el nombre del territorio para ubicar la infanteria restante: ";
@@ -214,8 +219,8 @@ void Comandos::inicializarJuego(Risk &risk)
                 condicional = true;
                 do
                 {
-                    cout << "Escriba la cantidad de infanteria que quiere ubicar, tiene " << infanteriaPorJugador << " unidades disponibles: ";
-                    ;
+                    cout << "Escriba la cantidad de infanteria que quiere ubicar, tiene " << infanteriaPorJugador << " unidades (En valor de infanteria) disponibles: ";
+
                     std::cin >> cantidadTropas;
                     if (cantidadTropas <= infanteriaPorJugador)
                     {
@@ -223,19 +228,19 @@ void Comandos::inicializarJuego(Risk &risk)
                     }
                     else
                     {
-                        cout << "No puede poner esa cantidad, tiene " << infanteriaPorJugador << " unidades disponibles\n";
+                        cout << "No puede poner esa cantidad, tiene " << infanteriaPorJugador << " unidades (En valor de infanteria) disponibles\n";
                     }
                 } while (condicional);
 
                 condicional = true;
-                for (Territorio &territorio : jugador.getTerritoriosOcupados())
+                for (Territorio* &territorio : jugador.getTerritoriosOcupados())
                 {
-                    if (territorio.getNombre() == territorioNombre)
+                    if (territorio->getNombre() == territorioNombre)
                     {
                         Tropa infanteria("Infanteria", 1, jugador.getColor());
                         for (int i = 0; i < cantidadTropas; i++)
                         {
-                            territorio.getTropas().push_back(infanteria);
+                            territorio->getTropas().push_back(infanteria);
                         }
                         infanteriaPorJugador -= cantidadTropas;
                         condicional = false;
@@ -313,7 +318,6 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
     int infanteria, caballeria, artilleria;
     std::string Nterritorio;
-    Territorio territorioParaPoner;
 
     // CIclo para poner las tropas
     while (nuevasUnidades > 0)
@@ -321,26 +325,26 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
         // Muestra los territorios
         cout << "Territorios del jugador " << jugadorId << ": " << endl;
-        for (Territorio territorio : jugadorActual->getTerritoriosOcupados())
+        for (Territorio* &territorio : jugadorActual->getTerritoriosOcupados())
         {
-            cout << territorio.getNombre() << " " << std::endl;
+            cout << territorio->getNombre() << " " << std::endl;
         }
         cout << "\n";
 
-        std::cout << "Tienes " << nuevasUnidades << " unidades disponibles." << std::endl;
+        std::cout << "Tienes " << nuevasUnidades << " unidades (En valor de infanteria) disponibles." << std::endl;
 
         // Recibe y comprueba el territorio
         std::cout << "Introduzca el nombre territorio donde va a poner sus tropas: ";
         std::cin >> Nterritorio;
 
         condicional = false;
-        for (Territorio &territorio : jugadorActual->getTerritoriosOcupados())
+        for (Territorio* &territorio : jugadorActual->getTerritoriosOcupados())
         {
-            if (territorio.getNombre() == Nterritorio)
+            if (territorio->getNombre() == Nterritorio)
             {
                 // Pregunta por tropas y las añade al territorio
 
-                std::cout << "Ingresa la cantidad de artilleria para ubicar en " << territorio.getNombre() << ": ";
+                std::cout << "Ingresa la cantidad de artilleria para ubicar en " << territorio->getNombre() << ": ";
                 std::cin >> artilleria;
 
                 if (artilleria * 10 > nuevasUnidades)
@@ -356,11 +360,11 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                         nuevaArtilleria.setTipoTropa("Artilleria");
                         nuevaArtilleria.setValorTropa(10);
                         nuevaArtilleria.setColor(jugadorActual->getColor());
-                        territorio.getTropas().push_back(nuevaArtilleria);
+                        territorio->getTropas().push_back(nuevaArtilleria);
                     }
                 }
 
-                std::cout << "Ingresa la cantidad de caballeria para ubicar en " << territorio.getNombre() << ": ";
+                std::cout << "Ingresa la cantidad de caballeria para ubicar en " << territorio->getNombre() << ": ";
                 std::cin >> caballeria;
 
                 if (caballeria * 5 > nuevasUnidades)
@@ -376,11 +380,11 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                         nuevaCaballeria.setTipoTropa("Caballeria");
                         nuevaCaballeria.setValorTropa(5);
                         nuevaCaballeria.setColor(jugadorActual->getColor());
-                        territorio.getTropas().push_back(nuevaCaballeria);
+                        territorio->getTropas().push_back(nuevaCaballeria);
                     }
                 }
 
-                std::cout << "Ingresa la cantidad de infanteria para ubicar en " << territorio.getNombre() << ": ";
+                std::cout << "Ingresa la cantidad de infanteria para ubicar en " << territorio->getNombre() << ": ";
                 std::cin >> infanteria;
 
                 if (infanteria > nuevasUnidades)
@@ -396,7 +400,7 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                         nuevaInfanteria.setTipoTropa("Infanteria");
                         nuevaInfanteria.setValorTropa(1);
                         nuevaInfanteria.setColor(jugadorActual->getColor());
-                        territorio.getTropas().push_back(nuevaInfanteria);
+                        territorio->getTropas().push_back(nuevaInfanteria);
                     }
                 }
                 condicional = true;
@@ -419,9 +423,9 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
     // Obtener nombres territorio del jugador
     vector<string> territoriosJugador;
-    for (const Territorio &t : jugadorActual->getTerritoriosOcupados())
+    for (Territorio* &t : jugadorActual->getTerritoriosOcupados())
     {
-        territoriosJugador.push_back(t.getNombre());
+        territoriosJugador.push_back(t->getNombre());
     }
 
     // Mostrar territorios del jugador
@@ -434,77 +438,103 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
     // Territorio atacante
     condicional = true;
+    bool esDelJugador;
+    bool todosSonJugador;
     Territorio* territorioAtacante;
     string SterritorioAtacante;
 
     do
     {
+        condicional = true;
+        esDelJugador = false;
+
         cout << "Escriba el nombre del territorio desde el que se ataca: ";
         cin >> SterritorioAtacante;
-        for (Territorio &t : jugadorActual->getTerritoriosOcupados())
+        for (Territorio* &t : jugadorActual->getTerritoriosOcupados())
         {
-            if (SterritorioAtacante == t.getNombre())
+            if (SterritorioAtacante == t->getNombre())
             {
-                territorioAtacante = &t;
+                territorioAtacante = t;
                 condicional = false;
                 break;
             }
         }
         if (condicional)
         {
-            std::cout << "Este territorio no existe o no es suyo\n";
+            std::cout << "Este territorio no es suyo o no existe\n";
+        }else{
+            todosSonJugador = true;
+            for(Territorio* &territorio : territorioAtacante->getTerritoriosColindantes()){
+                esDelJugador = false;
+                for(Territorio* &t : jugadorActual->getTerritoriosOcupados()){
+                    if(territorio->getNombre()==t->getNombre()){
+                        esDelJugador = true;
+                        break;
+                    }
+                }
+                if (!esDelJugador) {
+                    todosSonJugador = false;
+                    break;
+                }
+            }
+            if(todosSonJugador){
+                cout<<"Este territorio no tiene territorios enemigos para atacar\n";
+            }
         }
-    } while (condicional);
+    } while (condicional||todosSonJugador);
 
     // Elegir territorio para atacar --------------
 
-    // Obtener nombres territorio del jugador
-    vector<string> territoriosColindantes;
-    for (const Territorio &t : territorioAtacante->getTerritoriosColindantes())
+    // Mostrar territorios colindantes y que no son del jugador
+    cout << "Territorios que puede atacar " << jugadorActual->getNombre() << ": " <<  endl;
+    for (Territorio* &territorio : territorioAtacante->getTerritoriosColindantes())
     {
-        territoriosColindantes.push_back(t.getNombre());
+        esDelJugador = false;
+        for(Territorio* &t:jugadorActual->getTerritoriosOcupados()){
+            if(territorio->getNombre()==t->getNombre()){
+                esDelJugador = true;
+                break;
+            }
+        }
+        if(!esDelJugador){
+            cout << territorio->getNombre() << "\n";
+        }
     }
+    cout<<endl;
 
-    // Mostrar territorios colindantes
-    cout << "Territorios que puede atacar " << jugadorId << ": " <<  endl;
-    for (const string &territorio : territoriosColindantes)
-    {
-        cout << territorio << endl;
-    }
-    cout << endl;
+    // Pregunta por el territorio defensor, verifica si es colindante y si es del jugador
 
-    // Territorio defensor
-
-    bool condicionalRepetido = false;
+    esDelJugador = false;
     Territorio* territorioDefensor;
     string SterritorioDefensor;
 
     do{
         condicional = true;
-        condicionalRepetido = false;
+        esDelJugador = false;
 
         cout << "Selecciona el territorio a atacar: ";
         cin >> SterritorioDefensor;
-        for(Territorio& t: territorioAtacante->getTerritoriosColindantes()){
-            if(SterritorioDefensor==t.getNombre()){
-                territorioDefensor = &t;
+        for(Territorio* & t: territorioAtacante->getTerritoriosColindantes()){
+            if(SterritorioDefensor==t->getNombre()){
+                territorioDefensor = t;
                 condicional = false;
                 break;
             }
         }
-        for(Territorio& t1: jugadorActual->getTerritoriosOcupados()){
-            if(SterritorioDefensor==t1.getNombre()){
-                condicional = true;
-                condicionalRepetido = true;
+        if(condicional){
+            std::cout<<"Este territorio no colinda con su territorio atacante\n";
+        }else {
+            for(Territorio* & t1: jugadorActual->getTerritoriosOcupados()){
+                if(SterritorioDefensor==t1->getNombre()){
+                    esDelJugador = true;
+                }
+            }
+
+            if (esDelJugador) {
+                std::cout << "Este territorio es suyo\n";
             }
         }
-        if(condicionalRepetido){
-            std::cout<<"Este territorio es suyo\n";
-        }else if(condicional){
-            std::cout<<"Este territorio no colinda con su territorio atacante\n";
-        }
-
-    }while (condicional);
+    }while (condicional||esDelJugador);
 
     // Elegir de tropas para atacar:
 
@@ -682,35 +712,43 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
     int valorPerdidoDefensores = 0;
 
     condicional = true;
-    cout<<"llega amtes dñe loop \n";
     while (condicional)
     {
+        cout<<"Ocurrio un loop\n";
 
         // Simular lanzamiento de dados y determinar resultados
         vector<int> resultadosAtacante = lanzarDados(dadosAtacante);
         vector<int> resultadosDefensor = lanzarDados(dadosDefensor);
 
-        cout<<"Despues de lanzar dados \n";
+
         // Calcular perdidas de unidades para atacante y defensor (Ataque se devuelve en [1] y defensa en [0]
         vector<int> perdidas = calcularPerdidas(resultadosAtacante, resultadosDefensor);
         valorPerdidoDefensores += perdidas[0];
         valorPerdidoAtacantes += perdidas[1];
 
         // Actualizar valor de tropas de la batalla (Provisional)
-        valorDefensor - perdidas[0];
-        valorAtacante - perdidas[1];
+        valorDefensor -= perdidas[0];
+        valorAtacante -= perdidas[1];
+
+        valorPerdidoAtacantes = 0;
+        valorPerdidoDefensores = 0;
 
         // Comprobar si la batalla esta terminada y Ajustar el estado actual de la partida dependiendo del resultado de la partida
         if (valorAtacante <= 0 || valorDefensor <= 0)
         {
             if (valorAtacante <= 0 && valorDefensor <= 0)
             {
+                auto it = territorioDefensor->getTropas().begin();
+                string color = it->getColor();
+                eliminarPropiedadConColor(risk, color, territorioDefensor->getNombre()); // Eliminar el pais de la lista del defensor
+
                 territorioDefensor->setTropas(list<Tropa>());
+                cout << "El defensor perdio sus tropas y tu tambien, no se realiza la conquista.\n";
             }
             else if (valorAtacante <= 0)
             {
                 cout << "No lograste conquistar el territorio\n";
-                eliminarPerdidas(*territorioDefensor, infanteriaDefensa, caballeriaDefensa, artilleriaDefensa, valorPerdidoDefensores);
+                eliminarPerdidas(territorioDefensor, infanteriaDefensa, caballeriaDefensa, artilleriaDefensa, valorPerdidoDefensores);
             }
             else if (valorDefensor <= 0)
             {
@@ -719,27 +757,22 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                 eliminarPropiedadConColor(risk, color, territorioDefensor->getNombre()); // Eliminar el pais de la lista del defensor
 
                 territorioDefensor->setTropas(tropasAtacantes);
-                eliminarPerdidas(*territorioDefensor, infanteriaAtaque, caballeriaAtaque, artilleriaAtaque, valorPerdidoAtacantes);
+                eliminarPerdidas(territorioDefensor, infanteriaAtaque, caballeriaAtaque, artilleriaAtaque, valorPerdidoAtacantes);
 
-                if (!territorioDefensor->getTropas().empty()) {
+                jugadorActual->getTerritoriosOcupados().push_back(territorioDefensor);
 
-                    jugadorActual->getTerritoriosOcupados().push_back(*territorioDefensor);
-                    // Dar carta por la victoria
-                    if (!risk.getListaCartas().empty()) {
-                        jugadorActual->agregarCarta(risk.getListaCartas().back());
-                        risk.eliminarUltimaCarta();
-                    } else {
-                        cout << "Ya no hay mas cartas\n";
-                    }
-
-                    cout << "Lograste controlar el territorio, felicitaciones :)\n";
+                // Dar carta por la victoria
+                if (!risk.getListaCartas().empty()) {
+                    jugadorActual->agregarCarta(risk.getListaCartas().back());
+                    risk.eliminarUltimaCarta();
                 } else {
-                    cout << "El territorio defensor no tiene tropas, no se realiza la conquista.\n";
+                    cout << "Ya no hay mas cartas\n";
                 }
 
-                condicional = false;
+                cout << "Lograste controlar el territorio, felicitaciones :)\n";
 
             }
+            condicional = false;
         }
     }
 
@@ -751,23 +784,19 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
     fortificarPosicion(*jugadorActual, risk);
 
     // Cambiar el turno al siguiente jugador
-    for (auto it = risk.getListaJugadores().begin(); it != risk.getListaJugadores().end(); it++)
+    for (auto it = risk.getListaJugadores().begin(); it != risk.getListaJugadores().end(); ++it)
     {
         if (it->getNombre() == jugadorActual->getNombre())
         {
-            if (it++ == risk.getListaJugadores().end())
+            auto nextIt = std::next(it); // Avanzar al siguiente jugador
+
+            if (nextIt == risk.getListaJugadores().end())
             {
-                risk.setCurrentTurn(risk.getListaJugadores().front().getIdJugador());
-                cout << "Turno del jugador " << risk.getListaJugadores().front().getNombre() << " ID: "<<
-                risk.getListaJugadores().front().getIdJugador()<< endl;;
+                nextIt = risk.getListaJugadores().begin(); // Volver al primer jugador si es el último
             }
-            else
-            {
-                it++;
-                risk.setCurrentTurn(it->getIdJugador());
-                cout << "Turno del jugador " << it->getNombre() << " ID: "<<
-                it->getIdJugador()<< endl;
-            }
+
+            risk.setCurrentTurn(nextIt->getIdJugador());
+            cout << "Turno del jugador " << nextIt->getNombre() << " ID: " << nextIt->getIdJugador() << endl;
             break;
         }
     }
@@ -915,14 +944,14 @@ int Comandos::obtenerNuevasUnidades(Jugador &jugador, Risk &risk)
 
     // Calcular unidades por continentes ocupados
     int continentesOcupados = 0;
-    for (const Continente &continente : risk.getListaContinentes())
+    for (Continente &continente : risk.getListaContinentes())
     {
         int territoriosOcupadosEnContinente = 0;
-        for (const Territorio &territorio : continente.getTerritorios())
+        for (Territorio* &territorio : continente.getTerritorios())
         {
-            for (const Territorio &t : jugador.getTerritoriosOcupados())
+            for (Territorio* &t : jugador.getTerritoriosOcupados())
             {
-                if (territorio.getNombre() == t.getNombre())
+                if (territorio->getNombre() == t->getNombre())
                 {
                     territoriosOcupadosEnContinente++;
                     break;
@@ -1019,7 +1048,7 @@ int Comandos::intercambiarCartas(Jugador &jugadorActual, Risk &risk)
             int comodinesUsados = comandos.intercambioCartasYTerritorio(risk, jugadorActual, tipoIntercambio, 3);
 
             // Se calculan las unidades extra que puede calcular
-            unidadesExtras = comandos.calcularUnidadesExtra(cartasIntercambiadas, unidadesExtras);
+            unidadesExtras = comandos.calcularUnidadesExtraCartas(cartasIntercambiadas, unidadesExtras);
 
             // Ajustar contadores dependiendo del intercambio hecho
             if (tipoIntercambio == "Infanteria")
@@ -1047,7 +1076,7 @@ int Comandos::intercambiarCartas(Jugador &jugadorActual, Risk &risk)
             comandos.intercambioCartasYTerritorio(risk, jugadorActual, "Caballeria", 1);
             comandos.intercambioCartasYTerritorio(risk, jugadorActual, "Artilleria", 1);
 
-            unidadesExtras = comandos.calcularUnidadesExtra(cartasIntercambiadas, unidadesExtras);
+            unidadesExtras = comandos.calcularUnidadesExtraCartas(cartasIntercambiadas, unidadesExtras);
             contadorArtilleria--;
             contadorInfanteria--;
             contadorCaballeria--;
@@ -1059,7 +1088,7 @@ int Comandos::intercambiarCartas(Jugador &jugadorActual, Risk &risk)
     return unidadesExtras;
 }
 
-int Comandos::calcularUnidadesExtra(int cartasIntercambiadas, int unidadesExtras)
+int Comandos::calcularUnidadesExtraCartas(int cartasIntercambiadas, int unidadesExtras)
 {
     if (cartasIntercambiadas == 0)
     {
@@ -1107,31 +1136,31 @@ int Comandos::intercambioCartasYTerritorio(Risk &risk, Jugador &jugadorActual, s
             if (it->getTropa() == "Comodin")
             {
                 comodinesUsados++;
-                comodinesUsados = true;
+                comodinUsado = true;
             }
             contadorGrupo++;
 
-            if (comodinesUsados || contadorGrupo < 3)
+            if (comodinUsado || contadorGrupo < 3)
             {
                 // Agregar carta a las que se van a intercambiar
                 cartasAIntercambiar.push_back(it);
 
                 // Evaluar si el territorio de la carta pertenece al jugador, darle las unidades adicionales
-                for (Territorio &territorio : jugadorActual.getTerritoriosOcupados())
+                for (Territorio* &territorio : jugadorActual.getTerritoriosOcupados())
                 {
-                    if (it->getTerritorio() == territorio.getNombre())
+                    if (it->getTerritorio() == territorio->getNombre())
                     {
                         Tropa nuevaInfanteria;
                         nuevaInfanteria.setTipoTropa("Infanteria");
                         nuevaInfanteria.setValorTropa(1);
                         nuevaInfanteria.setColor(jugadorActual.getColor());
-                        territorio.getTropas().push_back(nuevaInfanteria);
-                        territorio.getTropas().push_back(nuevaInfanteria);
+                        territorio->getTropas().push_back(nuevaInfanteria);
+                        territorio->getTropas().push_back(nuevaInfanteria);
                     }
                 }
             }
 
-            if (contadorGrupo >= contador && comodinUsado)
+            if (contadorGrupo >= 3 && comodinUsado)
             {
                 break;
             }
@@ -1149,16 +1178,16 @@ int Comandos::intercambioCartasYTerritorio(Risk &risk, Jugador &jugadorActual, s
                 cartasAIntercambiar.push_back(it);
 
                 // Evaluar si el territorio de la carta pertenece al jugador, darle las unidades adicionales
-                for (Territorio &territorio : jugadorActual.getTerritoriosOcupados())
+                for (Territorio* &territorio : jugadorActual.getTerritoriosOcupados())
                 {
-                    if (it->getTerritorio() == territorio.getNombre())
+                    if (it->getTerritorio() == territorio->getNombre())
                     {
                         Tropa nuevaInfanteria;
                         nuevaInfanteria.setTipoTropa("Infanteria");
                         nuevaInfanteria.setValorTropa(1);
                         nuevaInfanteria.setColor(jugadorActual.getColor());
-                        territorio.getTropas().push_back(nuevaInfanteria);
-                        territorio.getTropas().push_back(nuevaInfanteria);
+                        territorio->getTropas().push_back(nuevaInfanteria);
+                        territorio->getTropas().push_back(nuevaInfanteria);
                     }
                 }
             }
@@ -1173,7 +1202,7 @@ int Comandos::intercambioCartasYTerritorio(Risk &risk, Jugador &jugadorActual, s
     for (auto it : cartasAIntercambiar)
     {
         risk.getListaCartas().push_back(*it);
-        jugadorActual.eliminarCarta(it);
+        it = jugadorActual.eliminarCarta(it);
     }
 
     return comodinesUsados;
@@ -1193,7 +1222,7 @@ vector<int> Comandos::lanzarDados(int cantidad)
     int aux;
     for (int i = 0; i < cantidad; i++)
     {
-        for (int j = 0; j < cantidad; j++)
+        for (int j = i + 1; j < cantidad; j++)
         {
             if (resultados[i] < resultados[j])
             {
@@ -1239,16 +1268,17 @@ vector<int> Comandos::calcularPerdidas(const vector<int> &resultadosA, const vec
     return perdidas;
 }
 
-void Comandos::eliminarPerdidas(Territorio &territorio, int infanteria, int caballaria, int artilleria, int valorPerdido)
+void Comandos::eliminarPerdidas(Territorio* &territorio, int infanteria, int caballeria, int artilleria, int valorPerdido)
 {
-    // Organizar tropas
-    for (auto iterador = territorio.getTropas().begin(); iterador != territorio.getTropas().end();)
+    for (auto iterador = territorio->getTropas().begin(); iterador != territorio->getTropas().end();)
     {
         if (iterador->getTipoTropa() == "Infanteria")
         {
-            if (valorPerdido > 0)
+            if (valorPerdido > 0 && infanteria > 0)
             {
-                iterador = territorio.getTropas().erase(iterador);
+                iterador = territorio->getTropas().erase(iterador);
+                infanteria--;
+                valorPerdido--;
             }
             else
             {
@@ -1257,9 +1287,11 @@ void Comandos::eliminarPerdidas(Territorio &territorio, int infanteria, int caba
         }
         else if (iterador->getTipoTropa() == "Caballeria")
         {
-            if (valorPerdido >= 5)
+            if (valorPerdido >= 5 && caballeria > 0)
             {
-                iterador = territorio.getTropas().erase(iterador);
+                iterador = territorio->getTropas().erase(iterador);
+                caballeria--;
+                valorPerdido-=5;
             }
             else
             {
@@ -1268,9 +1300,11 @@ void Comandos::eliminarPerdidas(Territorio &territorio, int infanteria, int caba
         }
         else if (iterador->getTipoTropa() == "Artilleria")
         {
-            if (valorPerdido >= 10)
+            if (valorPerdido >= 10 && artilleria > 0)
             {
-                iterador = territorio.getTropas().erase(iterador);
+                iterador = territorio->getTropas().erase(iterador);
+                artilleria--;
+                valorPerdido-=10;
             }
             else
             {
@@ -1282,19 +1316,20 @@ void Comandos::eliminarPerdidas(Territorio &territorio, int infanteria, int caba
 
 void Comandos::eliminarPropiedadConColor(Risk &risk, const string &color, const string &nombreTerritorio)
 {
-    for (Jugador jugador : risk.getListaJugadores())
+    for (Jugador& jugador : risk.getListaJugadores())
     {
         if (jugador.getColor() == color)
         {
             for (auto iterador = jugador.getTerritoriosOcupados().begin();
-                 iterador != jugador.getTerritoriosOcupados().end(); iterador++)
-            {
-                if (nombreTerritorio == iterador->getNombre())
-                {
-                    jugador.getTerritoriosOcupados().erase(iterador);
+                 iterador != jugador.getTerritoriosOcupados().end();) {
+                if (nombreTerritorio == (*iterador)->getNombre()) {
+                    iterador = jugador.getTerritoriosOcupados().erase(iterador);
                     break;
+                } else {
+                    ++iterador;
                 }
             }
+            break;
         }
     }
 }
@@ -1305,59 +1340,83 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
         bool condicional;
 
         cout << "Territorios del jugador " << jugadorActual.getNombre() << ": " << endl;
-        for (const Territorio &territorio : jugadorActual.getTerritoriosOcupados())
+        for (Territorio* &territorio : jugadorActual.getTerritoriosOcupados())
         {
-            cout << territorio.getNombre() << " " << endl;
+            cout << territorio->getNombre() << " " << endl;
         }
         cout << "\n";
 
         string SterritorioOrigen, SterritorioDestino;
         Territorio* territorioOrigen;
         Territorio* territorioDestino;
+        bool esDelJugador;
 
-
-        // Obtener territorio origen
+        // Pregunta territorio origen, verifica si es del jugador y si este tiene territorios colindantes del jugador
         condicional = true;
         do
         {
-            cout << "Selecciona el territorio desde el que deseas trasladar unidades: ";
+            condicional = true;
+            esDelJugador = false;
+
+            cout << "Selecciona el territorio desde el que deseas trasladar unidades (Si no quiere realizar fortificacion"
+                    " escriba 'no'): ";
             cin >> SterritorioOrigen;
-            for (Territorio &t : jugadorActual.getTerritoriosOcupados())
+
+            if(SterritorioOrigen == "no"||SterritorioOrigen == "No"){
+                cout<<"No se fortificó ningun territorio\n";
+                return;
+            }
+
+            for (Territorio* &t : jugadorActual.getTerritoriosOcupados())
             {
-                if (SterritorioOrigen == t.getNombre())
+                if (SterritorioOrigen == t->getNombre())
                 {
-                    territorioOrigen = &t;
+                    territorioOrigen = t;
                     condicional = false;
                     break;
                 }
             }
+
+
             if (condicional)
             {
-                std::cout << "Este territorio no es suyo\n";
+                std::cout << "Este territorio no es suyo o no existe\n";
+            }else{
+                for(Territorio* &territorio : territorioOrigen->getTerritoriosColindantes()){
+                    for(Territorio* &t : jugadorActual.getTerritoriosOcupados()){
+                        if(territorio->getNombre()==t->getNombre()){
+                            esDelJugador = true;
+                            break;
+                        }
+                    }
+                }
+                if(!esDelJugador){
+                    cout<<"Este territorio no tiene territorios colindantes tuyos para fortificar\n";
+                }
             }
-        } while (condicional);
+        } while (condicional||!esDelJugador);
 
-        // Obtener territorio destino
+        // Obtener territorio destino de la fortificacion
 
-        // Mostrar territorios colindantes
+        // Mostrar territorios colindantes y que pertenecen al jugador
         cout << "Territorios a los que puede trasladar " << jugadorActual.getNombre() << ": ";
-        for (const Territorio &territorio : territorioOrigen->getTerritoriosColindantes())
+        for (Territorio* &territorio : territorioOrigen->getTerritoriosColindantes())
         {
             condicional = false;
-            for(const Territorio &t:jugadorActual.getTerritoriosOcupados()){
-                if(territorio.getNombre()==t.getNombre()){
+            for(Territorio* &t:jugadorActual.getTerritoriosOcupados()){
+                if(territorio->getNombre()==t->getNombre()){
                     condicional = true;
                     break;
                 }
             }
             if(condicional){
-                cout << territorio.getNombre() << " ";
+                cout << territorio->getNombre() << "\n";
             }
 
         }
         cout << "\n";
 
-        bool esDelJugador;
+        //Pregunta por los territorios destino de la fortificacion, verifica si es colindante y si es del jugador
         do
         {
             condicional = true;
@@ -1365,27 +1424,31 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
 
             cout << "Escriba el nombre territorio para trasladar las tropas: ";
             cin >> SterritorioDestino;
-            for (Territorio &t : territorioOrigen->getTerritoriosColindantes())
+
+            for (Territorio* &t : territorioOrigen->getTerritoriosColindantes())
             {
-                if (SterritorioDestino == t.getNombre())
+                if (SterritorioDestino == t->getNombre())
                 {
-                    territorioDestino = &t;
+                    territorioDestino = t;
                     condicional = false;
                     break;
                 }
             }
-            for(Territorio &t : jugadorActual.getTerritoriosOcupados()){
-                if(territorioDestino->getNombre()==t.getNombre()){
-                    esDelJugador = true;
-                    break;
-                }
-            }
-            if(!esDelJugador){
-                std::cout << "Este territorio no es tuyo\n";
-            }else if(condicional)
+            if(condicional)
             {
                 std::cout << "Este territorio no colinda con su territorio atacante\n";
+            } else{
+                for(Territorio* &t : jugadorActual.getTerritoriosOcupados()){
+                    if(territorioDestino->getNombre()==t->getNombre()){
+                        esDelJugador = true;
+                        break;
+                    }
+                }
+                if(!esDelJugador) {
+                    std::cout << "Este territorio no es tuyo\n";
+                }
             }
+
         } while (!esDelJugador||condicional);
 
         // Trasladar tropas

@@ -3,7 +3,7 @@
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
-#include "string"
+#include <string>
 #include "list"
 #include "Territorio.h"
 #include "Carta.h"
@@ -14,7 +14,7 @@ protected:
     string nombre;
     int id_jugador;
     string color;
-    list<Territorio> territoriosOcupados;
+    list<Territorio*> territoriosOcupados;
     list<Carta> cartas;
 public:
     const string &getNombre() const;
@@ -29,15 +29,15 @@ public:
 
     void setColor(const string &color);
 
-    list<Territorio> &getTerritoriosOcupados();
+    list<Territorio *> &getTerritoriosOcupados();
 
-    void setTerritoriosOcupados(const list<Territorio> &territoriosOcupados);
+    void setTerritoriosOcupados(const list<Territorio *> &territoriosOcupados);
 
     const list<Carta> &getCartas() const;
 
     void agregarCarta(Carta& carta);
 
-    void eliminarCarta(std::list<Carta>::const_iterator iterador);
+    list<Carta>::const_iterator eliminarCarta(std::list<Carta>::const_iterator iterador);
 
     void setCartas(const list<Carta> &cartas);
 

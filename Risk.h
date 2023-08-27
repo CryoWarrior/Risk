@@ -10,6 +10,7 @@
 #include "Jugador.h"
 #include "Carta.h"
 #include "Territorio.h"
+#include <memory>
 
 using namespace std;
 class Risk {
@@ -17,7 +18,7 @@ protected:
     vector<Continente> listaContinentes;
     vector<Carta> listaCartas;
     list<Jugador> listaJugadores;
-    list<Territorio> listaTerritorios;
+    list<shared_ptr<Territorio>> listaTerritorios;
     int currentTurn;
     int cartasIntercambiadas;
     bool isGameInitialized = false;
@@ -39,9 +40,10 @@ public:
 
     void setListaJugadores(const list<Jugador> &listaJugadores);
 
-    list<Territorio> &getListaTerritorios();
+    const list<shared_ptr<Territorio>> &getListaTerritorios() const;
 
-    void setListaTerritorios(const list<Territorio> &listaTerritorios);
+    void setListaTerritorios(const list<shared_ptr<Territorio>> &listaTerritorios);
+
 
     int getCurrentTurn() const;
 

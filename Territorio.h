@@ -4,7 +4,7 @@
 #ifndef TERRITORIO_H
 #define TERRITORIO_H
 
-#include "string"
+#include <string>
 #include "Tropa.h"
 #include "list"
 
@@ -15,7 +15,7 @@ class Territorio {
 protected:
     string nombre;
     list<Tropa> tropas;
-    list<Territorio> territoriosColindantes;
+    list<Territorio*> territoriosColindantes;
 
 public:
     const string &getNombre() const;
@@ -26,15 +26,15 @@ public:
 
     void setTropas(const list<Tropa> &tropas);
 
-    list<Territorio> &getTerritoriosColindantes();
-
-    void setTerritoriosColindantes(const list<Territorio> &territoriosColindantes);
-
     Territorio() = default;
 
     Territorio(const string &nombre, const list<Tropa> &tropas);
 
     Territorio& operator=(const Territorio &other);
+
+    list<Territorio *> &getTerritoriosColindantes();
+
+    void setTerritoriosColindantes(const list<Territorio *> &territoriosColindantes);
 
 
 };

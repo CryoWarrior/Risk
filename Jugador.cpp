@@ -24,13 +24,14 @@ void Jugador::setColor(const string &color) {
     Jugador::color = color;
 }
 
-list<Territorio> &Jugador::getTerritoriosOcupados() {
+list<Territorio *> &Jugador::getTerritoriosOcupados() {
     return territoriosOcupados;
 }
 
-void Jugador::setTerritoriosOcupados(const list<Territorio> &territoriosOcupados) {
+void Jugador::setTerritoriosOcupados(const list<Territorio *> &territoriosOcupados) {
     Jugador::territoriosOcupados = territoriosOcupados;
 }
+
 
 Jugador& Jugador::operator=(const Jugador &other) {
     if (this != &other) {
@@ -58,8 +59,9 @@ void Jugador::agregarCarta(Carta &carta) {
     cartas.push_back(carta);
 }
 
-void Jugador::eliminarCarta(std::list<Carta>::const_iterator iterator) {
+list<Carta>::const_iterator Jugador::eliminarCarta(std::list<Carta>::const_iterator iterator) {
     cartas.erase(iterator);
 }
+
 
 

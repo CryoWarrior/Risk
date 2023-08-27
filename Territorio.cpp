@@ -16,11 +16,11 @@ void Territorio::setTropas(const list<Tropa> &tropas) {
     Territorio::tropas = tropas;
 }
 
-list<Territorio> &Territorio::getTerritoriosColindantes() {
+list<Territorio *> &Territorio::getTerritoriosColindantes() {
     return territoriosColindantes;
 }
 
-void Territorio::setTerritoriosColindantes(const list<Territorio> &territoriosColindantes) {
+void Territorio::setTerritoriosColindantes(const list<Territorio *> &territoriosColindantes) {
     Territorio::territoriosColindantes = territoriosColindantes;
 }
 
@@ -36,6 +36,7 @@ Territorio& Territorio::operator=(const Territorio &other) {
 }
 
 Territorio::Territorio(const string &nombre, const list<Tropa> &tropas) : nombre(nombre), tropas(tropas) {}
+
 
 
 

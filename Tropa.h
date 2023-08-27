@@ -4,7 +4,7 @@
 #ifndef TROPA_H
 #define TROPA_H
 
-#include "string"
+#include <string>
 
 using namespace std;
 class Tropa {
