@@ -745,7 +745,8 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                 eliminarPropiedadConColor(risk, color, territorioDefensor->getNombre()); // Eliminar el pais de la lista del defensor
 
                 territorioDefensor->setTropas(list<Tropa>());
-                cout << "El defensor perdio sus tropas y tu tambien, no se realiza la conquista.\n";
+                cout << "El defensor perdio sus tropas y tu tambien, no se realiza la conquista, se la quita la propiedad al defensor.\n";
+
             }
             else if (valorAtacante <= 0)
             {
@@ -1370,7 +1371,7 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
             cin >> SterritorioOrigen;
 
             if(SterritorioOrigen == "no"||SterritorioOrigen == "No"){
-                cout<<"No se fortificó ningun territorio\n";
+                cout<<"No se fortifico ningun territorio\n";
                 return;
             }
 
