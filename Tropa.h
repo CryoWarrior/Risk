@@ -14,21 +14,19 @@ protected:
     string color;
 
 public:
+    //Constructores
+    Tropa() = default;
+    Tropa(const string &tipoTropa, int valorTropa, const string &color);
+
+    //Getters y Setters
     const string &getTipoTropa() const;
-
     void setTipoTropa(const string &tipoTropa);
-
     int getValorTropa() const;
-
     void setValorTropa(int valorTropa);
-
     const string &getColor() const;
-
     void setColor(const string &color);
 
-    Tropa() = default;
 
-    Tropa(const string &tipoTropa, int valorTropa, const string &color);
 };
 
 

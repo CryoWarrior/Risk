@@ -15,16 +15,15 @@ protected:
     string nombre;
     list<Territorio*> territorios;
 public:
-    const string &getNombre() const;
-
+    //Constructores
     Continente() = default;
-
     Continente(const string &nombre, const list<Territorio *> &territorios);
 
+
+    //Getters y setters
+    const string &getNombre() const;
     void setNombre(const string &nombre);
-
     list<Territorio *> &getTerritorios();
-
     void setTerritorios(const list<Territorio *> &territorios);
 };
 

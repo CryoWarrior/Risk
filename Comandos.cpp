@@ -270,6 +270,13 @@ void Comandos::inicializarJuego(Risk &risk)
     }
 }
 
+
+
+
+
+
+
+
 void Comandos::turnoJugador(int jugadorId, Risk &risk)
 {
     bool condicional = false;
@@ -312,12 +319,15 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
     std::cout<<"\n***********************FASE DE PONER NUEVAS TROPAS ADQUIRIDAS***************\n\n";
 
+
     // Obtener nuevas unidades para el jugador
     int nuevasUnidades = obtenerNuevasUnidades(*jugadorActual, risk);
     cout << "El jugador " << jugadorId << " ha obtenido " << nuevasUnidades << " nuevas unidades.\n";
 
     int infanteria, caballeria, artilleria;
     std::string Nterritorio;
+
+
 
     // CIclo para poner las tropas
     while (nuevasUnidades > 0)
@@ -417,9 +427,12 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 
     std::cout << "Unidades ubicadas exitosamente en tus territorios." << std::endl;
 
-    // Elegir territorio de ataque ---------------
+
+
 
     std::cout<<"\n**********************FASE DE ATAQUE*****************************\n\n";
+
+    // Elegir territorio de ataque ---------------
 
     // Obtener nombres territorio del jugador
     vector<string> territoriosJugador;
@@ -463,6 +476,7 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
         {
             std::cout << "Este territorio no es suyo o no existe\n";
         }else{
+            //Aegura que tenga paises para atacar
             todosSonJugador = true;
             for(Territorio* &territorio : territorioAtacante->getTerritoriosColindantes()){
                 esDelJugador = false;
@@ -479,6 +493,19 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
             }
             if(todosSonJugador){
                 cout<<"Este territorio no tiene territorios enemigos para atacar\n";
+            }else{
+                //Aegura que tenga más de una tropa para poder atacar
+                int contadorTropas = 0;
+                for(Tropa tropa:territorioAtacante->getTropas()){
+                    contadorTropas++;
+                    if(contadorTropas > 1){
+                        break;
+                    }
+                }
+                if(contadorTropas == 1){
+                    cout<<"Este territorio solo tiene una tropa, no puede atacar ningun terrtorio\n";
+                    condicional = true;
+                }
             }
         }
     } while (condicional||todosSonJugador);
@@ -542,20 +569,24 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
     int contInfanteria = 0;
     int contCaballeria = 0;
     int contArtilleria = 0;
+    int contTropasTotalesPaisAtaque = 0;
 
     for (Tropa tropa : territorioAtacante->getTropas())
     {
         if (tropa.getTipoTropa() == "Infanteria")
         {
             contInfanteria++;
+            contTropasTotalesPaisAtaque++;
         }
         else if (tropa.getTipoTropa() == "Caballeria")
         {
             contCaballeria++;
+            contTropasTotalesPaisAtaque++;
         }
         else if (tropa.getTipoTropa() == "Artilleria")
         {
             contArtilleria++;
+            contTropasTotalesPaisAtaque++;
         }
         else
             cout << " ñoñañaiou \"Hay tipos de tropa no valida :(\"\n";
@@ -571,51 +602,65 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
     int infanteriaAtaque;
     int caballeriaAtaque;
     int artilleriaAtaque;
+    int contadorTropasAtaque = 0;
+    bool todasLasTropas = false;
 
-    do
-    {
-        std::cout << "Con cuantas tropas de infanteria quieres atacar: ";
-        std::cin >> infanteriaAtaque;
-        if (infanteriaAtaque > contInfanteria || infanteriaAtaque < 0)
+    while(!todasLasTropas){
+        do
         {
-            std::cout << "No tienes esa cantidad de unidades de infanteria\n";
-            condicional = true;
-        }
-        else
-        {
-            condicional = false;
-        }
-    } while (condicional);
+            std::cout << "Con cuantas tropas de infanteria quieres atacar: ";
+            std::cin >> infanteriaAtaque;
+            if (infanteriaAtaque > contInfanteria || infanteriaAtaque < 0)
+            {
+                std::cout << "No tienes esa cantidad de unidades de infanteria\n";
+                condicional = true;
+            }
+            else
+            {
+                contadorTropasAtaque += infanteriaAtaque;
+                condicional = false;
+            }
+        } while (condicional);
 
-    do
-    {
-        std::cout << "Con cuantas tropas de caballeria quieres atacar: ";
-        std::cin >> caballeriaAtaque;
-        if (caballeriaAtaque > contCaballeria || caballeriaAtaque < 0)
+        do
         {
-            std::cout << "No tienes esa cantidad de unidades de caballeria\n";
-            condicional = true;
-        }
-        else
-        {
-            condicional = false;
-        }
-    } while (condicional);
+            std::cout << "Con cuantas tropas de caballeria quieres atacar: ";
+            std::cin >> caballeriaAtaque;
+            if (caballeriaAtaque > contCaballeria || caballeriaAtaque < 0)
+            {
+                std::cout << "No tienes esa cantidad de unidades de caballeria\n";
+                condicional = true;
+            }
+            else
+            {
+                contadorTropasAtaque += caballeriaAtaque;
+                condicional = false;
+            }
+        } while (condicional);
 
-    do
-    {
-        std::cout << "Con cuantas tropas de artilleria quieres atacar: ";
-        std::cin >> artilleriaAtaque;
-        if (artilleriaAtaque > contArtilleria || artilleriaAtaque < 0)
+        do
         {
-            std::cout << "No tienes esa cantidad de unidades de artilleria\n";
-            condicional = true;
+            std::cout << "Con cuantas tropas de artilleria quieres atacar: ";
+            std::cin >> artilleriaAtaque;
+            if (artilleriaAtaque > contArtilleria || artilleriaAtaque < 0)
+            {
+                std::cout << "No tienes esa cantidad de unidades de artilleria\n";
+                condicional = true;
+            }
+            else
+            {
+                contadorTropasAtaque += artilleriaAtaque;
+                condicional = false;
+            }
+        }while (condicional);
+        if(contadorTropasAtaque < contTropasTotalesPaisAtaque){
+            todasLasTropas = true;
+        }else{
+            std::cout << "Debes dejar por lo menos una tropa en tu pais de ataque\n";
         }
-        else
-        {
-            condicional = false;
-        }
-    } while (condicional);
+        contadorTropasAtaque = 0;
+    }
+
 
     // Quitar las tropas del pais atacante y se almacenan en el vector tropas atacantes
     int contQuitarInfanteria = infanteriaAtaque;
@@ -745,7 +790,7 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                 eliminarPropiedadConColor(risk, color, territorioDefensor->getNombre()); // Eliminar el pais de la lista del defensor
 
                 territorioDefensor->setTropas(list<Tropa>());
-                cout << "El defensor perdio sus tropas y tu tambien, no se realiza la conquista, se la quita la propiedad al defensor.\n";
+                cout << "El defensor perdio sus tropas y tu tambien, no se realiza la conquista y se la quita la propiedad al defensor.\n";
 
             }
             else if (valorAtacante <= 0)
@@ -760,6 +805,7 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
                 string color = it->getColor();
                 eliminarPropiedadConColor(risk, color, territorioDefensor->getNombre()); // Eliminar el pais de la lista del defensor
 
+                //Se ubican las tropas del atacante en el territorio
                 territorioDefensor->setTropas(tropasAtacantes);
                 eliminarPerdidas(territorioDefensor, infanteriaAtaque, caballeriaAtaque, artilleriaAtaque, valorPerdidoAtacantes);
 
@@ -783,6 +829,8 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
             std::cin.get();
         }
     }
+
+
 
     std::cout<<"\n***********************FASE DE FORTIFICACION**********************************\n\n";
 
@@ -1029,7 +1077,7 @@ int Comandos::intercambiarCartas(Jugador &jugadorActual, Risk &risk)
             contadorArtilleria++;
         }
 
-        // Si son se encuentra de la misma tropa
+        // Si se encuentra de la misma tropa
         if (contadorInfanteria == 3 || contadorCaballeria == 3 || contadorArtilleria == 3 ||
             (contadorComodines > 0 && (contadorComodines + contadorArtilleria + contadorCaballeria + contadorInfanteria >= 3)))
         {
@@ -1400,6 +1448,19 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
                 }
                 if(!esDelJugador){
                     cout<<"Este territorio no tiene territorios colindantes tuyos para fortificar\n";
+                }else{
+                    //Aegura que tenga más de una tropa para poder atacar
+                    int contadorTropas = 0;
+                    for(Tropa tropa:territorioOrigen->getTropas()){
+                        contadorTropas++;
+                        if(contadorTropas > 1){
+                            break;
+                        }
+                    }
+                    if(contadorTropas == 1){
+                        cout<<"Este territorio solo tiene una tropa, no puede ayudar a ningun territorio\n";
+                        condicional = true;
+                    }
                 }
             }
         } while (condicional||!esDelJugador);
@@ -1467,23 +1528,27 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
         int contInfanteria = 0;
         int contCaballeria = 0;
         int contArtilleria = 0;
+        int contTropasTotalesPaisInicial = 0;
 
         for (const Tropa &tropa : territorioOrigen->getTropas())
         {
             if (tropa.getTipoTropa() == "Infanteria")
             {
                 contInfanteria++;
+                contTropasTotalesPaisInicial++;
             }
             else if (tropa.getTipoTropa() == "Caballeria")
             {
                 contCaballeria++;
+                contTropasTotalesPaisInicial++;
             }
             else if (tropa.getTipoTropa() == "Artilleria")
             {
                 contArtilleria++;
+                contTropasTotalesPaisInicial++;
             }
             else
-                cout << " ñoñañaiou \"Hay tipos de tropa no valida :(\"\n";
+                cout << " ñoñañÄáíú \"Hay tipos de tropa no valida :(\"\n";
         }
 
         // Imprime tropas disponibles
@@ -1496,51 +1561,55 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
         int unidadesInfanteria;
         int unidadesCaballeria;
         int unidadesArtilleria;
+        int contadorTropasMover = 0;
+        bool todasLasTropas = false;
 
-        do
-        {
-            std::cout << "Cuantas tropas de infanteria quieres mover: ";
-            std::cin >> unidadesInfanteria;
-            if (unidadesInfanteria > contInfanteria || unidadesInfanteria < 0)
-            {
-                std::cout << "No tienes esa cantidad de unidades de infanteria\n";
-                condicional = true;
-            }
-            else
-            {
-                condicional = false;
-            }
-        } while (condicional);
+        while(!todasLasTropas) {
 
-        do
-        {
-            std::cout << "Cuantas tropas de caballeria quieres mover: ";
-            std::cin >> unidadesCaballeria;
-            if (unidadesCaballeria > contCaballeria || unidadesCaballeria < 0)
-            {
-                std::cout << "No tienes esa cantidad de unidades de caballeria\n";
-                condicional = true;
-            }
-            else
-            {
-                condicional = false;
-            }
-        } while (condicional);
+            do {
+                std::cout << "Cuantas tropas de infanteria quieres mover: ";
+                std::cin >> unidadesInfanteria;
+                if (unidadesInfanteria > contInfanteria || unidadesInfanteria < 0) {
+                    std::cout << "No tienes esa cantidad de unidades de infanteria\n";
+                    condicional = true;
+                } else {
+                    condicional = false;
+                    contadorTropasMover++;
+                }
+            } while (condicional);
 
-        do
-        {
-            std::cout << "Cuantas tropas de artilleria quieres mover: ";
-            std::cin >> unidadesArtilleria;
-            if (unidadesArtilleria > contArtilleria || unidadesArtilleria < 0)
-            {
-                std::cout << "No tienes esa cantidad de unidades de artilleria\n";
-                condicional = true;
+            do {
+                std::cout << "Cuantas tropas de caballeria quieres mover: ";
+                std::cin >> unidadesCaballeria;
+                if (unidadesCaballeria > contCaballeria || unidadesCaballeria < 0) {
+                    std::cout << "No tienes esa cantidad de unidades de caballeria\n";
+                    condicional = true;
+                } else {
+                    condicional = false;
+                    contadorTropasMover++;
+
+                }
+            } while (condicional);
+
+            do {
+                std::cout << "Cuantas tropas de artilleria quieres mover: ";
+                std::cin >> unidadesArtilleria;
+                if (unidadesArtilleria > contArtilleria || unidadesArtilleria < 0) {
+                    std::cout << "No tienes esa cantidad de unidades de artilleria\n";
+                    condicional = true;
+                } else {
+                    condicional = false;
+                    contadorTropasMover++;
+                }
+            } while (condicional);
+
+            if (contadorTropasMover < contTropasTotalesPaisInicial) {
+                todasLasTropas = true;
+            } else {
+                std::cout << "Debes dejar por lo menos una tropa en tu pais de ataque\n";
             }
-            else
-            {
-                condicional = false;
-            }
-        } while (condicional);
+            contadorTropasMover = 0;
+        }
 
         // Quitar las tropas del pais origen y se almacenan en el vector tropas apoyo y contar valor de fortificacion
         int contQuitarInfanteria = unidadesInfanteria;

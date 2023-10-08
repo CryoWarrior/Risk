@@ -18,23 +18,20 @@ protected:
     list<Territorio*> territoriosColindantes;
 
 public:
-    const string &getNombre() const;
-
-    void setNombre(const string &nombre);
-
-    list<Tropa> &getTropas();
-
-    void setTropas(const list<Tropa> &tropas);
-
+    //Constructores
     Territorio() = default;
-
     Territorio(const string &nombre, const list<Tropa> &tropas);
 
-    Territorio& operator=(const Territorio &other);
-
+    //Getters y setters
+    const string &getNombre() const;
+    void setNombre(const string &nombre);
+    list<Tropa> &getTropas();
+    void setTropas(const list<Tropa> &tropas);
     list<Territorio *> &getTerritoriosColindantes();
-
     void setTerritoriosColindantes(const list<Territorio *> &territoriosColindantes);
+
+    //Sobrecarga operadores
+    Territorio& operator=(const Territorio &other);
 
 
 };
