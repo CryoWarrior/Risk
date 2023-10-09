@@ -2,23 +2,7 @@
 Este proyecto tiene como objetivo la creación de una herramienta  de software que sirva como ayuda para los jugadores de Risk.
 
 ## Codigo de ejecución
-g++ -c Carta.cpp -o Carta.o
-
-g++ -c Comandos.cpp -o Comandos.o
-
-g++ -c Continente.cpp -o Continente.o
-
-g++ -c Jugador.cpp -o Jugador.o
-
-g++ -c Risk.cpp -o Risk.o
-
-g++ -c Territorio.cpp -o Territorio.o
-
-g++ -c Tropa.cpp -o Tropa.o
-
-g++ -c main.cpp -o main.o
-
-g++ Carta.o Comandos.o Continente.o Jugador.o Risk.o Territorio.o Tropa.o main.o -o JuegoRisk
+g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp main.cpp
 
 ## Authors
 
