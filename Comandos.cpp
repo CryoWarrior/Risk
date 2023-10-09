@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 #include "algorithm"
 
 using namespace std;
@@ -18,6 +19,7 @@ void Comandos::inicializarJuego(Risk &risk)
         // Realiza la inicializacion del juego aqui
 
         risk.setIsGameInitialized(true);
+        std::srand(std::time(nullptr));
 
         // Se incluyen todos los territorios, continentes, cartas y relaciones
 
@@ -861,8 +863,12 @@ void Comandos::turnoJugador(int jugadorId, Risk &risk)
 void Comandos::salirJuego(Risk &risk)
 {
     risk.setIsGameOver(true);
-    cout << "El juego ha terminado. ¡Hasta luego!\n";
+    cout << "El juego ha terminado. Hasta luego!\n";
 }
+
+
+
+
 
 void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
 {
@@ -877,17 +883,33 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
     }
     else
     {
+        //Obtener informacion en string
+        string infoActual = risk.contenidoDeLaPartidaEnTexto();
 
-        bool guardo_bien = false;
-        if (guardo_bien)
-        {
-        }
-        else
-        {
-            cout << "(Error al guardar) La partida no ha sido guardada correctamente.\n";
+        string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
+        //Guardar en archivo
+        ofstream archivo(nombreArchivoXD);
+        if(archivo.is_open()){
+            try {
+                archivo << infoActual;
+                archivo.close();
+                cout<<"(Guardado Exitoso) El estado de la partidad ha sido guardado exitosamente\n";
+            }catch (exception e){
+                cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
+                return;
+            }
+        }else{
+            cout << "(Error al guardar) No se pudo abrir el archivo\n";
+            return;
         }
     }
 }
+
+
+
+
+
+
 
 void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 {
@@ -902,6 +924,16 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
     }
     else
     {
+        map<int,int> conteoCarateres;
+        map<int,string> caracteresYCodigos;
+
+        ArbolHuffman arbolHuffman;
+
+        risk.contarCaracteres();
+        arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
+
+        string codigo;
+        arbolHuffman.generarCodigos(arbolHuffman.getRaiz(), codigo,caracteresYCodigos);
 
         bool guardo_archivo_binario = false;
         if (guardo_archivo_binario)
@@ -915,6 +947,27 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 }
 
 void Comandos::inicializar(const string &nombre_archivo) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 string Comandos::costoConquista(Risk &risk, const string &territorio, const vector<string> &territorios)
 {
@@ -1268,7 +1321,7 @@ vector<int> Comandos::lanzarDados(int cantidad)
 {
     vector<int> resultados;
     // Poner los resultados en el vector
-    std::srand(std::time(nullptr));
+
     for (int i = 0; i < cantidad; i++)
     {
         resultados.push_back((std::rand() % 6) + 1);
@@ -1676,5 +1729,18 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
              << territorioOrigen->getNombre() << " a " << territorioDestino->getNombre() << ".\n";
     } catch (const std::exception &e) {
         std::cerr << "Error: " << e.what() << std::endl;
+    }
+}
+
+bool Comandos::guardarEnArchivoTexto(Risk &risk, vector<int, string> caracteresYCodigos, string nombreArchivo){
+
+    ofstream archivo(nombreArchivo+".txt");
+    if(archivo.is_open()){
+        archivo << "Territorios\n";
+
+
+    }else{
+        cout << "No se pudo abrir el archivo\n";
+        return false;
     }
 }

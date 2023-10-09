@@ -1,5 +1,12 @@
 #include "NodoHuffman.h"
 
+
+NodoHuffman::NodoHuffman(){}
+
+NodoHuffman::NodoHuffman(int frecuencia, int codigoSimbolo) : izq(nullptr), der(nullptr), frecuencia(frecuencia),
+                                                              codigoSimbolo(codigoSimbolo) {}
+
+
 NodoHuffman *NodoHuffman::getIzq() const {
     return izq;
 }
@@ -30,4 +37,11 @@ int NodoHuffman::getCodigoSimbolo() const {
 
 void NodoHuffman::setCodigoSimbolo(int codigoSimbolo) {
     NodoHuffman::codigoSimbolo = codigoSimbolo;
+}
+
+bool NodoHuffman::operator<(const NodoHuffman &other) const {
+    if(frecuencia < other.frecuencia){
+        return true;
+    }
+    return false;
 }

@@ -25,16 +25,19 @@ public:
     int obtenerCantidadTerritoriosOcupados(int jugadorId, const vector<string> &territorios);
     int obtenerUnidadesPorContinentes(int jugadorId);
     int obtenerUnidadesPorCartas(int jugadorId); 
-    vector <string> obtenerTerritoriosJugador(int jugadorId, const vector<string> &territorios);
 
     vector<int> lanzarDados(int cantidad);
     vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados);
-    void eliminarPerdidas(Territorio*& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
-    void eliminarPropiedadConColor(Risk& risk, const string& color, const string& nombreTerritorio);
+
     static void fortificarPosicion(Jugador& jugador, Risk& risk);
     int intercambiarCartas(Jugador& jugadorActual, Risk& risk);
     int calcularUnidadesExtraCartas(int cartasIntercambiadas, int unidadesExtras);
     int intercambioCartasYTerritorio(Risk& risk, Jugador& jugadorActual,string tropa, int contador);
+    void eliminarPerdidas(Territorio*& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
+    void eliminarPropiedadConColor(Risk& risk, const string& color, const string& nombreTerritorio);
+
+    bool guardarEnArchivoTexto(Risk &risk, vector<int,string>caracteresYCodigos, string nombreArchivo);
+
 };
 
 

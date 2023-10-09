@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
@@ -38,7 +36,6 @@ public:
 
     //Demas funciones
     void agregarCarta(Carta& carta);
-
     list<Carta>::const_iterator eliminarCarta(std::list<Carta>::const_iterator iterador);
 
 

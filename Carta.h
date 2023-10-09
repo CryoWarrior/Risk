@@ -14,24 +14,21 @@ protected:
     string territorio;
     string tropa;
 public:
+    //Constructores
     Carta() = default;
-
     Carta(const string &idCarta, const string &territorio, const string &tropa);
 
-    Carta& operator=(const Carta &other);
 
+    //Getters y Setters
     const string &getIdCarta() const;
-
     void setIdCarta(const string &idCarta);
-
     const string &getTerritorio() const;
-
     void setTerritorio(const string &territorio);
-
     const string &getTropa() const;
-
     void setTropa(const string &tropa);
 
+    //Sobrecarga de operadores
+    Carta& operator=(const Carta &other);
     bool operator==(const Carta& other) const;
 };
 

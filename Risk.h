@@ -11,6 +11,8 @@
 #include "Carta.h"
 #include "Territorio.h"
 #include <memory>
+#include <queue>
+#include "D:\Javeriana\Estructuras de datos\PROYECTO\Risk\RiskGit\Huffman\ArbolHuffman.h"
 
 using namespace std;
 class Risk {
@@ -23,7 +25,6 @@ protected:
     int cartasIntercambiadas;
     bool isGameInitialized = false;
     bool isGameOver = false;
-
 
 public:
     //Constructor
@@ -49,6 +50,10 @@ public:
 
     //OTras funciones
     void eliminarUltimaCarta();
+    map<int,int> contarCaracteres();
+    ArbolHuffman crearArbolHuffman(map<int, int>);
+    string contenidoDeLaPartidaEnTexto();
+    string contenidoDeLaPartidaCodificado(map<int,string> carateresYCodigos);
 };
 
 #endif //RISK_H

@@ -12,6 +12,10 @@ protected:
     int codigoSimbolo;
 
 public:
+    //Constructores
+    NodoHuffman();
+    NodoHuffman(int frecuencia, int codigoSimbolo);
+
     //Getters y Setters
     NodoHuffman *getIzq() const;
     void setIzq(NodoHuffman *izq);
@@ -21,6 +25,9 @@ public:
     void setFrecuencia(int frecuencia);
     int getCodigoSimbolo() const;
     void setCodigoSimbolo(int codigoSimbolo);
+
+    //Sobrecarga operadores
+    bool operator<(const NodoHuffman &other) const;
 
 };
 

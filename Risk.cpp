@@ -1,34 +1,5 @@
 #include "Risk.h"
 
-vector<Continente> &Risk::getListaContinentes()
-{
-    return listaContinentes;
-}
-
-void Risk::setListaContinentes(const vector<Continente> &listaContinentes)
-{
-    Risk::listaContinentes = listaContinentes;
-}
-
-vector<Carta> &Risk::getListaCartas()
-{
-    return listaCartas;
-}
-
-void Risk::setListaCartas(const vector<Carta> &listaCartas)
-{
-    Risk::listaCartas = listaCartas;
-}
-
-list<Jugador> &Risk::getListaJugadores()
-{
-    return listaJugadores;
-}
-
-void Risk::setListaJugadores(const list<Jugador> &listaJugadores)
-{
-    Risk::listaJugadores = listaJugadores;
-}
 
 
 Risk::Risk()
@@ -366,6 +337,37 @@ Risk::Risk()
 
 }
 
+vector<Continente> &Risk::getListaContinentes()
+{
+    return listaContinentes;
+}
+
+void Risk::setListaContinentes(const vector<Continente> &listaContinentes)
+{
+    Risk::listaContinentes = listaContinentes;
+}
+
+vector<Carta> &Risk::getListaCartas()
+{
+    return listaCartas;
+}
+
+void Risk::setListaCartas(const vector<Carta> &listaCartas)
+{
+    Risk::listaCartas = listaCartas;
+}
+
+list<Jugador> &Risk::getListaJugadores()
+{
+    return listaJugadores;
+}
+
+void Risk::setListaJugadores(const list<Jugador> &listaJugadores)
+{
+    Risk::listaJugadores = listaJugadores;
+}
+
+
 int Risk::getCurrentTurn() const
 {
     return currentTurn;
@@ -407,11 +409,6 @@ void Risk::setCartasIntercambiadas(int cartasIntercambiadas)
 }
 
 
-void Risk::eliminarUltimaCarta()
-{
-    listaCartas.pop_back();
-}
-
 const list<shared_ptr<Territorio>> &Risk::getListaTerritorios() const {
     return listaTerritorios;
 }
@@ -419,3 +416,288 @@ const list<shared_ptr<Territorio>> &Risk::getListaTerritorios() const {
 void Risk::setListaTerritorios(const list<shared_ptr<Territorio>> &listaTerritorios) {
     Risk::listaTerritorios = listaTerritorios;
 }
+
+
+
+
+void Risk::eliminarUltimaCarta()
+{
+    listaCartas.pop_back();
+}
+
+
+map<int,int> Risk::contarCaracteres() {
+    map<int,int> caracteresYFrecuencias;
+
+    /*
+     *
+     * COSAS QUE GUARDAR
+     *
+     * TERRITORIO
+     *
+     * Cosas posibles para no guardar:
+     *      Ya se saben todos los contientes
+     *      Ya se conocen todos sus territorios colidantes
+     *
+     * Cosas que guardar:
+     *      Tropas definen de quien es el territorio
+     *
+     * Sugerencias:
+     * No guardar territorios colidantes
+     * Al leer el archivo se busca el nombre del territorio y se le asigna las tropas
+     *
+     * CONTINENTE
+     *
+     * Los continentes no guardan nada, no guardar?
+     *
+     * CARTAS
+     *
+     * Las cartas si se guardan porque se van quitando y dando a jugadores
+     *
+     * JUGADOR
+     *
+     * Se guarda todo, ningun jugador se puede inicializar
+     *
+     * NO OLVIDAR: Se separa todo en el de texto, para contar se quitan los espacios para crear la nueva cadena y luego se
+     * cuentan los caracteres  de esta cadena
+     */
+/*
+    for(const shared_ptr<Territorio> &territorio : listaTerritorios){
+        //Nombre de territorio
+        for(char caracterActual : territorio.get()->getNombre()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+
+        //Nombre de territorios colindantes
+        /*for(auto territorioColidante : territorio->getTerritoriosColindantes()){
+            for(char caracterActual : territorioColidante->getNombre()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+        }
+
+        //Guardar Tropas
+        for(Tropa tropa: territorio->getTropas()){
+            //Color de la tropa
+            for(char caracterActual : tropa.getColor()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+            //Tipo de la tropa
+            for(char caracterActual : tropa.getTipoTropa()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+            //Valor de la tropa
+            for(char caracterActual : to_string(tropa.getValorTropa())){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+
+        }
+    }
+    /*
+
+    for(const Continente& continente : listaContinentes){
+        //Nombre de continente
+        for(char caracterActual : continente.getNombre()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+    }
+
+    for(const Jugador& jugador : listaJugadores){
+        //Nombre de jugador
+        for(char caracterActual : jugador.getNombre()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+        //ID del jugador
+        for(char caracterActual : to_string(jugador.getIdJugador())){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+        //Color del jugador
+        for(char caracterActual : jugador.getColor()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+
+        //Cartas del jugador
+        for(const Carta& carta: jugador.getCartas()){
+            //Id de la carta
+            for(char caracterActual : carta.getIdCarta()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+            //Territorio de la carta
+            for(char caracterActual : carta.getTerritorio()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+            //Tropa de la carta
+            for(char caracterActual : carta.getTropa()){
+                if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                    caracteresYFrecuencias[caracterActual] += 1;
+                } else{
+                    caracteresYFrecuencias[caracterActual] = 1;
+                }
+            }
+        }
+    }
+
+    for(const Carta& carta : listaCartas){
+        //Id de carta
+        for(char caracterActual : carta.getIdCarta()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+        //Nombre de territorio
+        for(char caracterActual : carta.getTerritorio()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+        }
+
+        //Nombre de tropa
+        for(char caracterActual : carta.getTropa()){
+            if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracterActual] += 1;
+            } else{
+                caracteresYFrecuencias[caracterActual] = 1;
+            }
+
+        }
+    }
+
+    for(char caracterActual : to_string(cartasIntercambiadas)){
+        //Cantidad de cartas intercambiadas
+        if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+            caracteresYFrecuencias[caracterActual] += 1;
+        } else{
+            caracteresYFrecuencias[caracterActual] = 1;
+        }
+    }
+
+    for(char caracterActual : to_string(currentTurn)){
+        //Id del jugador con el turno actual
+        if(caracteresYFrecuencias.find(caracterActual) != caracteresYFrecuencias.end()){
+            caracteresYFrecuencias[caracterActual] += 1;
+        } else{
+            caracteresYFrecuencias[caracterActual] = 1;
+        }
+    }
+*/
+    return caracteresYFrecuencias;
+}
+
+ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
+    priority_queue<NodoHuffman*, vector<NodoHuffman*>> colaPrioridad;
+
+    for (const auto& pair : caracteresYFrecuencias) {
+        NodoHuffman* node = new NodoHuffman(pair.first, pair.second);
+        colaPrioridad.push(node);
+    }
+
+    ArbolHuffman arbolHuffman(colaPrioridad);
+
+    return arbolHuffman;
+}
+
+string Risk::contenidoDeLaPartidaCodificado(map<int,string> codigosCaracteres) {
+    string salidaArchivo;
+
+    for(const shared_ptr<Territorio> &territorio : listaTerritorios) {
+        //Nombre de territorio
+        for (char caracterActual: territorio.get()->getNombre()) {
+            salidaArchivo += codigosCaracteres[caracterActual];
+        }
+    }
+    return salidaArchivo;
+}
+
+string Risk::contenidoDeLaPartidaEnTexto() {
+    string salidaArchivo;
+
+    //SECCION JUGADORES
+    salidaArchivo += "jugadores ";
+
+    //Guarda cantidad de jugadores
+    salidaArchivo += to_string(listaJugadores.size()) + " ";
+
+    //Informacion de jugadores
+    for(Jugador &jugador:listaJugadores){
+
+        salidaArchivo += jugador.getNombre() + " ";
+        salidaArchivo += jugador.getColor() + " ";
+
+        //Guarda cantidad de territorios
+        salidaArchivo += to_string(jugador.getTerritoriosOcupados().size()) + " ";
+
+        //Guarda el estado actual de todos los territorios del jugador
+        for(Territorio* territorio : jugador.getTerritoriosOcupados()){
+            salidaArchivo += territorio->getNombre() + " ";
+            salidaArchivo += to_string(territorio->getTropas().size()) + " ";
+
+            //Informacion de las tropas
+            for(Tropa &tropa : territorio->getTropas()){
+                salidaArchivo += tropa.getTipoTropa() + " ";
+                salidaArchivo += tropa.getColor() + " ";
+                salidaArchivo += to_string(tropa.getValorTropa())+ " ";
+            }
+        }
+
+        //Guarda el estado actual de las cartas del jugador
+        salidaArchivo += to_string(jugador.getCartas().size())+ " ";
+
+        for(const Carta &carta : jugador.getCartas()){
+            salidaArchivo += carta.getIdCarta() + " ";
+        }
+    }
+
+    salidaArchivo += to_string(cartasIntercambiadas) + " ";
+    salidaArchivo += to_string(currentTurn);
+
+    return salidaArchivo;
+}
+
+
