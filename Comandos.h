@@ -11,6 +11,7 @@ using namespace std;
 
 class Comandos {
 public:
+    //Comandos principales
     void inicializarJuego(Risk& risk);
     void inicializar(const string& nombre_archivo);
     void turnoJugador(int jugadorId, Risk& risk);
@@ -29,15 +30,19 @@ public:
     vector<int> lanzarDados(int cantidad);
     vector<int> calcularPerdidas(const vector<int>& resultadosA, const vector<int>& resultados);
 
+
+    //Fortificacion
     static void fortificarPosicion(Jugador& jugador, Risk& risk);
-    int intercambiarCartas(Jugador& jugadorActual, Risk& risk);
-    int calcularUnidadesExtraCartas(int cartasIntercambiadas, int unidadesExtras);
-    int intercambioCartasYTerritorio(Risk& risk, Jugador& jugadorActual,string tropa, int contador);
     void eliminarPerdidas(Territorio*& territorio, int infanteria, int caballaria, int artilleria, int valorPerido);
     void eliminarPropiedadConColor(Risk& risk, const string& color, const string& nombreTerritorio);
 
-    bool guardarEnArchivoTexto(Risk &risk, vector<int,string>caracteresYCodigos, string nombreArchivo);
+    //Cartas
+    int intercambiarCartas(Jugador& jugadorActual, Risk& risk);
+    int calcularUnidadesExtraCartas(int cartasIntercambiadas, int unidadesExtras);
+    int intercambioCartasYTerritorio(Risk& risk, Jugador& jugadorActual,string tropa, int contador);
 
+    //Archivos
+    string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string);
 };
 
 

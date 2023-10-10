@@ -50,7 +50,6 @@ public:
 
     //OTras funciones
     void eliminarUltimaCarta();
-    map<int,int> contarCaracteres();
     ArbolHuffman crearArbolHuffman(map<int, int>);
     string contenidoDeLaPartidaEnTexto();
     string contenidoDeLaPartidaCodificado(map<int,string> carateresYCodigos);

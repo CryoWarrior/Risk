@@ -926,22 +926,41 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
     {
         map<int,int> conteoCarateres;
         map<int,string> caracteresYCodigos;
+        string infoBinaria;
 
         ArbolHuffman arbolHuffman;
 
-        risk.contarCaracteres();
+
+        //Obtener estado del juego en string
+        string infoActual = risk.contenidoDeLaPartidaEnTexto();
+
+        //Se obtiene la frecuencia de cada caracter y se guarda la cadena sin espacios
+        infoBinaria = contarCaracteresYDevolverSinEspacios(conteoCarateres, infoActual);
+
+        //Se crea el arbol teniendo la frecuencia del arbol
         arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
 
+        //Mapa que contiene cada caracter con su codigo
         string codigo;
         arbolHuffman.generarCodigos(arbolHuffman.getRaiz(), codigo,caracteresYCodigos);
 
-        bool guardo_archivo_binario = false;
-        if (guardo_archivo_binario)
-        {
-        }
-        else
-        {
-            cout << "(Error al codificar y/o guardar) La partida no ha sido codificada ni guardada correctamente.\n";
+        //Nombre del archivo
+        string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".dat";
+
+        //Guardar en archivo binario
+        ofstream archivo(nombreArchivoXD);
+        if(archivo.is_open()){
+            try {
+               // archivo.write(infoActual, infoActual.size());
+                archivo.close();
+                cout<<"(Guardado Exitoso) El estado de la partidad ha sido comprimido y bguardado exitosamente\n";
+            }catch (exception e){
+                cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
+                return;
+            }
+        }else{
+            cout << "(Error al guardar) No se pudo abrir el archivo\n";
+            return;
         }
     }
 }
@@ -1732,15 +1751,19 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
     }
 }
 
-bool Comandos::guardarEnArchivoTexto(Risk &risk, vector<int, string> caracteresYCodigos, string nombreArchivo){
+string Comandos::contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string texto) {
+    string sinEspacios;
 
-    ofstream archivo(nombreArchivo+".txt");
-    if(archivo.is_open()){
-        archivo << "Territorios\n";
-
-
-    }else{
-        cout << "No se pudo abrir el archivo\n";
-        return false;
+    for(char &caracter : texto){
+        if(caracter != ' '){
+            sinEspacios += caracter;
+            if(caracteresYFrecuencias.find(caracter) != caracteresYFrecuencias.end()){
+                caracteresYFrecuencias[caracter] += 1;
+            } else{
+                caracteresYFrecuencias[caracter] = 1;
+            }
+        }
     }
+
+    return sinEspacios;
 }
