@@ -43,6 +43,7 @@ public:
 
     //Archivos
     string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string);
+    string codificarString(string texto, map<int,string> caracteresYFrecuencias);
 };
 
 

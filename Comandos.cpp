@@ -926,16 +926,16 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
     {
         map<int,int> conteoCarateres;
         map<int,string> caracteresYCodigos;
+        string infoSinEspacios;
         string infoBinaria;
 
         ArbolHuffman arbolHuffman;
-
 
         //Obtener estado del juego en string
         string infoActual = risk.contenidoDeLaPartidaEnTexto();
 
         //Se obtiene la frecuencia de cada caracter y se guarda la cadena sin espacios
-        infoBinaria = contarCaracteresYDevolverSinEspacios(conteoCarateres, infoActual);
+        infoSinEspacios = contarCaracteresYDevolverSinEspacios(conteoCarateres, infoActual);
 
         //Se crea el arbol teniendo la frecuencia del arbol
         arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
@@ -943,6 +943,9 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         //Mapa que contiene cada caracter con su codigo
         string codigo;
         arbolHuffman.generarCodigos(arbolHuffman.getRaiz(), codigo,caracteresYCodigos);
+
+        //Codificar cadena de archivo
+        infoBinaria = codificarString(infoSinEspacios, caracteresYCodigos);
 
         //Nombre del archivo
         string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".dat";
@@ -1751,6 +1754,8 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
     }
 }
 
+
+
 string Comandos::contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string texto) {
     string sinEspacios;
 
@@ -1767,3 +1772,14 @@ string Comandos::contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYF
 
     return sinEspacios;
 }
+
+string Comandos::codificarString(string texto, map<int, string> caracteresYFrecuencias) {
+    string codificado;
+
+    for(char caracterACodificar : texto){
+        codificado += caracteresYFrecuencias[caracterACodificar];
+    }
+
+    return codificado;
+}
+
