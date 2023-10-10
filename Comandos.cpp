@@ -954,7 +954,6 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         ofstream archivo(nombreArchivoXD);
         if(archivo.is_open()){
             try {
-               // archivo.write(infoActual, infoActual.size());
                 archivo.close();
                 cout<<"(Guardado Exitoso) El estado de la partidad ha sido comprimido y bguardado exitosamente\n";
             }catch (exception e){
