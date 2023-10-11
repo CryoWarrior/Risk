@@ -2,7 +2,7 @@
 Este proyecto tiene como objetivo la creación de una herramienta  de software que sirva como ayuda para los jugadores de Risk.
 
 ## Codigo de ejecución
-g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp main.cpp
+g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp Huffman/ArbolHuffman.cpp Huffman/NodoHuffman.cpp main.cpp
 
 ## Authors
 
