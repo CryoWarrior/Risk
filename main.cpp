@@ -6,6 +6,7 @@
 #include <vector>
 #include "Comandos.h"
 #include "Risk.h"
+#include "Huffman/NodoHuffman.h"
 
 using namespace std;
 
@@ -14,6 +15,17 @@ int main() {
     Risk risk = Risk();
     Comandos comandos;
 
+    NodoHuffman nodoHuffman(8,10);
+    NodoHuffman nodoHuffman1(10,20);
+    NodoHuffman nodoHuffman2(4,5);
+    NodoHuffman nodoHuffman3(11,8);
+    NodoHuffman nodoHuffman4(1,11);
+
+    cout<<"Frecuencia y codigo simbolo mayor: "<< (nodoHuffman<nodoHuffman1)<<endl; //Verdadero
+    cout<<"Frecuencia y codigo simbolo menor: "<< (nodoHuffman<nodoHuffman2)<<endl; //Falso
+    cout<<"Frecuencia menor y codigo simbolo mayor: "<< (nodoHuffman<nodoHuffman4)<<endl; //Falso
+    cout<<"Frecuencia mayor y codigo simbolo menor: "<< (nodoHuffman<nodoHuffman3)<<endl; //Verdadero
+    cout<<"Con frecuencia"<<endl;
 
     string command;
     bool isRunning = true;

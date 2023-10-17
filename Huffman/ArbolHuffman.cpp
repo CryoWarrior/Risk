@@ -1,24 +1,29 @@
-
 #include "ArbolHuffman.h"
 
 
 ArbolHuffman::ArbolHuffman() {}
 
-ArbolHuffman::ArbolHuffman(priority_queue<NodoHuffman*> colaFrecuencia) {
+
+ArbolHuffman::ArbolHuffman(deque<NodoHuffman*> colaFrecuencia) {
     while (colaFrecuencia.size() > 1) {
-        NodoHuffman* izquierdo = colaFrecuencia.top();
-        colaFrecuencia.pop();
-        NodoHuffman* derecho = colaFrecuencia.top();
-        colaFrecuencia.pop();
+        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<>());
+        NodoHuffman* izquierdo = colaFrecuencia.back();
+        colaFrecuencia.pop_back();
+
+        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<>());
+        NodoHuffman* derecho = colaFrecuencia.back();
+        colaFrecuencia.pop_back();
+
 
         NodoHuffman* nodo = new NodoHuffman(izquierdo->getFrecuencia() + derecho->getFrecuencia(), '$');
         nodo->setIzq(izquierdo);
         nodo->setDer(derecho);
 
-        colaFrecuencia.push(nodo);
+        colaFrecuencia.push_back(nodo);
+        push_heap(colaFrecuencia.begin(),colaFrecuencia.end(),greater<>());
     }
 
-    raiz = colaFrecuencia.top();
+    raiz = colaFrecuencia.back();
 }
 
 NodoHuffman *ArbolHuffman::getRaiz() const {
@@ -35,8 +40,10 @@ void ArbolHuffman::generarCodigos(NodoHuffman* nodoHuffman ,string codigo,map<in
     }
 
     if(nodoHuffman->getIzq() == nullptr && nodoHuffman->getDer() == nullptr){
-        caracterYCodigo[nodoHuffman->getCodigoSimbolo()] = codigo;
-        return;
+        if(nodoHuffman->getCodigoSimbolo() != '$'){
+            caracterYCodigo[nodoHuffman->getCodigoSimbolo()] = codigo;
+            return;
+        }
     }
 
     generarCodigos(nodoHuffman->getIzq(), codigo+='0',caracterYCodigo);

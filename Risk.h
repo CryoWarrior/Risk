@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef RISK_H
 #define RISK_H
 
@@ -10,10 +8,10 @@
 #include "Jugador.h"
 #include "Carta.h"
 #include "Territorio.h"
+//#include "Comparar.h"
+#include "map"
+#include "Huffman\ArbolHuffman.h"
 #include <memory>
-#include <queue>
-#include "D:\Javeriana\Estructuras de datos\PROYECTO\Risk\RiskGit\Huffman\ArbolHuffman.h"
-
 using namespace std;
 class Risk {
 protected:
@@ -25,7 +23,6 @@ protected:
     int cartasIntercambiadas;
     bool isGameInitialized = false;
     bool isGameOver = false;
-
 public:
     //Constructor
     Risk();
@@ -50,9 +47,11 @@ public:
 
     //OTras funciones
     void eliminarUltimaCarta();
-    ArbolHuffman crearArbolHuffman(map<int, int>);
+    ArbolHuffman crearArbolHuffman(map<int,int>);
+
     string contenidoDeLaPartidaEnTexto();
     string contenidoDeLaPartidaCodificado(map<int,string> carateresYCodigos);
+
 };
 
 #endif //RISK_H

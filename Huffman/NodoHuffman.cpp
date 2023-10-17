@@ -40,8 +40,9 @@ void NodoHuffman::setCodigoSimbolo(int codigoSimbolo) {
 }
 
 bool NodoHuffman::operator<(const NodoHuffman &other) const {
-    if(frecuencia < other.frecuencia){
-        return true;
-    }
-    return false;
+    return frecuencia < other.frecuencia;
+}
+
+bool NodoHuffman::operator>(const NodoHuffman &other) const {
+    return frecuencia > other.frecuencia;
 }

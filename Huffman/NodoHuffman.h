@@ -28,6 +28,7 @@ public:
 
     //Sobrecarga operadores
     bool operator<(const NodoHuffman &other) const;
+    bool operator>(const NodoHuffman &other) const;
 
 };
 

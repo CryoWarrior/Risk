@@ -4,7 +4,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
-#include "algorithm"
+#include <bitset>
+#include <algorithm>
 
 using namespace std;
 
@@ -885,13 +886,40 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
     {
         //Obtener informacion en string
         string infoActual = risk.contenidoDeLaPartidaEnTexto();
+        map<int,int> conteoCarateres;
+        int contadortotalCaracteres = 0;
+        int contadorDiferentesCaracteres = 0;
 
+        contarCaracteresYDevolverSinEspacios(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres ,infoActual);
+/*
+        string  infoTexto = to_string(contadorDiferentesCaracteres) + " ";
+
+        for(const auto x : conteoCarateres){
+            infoTexto += to_string(x.first) + " ";
+            infoTexto += to_string(x.second) + " ";
+        }
+        infoTexto += to_string(contadortotalCaracteres) + " ";
+
+        infoTexto += "\n";
+        infoTexto += infoActual;
+
+*/
         string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
         //Guardar en archivo
         ofstream archivo(nombreArchivoXD);
         if(archivo.is_open()){
             try {
+                archivo << to_string(contadorDiferentesCaracteres) + " ";
+
+                for(const auto x : conteoCarateres){
+                    archivo << to_string(x.first) + " ";
+                    archivo << to_string(x.second) + " ";
+                }
+                archivo << to_string(contadortotalCaracteres);
+                archivo << "\n";
+
                 archivo << infoActual;
+
                 archivo.close();
                 cout<<"(Guardado Exitoso) El estado de la partidad ha sido guardado exitosamente\n";
             }catch (exception e){
@@ -928,6 +956,9 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         map<int,string> caracteresYCodigos;
         string infoSinEspacios;
         string infoBinaria;
+        int totalCaracteres = 0;
+        int contadortotalCaracteres = 0;
+        int contadorDiferentesCaracteres = 0;
 
         ArbolHuffman arbolHuffman;
 
@@ -935,7 +966,18 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         string infoActual = risk.contenidoDeLaPartidaEnTexto();
 
         //Se obtiene la frecuencia de cada caracter y se guarda la cadena sin espacios
-        infoSinEspacios = contarCaracteresYDevolverSinEspacios(conteoCarateres, infoActual);
+        infoSinEspacios = contarCaracteresYDevolverSinEspacios(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres , infoActual);
+/*
+        //Se termina de fabricar el archivo
+        string  infoTexto = to_string(contadorDiferentesCaracteres) + " ";
+        for(const auto x : conteoCarateres){
+            infoTexto += to_string(x.first) + " ";
+            infoTexto += to_string(x.second) + " ";
+        }
+        infoTexto += to_string(contadorDiferentesCaracteres) + " ";
+        infoTexto += "\n";
+        infoTexto += infoSinEspacios;
+*/
 
         //Se crea el arbol teniendo la frecuencia del arbol
         arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
@@ -946,16 +988,31 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 
         //Codificar cadena de archivo
         infoBinaria = codificarString(infoSinEspacios, caracteresYCodigos);
-
+        
         //Nombre del archivo
-        string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".dat";
+        string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
 
-        //Guardar en archivo binario
-        ofstream archivo(nombreArchivoXD);
+        ofstream archivo(nombreArchivoUnosYCeros);
         if(archivo.is_open()){
             try {
+                auto valorDiferentes = static_cast<uint16_t>(contadorDiferentesCaracteres);
+                archivo.write(reinterpret_cast<char*>(&valorDiferentes), 2);
+
+                for(const auto x : conteoCarateres){
+                    auto valorChar = static_cast<uint8_t>(x.first);
+                    archivo.write(reinterpret_cast<char*>(&valorChar), 1);
+                    auto valorFrecuencia = static_cast<uint16_t>(x.second);
+                    archivo.write(reinterpret_cast<char*>(&valorFrecuencia), 8);
+                }
+
+                auto valorTotal = static_cast<uint16_t>(contadorDiferentesCaracteres);
+                archivo.write(reinterpret_cast<char*>(&valorTotal), 8);
+
+                archivo << "\n";
+
+                archivo << infoBinaria;
                 archivo.close();
-                cout<<"(Guardado Exitoso) El estado de la partidad ha sido comprimido y bguardado exitosamente\n";
+                cout<<"(Guardado Exitoso) El estado de la partidad ha sido guardado exitosamente\n";
             }catch (exception e){
                 cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
                 return;
@@ -964,6 +1021,26 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
             cout << "(Error al guardar) No se pudo abrir el archivo\n";
             return;
         }
+
+        //Guardar en archivo binario
+        /*
+              string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".dat";
+
+                ofstream archivo(nombreArchivoXD);
+                   if(archivo.is_open()){
+                       try {
+                           archivo.close();
+                           cout<<"(Guardado Exitoso) El estado de la partidad ha sido comprimido y bguardado exitosamente\n";
+                       }catch (exception e){
+                           cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
+                           return;
+                       }
+                   }else{
+                       cout << "(Error al guardar) No se pudo abrir el archivo\n";
+                       return;
+                   }
+
+                   */
     }
 }
 
@@ -1755,16 +1832,18 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
 
 
 
-string Comandos::contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string texto) {
+string Comandos::contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes ,string texto) {
     string sinEspacios;
 
     for(char &caracter : texto){
         if(caracter != ' '){
             sinEspacios += caracter;
+            total ++;
             if(caracteresYFrecuencias.find(caracter) != caracteresYFrecuencias.end()){
                 caracteresYFrecuencias[caracter] += 1;
             } else{
                 caracteresYFrecuencias[caracter] = 1;
+                diferentes++;
             }
         }
     }
@@ -1778,6 +1857,10 @@ string Comandos::codificarString(string texto, map<int, string> caracteresYFrecu
     for(char caracterACodificar : texto){
         codificado += caracteresYFrecuencias[caracterACodificar];
     }
+
+    const int size = codificado.size();
+    //bitset<size> bits(codificado);
+
 
     return codificado;
 }

@@ -426,11 +426,14 @@ void Risk::eliminarUltimaCarta()
 }
 
 ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
-    priority_queue<NodoHuffman*, vector<NodoHuffman*>> colaPrioridad;
+
+    deque<NodoHuffman*> colaPrioridad;
+
 
     for (const auto& pair : caracteresYFrecuencias) {
-        NodoHuffman* node = new NodoHuffman(pair.first, pair.second);
-        colaPrioridad.push(node);
+        NodoHuffman* node = new NodoHuffman(pair.second, pair.first);
+        colaPrioridad.push_back(node);
+        push_heap(colaPrioridad.begin(),colaPrioridad.end(),greater<>());
     }
 
     ArbolHuffman arbolHuffman(colaPrioridad);
@@ -438,6 +441,9 @@ ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
     return arbolHuffman;
 }
 
+
+
+/*
 string Risk::contenidoDeLaPartidaCodificado(map<int,string> codigosCaracteres) {
     string salidaArchivo;
 
@@ -448,7 +454,7 @@ string Risk::contenidoDeLaPartidaCodificado(map<int,string> codigosCaracteres) {
         }
     }
     return salidaArchivo;
-}
+}*/
 
 string Risk::contenidoDeLaPartidaEnTexto() {
     string salidaArchivo;

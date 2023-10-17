@@ -6,16 +6,20 @@
 #include <map>
 #include <queue>
 
+//#include "../Comparar.h"
+
 using namespace std;
-class ArbolHuffman {
+class ArbolHuffman{
 protected:
+
     NodoHuffman* raiz;
     int cantidadDeCaracteres;
 
 public:
     //Constructor
+    struct customComparator;
     ArbolHuffman();
-    explicit ArbolHuffman(priority_queue<NodoHuffman*> colaFrecuencia);
+    ArbolHuffman(deque<NodoHuffman*> colaFrecuencia);
 
     //Getters y setters
     NodoHuffman *getRaiz() const;

@@ -42,7 +42,8 @@ public:
     int intercambioCartasYTerritorio(Risk& risk, Jugador& jugadorActual,string tropa, int contador);
 
     //Archivos
-    string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, string);
+    void contarCaracteresDeString(string cadena, map<int,int> &caracteresYFrecuencias);
+    string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes , string);
     string codificarString(string texto, map<int,string> caracteresYFrecuencias);
 };
 
