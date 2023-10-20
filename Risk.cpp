@@ -513,7 +513,7 @@ void Risk::cargarEstadoDesdeTexto(const string& contenidoArchivo) {
 
     listaJugadores.clear();
 
-    for (int i = 0; i < numJugadores; i++) {
+    for (int i = 1; i <= numJugadores; i++) {
         string nombreJugador;
         string colorJugador;
         int numTerritorios;
@@ -579,4 +579,5 @@ void Risk::cargarEstadoDesdeTexto(const string& contenidoArchivo) {
 
     ss >> cartasIntercambiadas;
     ss >> currentTurn;
+
 }

@@ -8,9 +8,24 @@
 #include "Risk.h"
 #include "Huffman/NodoHuffman.h"
 
+#ifdef _WIN32
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
 using namespace std;
 
 int main() {
+
+    char currentPath[FILENAME_MAX];
+    if (GetCurrentDir(currentPath, sizeof(currentPath))) {
+        std::cout << "Current Working Directory: " << currentPath << std::endl;
+    } else {
+        std::cerr << "Error getting the current working directory." << std::endl;
+    }
 
     Risk risk = Risk();
     Comandos comandos;

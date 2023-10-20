@@ -894,7 +894,7 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
 
         string nombreArchivoCrear = "RiskGit/Archivos/" + nombreArchivo + ".txt";
 
-        nombreArchivoCrear = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
+        nombreArchivoCrear = nombreArchivo + ".txt";
 
         //nombreArchivoCrear = "RiskGit/Archivos/TEXTOu";
 
@@ -928,14 +928,22 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
 
 
 void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
-  ifstream archivo(nombreArchivo);
-  map<int, int> conteoCarateres;
-  if (archivo.is_open()) {
-    try {
-      // Leer cantidad de caracteres diferentes
-      string strNumCaracteres;
-      getline(archivo, strNumCaracteres);
-      int numCaracteres = stoi(strNumCaracteres);
+
+    bool esDeTexto = true;
+    string archivoALeer = nombreArchivo + ".txt";
+
+    ifstream archivo(archivoALeer);
+    map<int, int> conteoCarateres;
+    if (archivo.is_open()) {
+        try {
+            // Leer cantidad de caracteres diferentes
+
+            string lineaEspificaciones;
+            getline(archivo, lineaEspificaciones);
+/*
+        string strNumCaracteres;
+
+        int numCaracteres = stoi(strNumCaracteres);
 
       // Leer caracter y frecuencia asociada
       for (int i = 0; i < numCaracteres; i++) {
@@ -954,27 +962,31 @@ void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
       getline(archivo, strLongitudArchivo);
       int longitudArchivo = stoi(strLongitudArchivo);
 
-      // Leer información actual
-      string infoActual;
-      getline(archivo, infoActual);
+*/      // Leer información actual
+            string infoActual;
+            getline(archivo, infoActual);
+
+            // Cargar información en el objeto Risk
+            risk.cargarEstadoDesdeTexto(infoActual);
+
+            archivo.close();
+            cout << "(Lectura Exitosa) El estado de la partida se ha leido "
+                    "correctamente.\n";
+
+            risk.setIsGameInitialized(true);
+            cout << "Es el turno del jugador: "<<risk.getCurrentTurn()<<endl;
 
 
-      // Cargar información en el objeto Risk
-      risk.cargarEstadoDesdeTexto(infoActual);
-
-
-      archivo.close();
-      cout << "(Lectura Exitosa) El estado de la partida se ha leído "
-              "correctamente.\n";
-    } catch (exception e) {
-      cout << "(Error al leer) La partida no se ha leído correctamente: "
-           << e.what() << endl;
-      return;
+        } catch (exception e) {
+            cout << "(Error al leer) La partida no se ha leído correctamente: "
+                 << e.what() << endl;
+            return;
+        }
+    } else {
+        cout << "(Error al leer) No se pudo abrir el archivo " << nombreArchivo<<".txt" << endl;
+        esDeTexto = false;
+        return;
     }
-  } else {
-    cout << "(Error al leer) No se pudo abrir el archivo " << nombreArchivo << endl;
-    return;
-  }
 }
 
 
@@ -1009,17 +1021,6 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 
         //Se obtiene la frecuencia de cada caracter y se guarda la cadena sin espacios
         infoSinEspacios = contarCaracteresYDevolverSinEspacios(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres , infoActual);
-/*
-        //Se termina de fabricar el archivo
-        string  infoTexto = to_string(contadorDiferentesCaracteres) + " ";
-        for(const auto x : conteoCarateres){
-            infoTexto += to_string(x.first) + " ";
-            infoTexto += to_string(x.second) + " ";
-        }
-        infoTexto += to_string(contadorDiferentesCaracteres) + " ";
-        infoTexto += "\n";
-        infoTexto += infoSinEspacios;
-*/
 
         //Se crea el arbol teniendo la frecuencia del arbol
         arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
@@ -1032,7 +1033,7 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         infoBinaria = codificarString(infoSinEspacios, caracteresYCodigos);
         
         //Nombre del archivo
-        string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".bin";
+        string nombreArchivoUnosYCeros = nombreArchivo + ".bin";
 
         std::ofstream archivo(nombreArchivoUnosYCeros, ios::out | ios::binary);
         if(archivo.is_open()){
