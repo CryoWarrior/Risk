@@ -12,6 +12,7 @@
 #include "map"
 #include "Huffman\ArbolHuffman.h"
 #include <memory>
+#include <functional>
 using namespace std;
 class Risk {
 protected:
@@ -50,6 +51,7 @@ public:
     ArbolHuffman crearArbolHuffman(map<int,int>);
 
     string contenidoDeLaPartidaEnTexto();
+    void cargarEstadoDesdeTexto(const string& contenidoArchivo);
     string contenidoDeLaPartidaCodificado(map<int,string> carateresYCodigos);
 
 };

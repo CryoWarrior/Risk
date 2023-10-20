@@ -37,6 +37,10 @@ Territorio& Territorio::operator=(const Territorio &other) {
 
 Territorio::Territorio(const string &nombre, const list<Tropa> &tropas) : nombre(nombre), tropas(tropas) {}
 
+void Territorio::agregarTropa(Tropa tropa) {
+    this->tropas.push_back(tropa);
+}
+
 
 
 

@@ -29,6 +29,7 @@ public:
     void setTropas(const list<Tropa> &tropas);
     list<Territorio *> &getTerritoriosColindantes();
     void setTerritoriosColindantes(const list<Territorio *> &territoriosColindantes);
+    void agregarTropa(Tropa tropa);
 
     //Sobrecarga operadores
     Territorio& operator=(const Territorio &other);

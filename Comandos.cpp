@@ -891,22 +891,15 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
         int contadorDiferentesCaracteres = 0;
 
         contarCaracteresYDevolverSinEspacios(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres ,infoActual);
-/*
-        string  infoTexto = to_string(contadorDiferentesCaracteres) + " ";
 
-        for(const auto x : conteoCarateres){
-            infoTexto += to_string(x.first) + " ";
-            infoTexto += to_string(x.second) + " ";
-        }
-        infoTexto += to_string(contadortotalCaracteres) + " ";
+        string nombreArchivoCrear = "RiskGit/Archivos/" + nombreArchivo + ".txt";
 
-        infoTexto += "\n";
-        infoTexto += infoActual;
+        nombreArchivoCrear = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
 
-*/
-        string nombreArchivoXD = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
+        //nombreArchivoCrear = "RiskGit/Archivos/TEXTOu";
+
         //Guardar en archivo
-        ofstream archivo(nombreArchivoXD);
+        ofstream archivo(nombreArchivoCrear);
         if(archivo.is_open()){
             try {
                 archivo << to_string(contadorDiferentesCaracteres) + " ";
@@ -927,13 +920,60 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
                 return;
             }
         }else{
-            cout << "(Error al guardar) No se pudo abrir el archivo\n";
+            cout << "(Error al guardar) No se pudo abrir el archivo "<<nombreArchivoCrear<<endl;
             return;
         }
     }
 }
 
 
+void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
+  ifstream archivo(nombreArchivo);
+  map<int, int> conteoCarateres;
+  if (archivo.is_open()) {
+    try {
+      // Leer cantidad de caracteres diferentes
+      string strNumCaracteres;
+      getline(archivo, strNumCaracteres);
+      int numCaracteres = stoi(strNumCaracteres);
+
+      // Leer caracter y frecuencia asociada
+      for (int i = 0; i < numCaracteres; i++) {
+        string strCaracter, strFrecuencia;
+        getline(archivo, strCaracter, ' ');
+        getline(archivo, strFrecuencia, ' ');
+        int caracter = stoi(strCaracter);
+        int frecuencia = stoi(strFrecuencia);
+
+        // Guardar caracter y frecuencia en el mapa conteoCarateres
+        conteoCarateres[caracter] = frecuencia;
+      }
+
+      // Leer longitud del archivo
+      string strLongitudArchivo;
+      getline(archivo, strLongitudArchivo);
+      int longitudArchivo = stoi(strLongitudArchivo);
+
+      // Leer información actual
+      string infoActual;
+      getline(archivo, infoActual);
+
+      // Cargar información en el objeto Risk
+      risk.cargarEstadoDesdeTexto(infoActual);
+
+      archivo.close();
+      cout << "(Lectura Exitosa) El estado de la partida se ha leído "
+              "correctamente.\n";
+    } catch (exception e) {
+      cout << "(Error al leer) La partida no se ha leído correctamente: "
+           << e.what() << endl;
+      return;
+    }
+  } else {
+    cout << "(Error al leer) No se pudo abrir el archivo\n";
+    return;
+  }
+}
 
 
 

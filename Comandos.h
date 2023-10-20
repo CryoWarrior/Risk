@@ -45,6 +45,7 @@ public:
     void contarCaracteresDeString(string cadena, map<int,int> &caracteresYFrecuencias);
     string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes , string);
     string codificarString(string texto, map<int,string> caracteresYFrecuencias);
+    void leerEstadoJuego(Risk &risk, const string &nombreArchivo);
 };
 
 

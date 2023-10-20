@@ -15,18 +15,6 @@ int main() {
     Risk risk = Risk();
     Comandos comandos;
 
-    NodoHuffman nodoHuffman(8,10);
-    NodoHuffman nodoHuffman1(10,20);
-    NodoHuffman nodoHuffman2(4,5);
-    NodoHuffman nodoHuffman3(11,8);
-    NodoHuffman nodoHuffman4(1,11);
-
-    cout<<"Frecuencia y codigo simbolo mayor: "<< (nodoHuffman<nodoHuffman1)<<endl; //Verdadero
-    cout<<"Frecuencia y codigo simbolo menor: "<< (nodoHuffman<nodoHuffman2)<<endl; //Falso
-    cout<<"Frecuencia menor y codigo simbolo mayor: "<< (nodoHuffman<nodoHuffman4)<<endl; //Falso
-    cout<<"Frecuencia mayor y codigo simbolo menor: "<< (nodoHuffman<nodoHuffman3)<<endl; //Verdadero
-    cout<<"Con frecuencia"<<endl;
-
     string command;
     bool isRunning = true;
 
@@ -52,7 +40,14 @@ int main() {
             string commandName = tokens[0];
 
             if (commandName == "inicializar") {
-                comandos.inicializarJuego(risk);
+                if(tokens.size() == 1){
+                    comandos.inicializarJuego(risk);
+                }else if (tokens.size() == 2){
+                    comandos.leerEstadoJuego(risk, tokens[1]);
+                }else {
+                    cout<<"Comando no existe"<<endl;
+                }
+
             } else if (commandName == "turno") {
 
                 if (tokens.size() >= 2) {

@@ -6,11 +6,11 @@ ArbolHuffman::ArbolHuffman() {}
 
 ArbolHuffman::ArbolHuffman(deque<NodoHuffman*> colaFrecuencia) {
     while (colaFrecuencia.size() > 1) {
-        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<>());
+        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<NodoHuffman*>());
         NodoHuffman* izquierdo = colaFrecuencia.back();
         colaFrecuencia.pop_back();
 
-        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<>());
+        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<NodoHuffman*>());
         NodoHuffman* derecho = colaFrecuencia.back();
         colaFrecuencia.pop_back();
 
@@ -20,7 +20,7 @@ ArbolHuffman::ArbolHuffman(deque<NodoHuffman*> colaFrecuencia) {
         nodo->setDer(derecho);
 
         colaFrecuencia.push_back(nodo);
-        push_heap(colaFrecuencia.begin(),colaFrecuencia.end(),greater<>());
+        push_heap(colaFrecuencia.begin(),colaFrecuencia.end(),greater<NodoHuffman*>());
     }
 
     raiz = colaFrecuencia.back();

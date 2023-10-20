@@ -60,7 +60,11 @@ void Jugador::agregarCarta(Carta &carta) {
 }
 
 list<Carta>::const_iterator Jugador::eliminarCarta(std::list<Carta>::const_iterator iterator) {
-    cartas.erase(iterator);
+    return cartas.erase(iterator);
+}
+
+void Jugador::agregarTerritorio(Territorio* territorio) {
+    this->territoriosOcupados.push_back(territorio);
 }
 
 

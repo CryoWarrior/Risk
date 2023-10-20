@@ -1,3 +1,4 @@
+#include <sstream>
 #include "Risk.h"
 
 
@@ -433,7 +434,7 @@ ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
     for (const auto& pair : caracteresYFrecuencias) {
         NodoHuffman* node = new NodoHuffman(pair.second, pair.first);
         colaPrioridad.push_back(node);
-        push_heap(colaPrioridad.begin(),colaPrioridad.end(),greater<>());
+        push_heap(colaPrioridad.begin(),colaPrioridad.end(),greater<NodoHuffman*>());
     }
 
     ArbolHuffman arbolHuffman(colaPrioridad);
@@ -502,3 +503,80 @@ string Risk::contenidoDeLaPartidaEnTexto() {
 }
 
 
+void Risk::cargarEstadoDesdeTexto(const string& contenidoArchivo) {
+    stringstream ss(contenidoArchivo);
+    string palabra;
+
+    ss >> palabra; // Ignorar "jugadores"
+    int numJugadores;
+    ss >> numJugadores;
+
+    listaJugadores.clear();
+
+    for (int i = 0; i < numJugadores; i++) {
+        string nombreJugador;
+        string colorJugador;
+        int numTerritorios;
+        ss >> nombreJugador >> colorJugador >> numTerritorios;
+
+        Jugador jugador(nombreJugador, i, colorJugador);
+
+        for (int j = 0; j < numTerritorios; j++) {
+            string nombreTerritorio;
+            int numTropas;
+            ss >> nombreTerritorio >> numTropas;
+
+            shared_ptr<Territorio> territorio;
+
+            for (const auto& t : listaTerritorios) {
+                if (t->getNombre() == nombreTerritorio) {
+                    territorio = t;
+                    break;
+                }
+            }
+
+            if (territorio != nullptr) {
+                for (int k = 0; k < numTropas; k++) {
+                    string tipoTropa;
+                    string colorTropa;
+                    int valorTropa;
+                    ss >> tipoTropa >> colorTropa >> valorTropa;
+
+                    Tropa tropa(tipoTropa, valorTropa, colorTropa);
+                    territorio->agregarTropa(tropa);
+                }
+                jugador.agregarTerritorio(territorio.get());
+            }
+        }
+
+        int numCartas;
+        ss >> numCartas;
+
+        for (int j = 0; j < numCartas; j++) {
+            string idCarta;
+            ss >> idCarta;
+
+            for(auto it = listaCartas.begin();it!=listaCartas.end();it++){
+                if(it->getIdCarta() == idCarta){
+                    jugador.agregarCarta(*it);
+                    it = listaCartas.erase(it);
+                    break;
+                }
+            }
+
+            /*
+            for (auto& carta : listaCartas) {
+                if (carta.getIdCarta() == idCarta && !carta.isAsignada()) {
+                    jugador.agregarCarta(carta);
+                    carta.setAsignada(true);
+                    break;
+                }
+            }*/
+        }
+
+        listaJugadores.push_back(jugador);
+    }
+
+    ss >> cartasIntercambiadas;
+    ss >> currentTurn;
+}

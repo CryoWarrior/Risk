@@ -36,6 +36,7 @@ public:
 
     //Demas funciones
     void agregarCarta(Carta& carta);
+    void agregarTerritorio(Territorio* territorio);
     list<Carta>::const_iterator eliminarCarta(std::list<Carta>::const_iterator iterador);
 
 
