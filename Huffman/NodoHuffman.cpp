@@ -47,3 +47,10 @@ bool NodoHuffman::operator>(const NodoHuffman &other) const {
     return frecuencia > other.frecuencia;
 }
 
+bool NodoHuffman::esHoja() {
+    if(izq == nullptr && der == nullptr){
+        return true;
+    }
+    return false;
+}
+

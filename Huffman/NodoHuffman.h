@@ -29,6 +29,7 @@ public:
     //Sobrecarga operadores
     bool operator<(const NodoHuffman &other) const;
     bool operator>(const NodoHuffman &other) const;
+    bool esHoja();
 
     struct comparadorNodosHuffman {
         bool operator()( NodoHuffman* lhs,  NodoHuffman* rhs) const {

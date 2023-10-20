@@ -5,6 +5,10 @@
 #include <vector>
 #include <map>
 #include <queue>
+#include <fstream>
+#include <exception>
+
+
 
 //#include "../Comparar.h"
 

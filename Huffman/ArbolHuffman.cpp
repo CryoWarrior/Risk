@@ -48,3 +48,4 @@ void ArbolHuffman::generarCodigos(NodoHuffman* nodoHuffman ,string codigo,map<in
     generarCodigos(nodoHuffman->getIzq(), codigo+='0',caracterYCodigo);
     generarCodigos(nodoHuffman->getDer(),codigo+='1',caracterYCodigo);
 }
+

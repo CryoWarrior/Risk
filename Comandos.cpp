@@ -6,6 +6,7 @@
 #include <fstream>
 #include <bitset>
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -927,68 +928,6 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
 }
 
 
-void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
-
-    bool esDeTexto = true;
-    string archivoALeer = nombreArchivo + ".txt";
-
-    ifstream archivo(archivoALeer);
-    map<int, int> conteoCarateres;
-    if (archivo.is_open()) {
-        try {
-            // Leer cantidad de caracteres diferentes
-
-            string lineaEspificaciones;
-            getline(archivo, lineaEspificaciones);
-/*
-        string strNumCaracteres;
-
-        int numCaracteres = stoi(strNumCaracteres);
-
-      // Leer caracter y frecuencia asociada
-      for (int i = 0; i < numCaracteres; i++) {
-        string strCaracter, strFrecuencia;
-        getline(archivo, strCaracter, ' ');
-        getline(archivo, strFrecuencia, ' ');
-        int caracter = stoi(strCaracter);
-        int frecuencia = stoi(strFrecuencia);
-
-        // Guardar caracter y frecuencia en el mapa conteoCarateres
-        conteoCarateres[caracter] = frecuencia;
-      }
-
-      // Leer longitud del archivo
-      string strLongitudArchivo;
-      getline(archivo, strLongitudArchivo);
-      int longitudArchivo = stoi(strLongitudArchivo);
-
-*/      // Leer información actual
-            string infoActual;
-            getline(archivo, infoActual);
-
-            // Cargar información en el objeto Risk
-            risk.cargarEstadoDesdeTexto(infoActual);
-
-            archivo.close();
-            cout << "(Lectura Exitosa) El estado de la partida se ha leido "
-                    "correctamente.\n";
-
-            risk.setIsGameInitialized(true);
-            cout << "Es el turno del jugador: "<<risk.getCurrentTurn()<<endl;
-
-
-        } catch (exception e) {
-            cout << "(Error al leer) La partida no se ha leído correctamente: "
-                 << e.what() << endl;
-            return;
-        }
-    } else {
-        cout << "(Error al leer) No se pudo abrir el archivo " << nombreArchivo<<".txt" << endl;
-        esDeTexto = false;
-        return;
-    }
-}
-
 
 
 
@@ -1048,7 +987,7 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
                     archivo.write(reinterpret_cast<char*>(&valorFrecuencia), 8);
                 }
 
-                auto valorTotal = static_cast<uint16_t>(contadorDiferentesCaracteres);
+                auto valorTotal = static_cast<uint16_t>(contadortotalCaracteres);
                 archivo.write(reinterpret_cast<char*>(&valorTotal), 8);
 
                 archivo << "\n";
@@ -1068,16 +1007,207 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
     }
 }
 
-void Comandos::inicializar(const string &nombre_archivo) {}
+void Comandos::inicializarPartidaCargada(Risk &risk, const string &nombre_archivo) {
+
+    bool esDeTexto = false;
+    bool esBinario = false;
+
+    esDeTexto = leerArchivoTexto(risk,nombre_archivo);
+
+    if(!esDeTexto){
+        esBinario = leerComprimido(risk, nombre_archivo);
+    }
+
+    if(!esDeTexto && !esBinario){
+        cout<<"(Error al leer) No se pudo abrir el archivo:" << nombre_archivo<<endl;
+    }
+
+}
 
 
 
+bool Comandos::leerArchivoTexto(Risk &risk, const string &nombreArchivo) {
+
+    string archivoALeer = nombreArchivo + ".txt";
+
+    ifstream archivo(archivoALeer);
+    map<int, int> conteoCarateres;
+    if (archivo.is_open()) {
+        try {
+            // Se leen la linea de especificaciones, las cuales no son necesarias para la lectura del archivo de texto
+            string lineaEspificaciones;
+            getline(archivo, lineaEspificaciones);
+/*
+        string strNumCaracteres;
+
+        int numCaracteres = stoi(strNumCaracteres);
+
+      // Leer caracter y frecuencia asociada
+      for (int i = 0; i < numCaracteres; i++) {
+        string strCaracter, strFrecuencia;
+        getline(archivo, strCaracter, ' ');
+        getline(archivo, strFrecuencia, ' ');
+        int caracter = stoi(strCaracter);
+        int frecuencia = stoi(strFrecuencia);
+
+        // Guardar caracter y frecuencia en el mapa conteoCarateres
+        conteoCarateres[caracter] = frecuencia;
+      }
+
+      // Leer longitud del archivo
+      string strLongitudArchivo;
+      getline(archivo, strLongitudArchivo);
+      int longitudArchivo = stoi(strLongitudArchivo);
+
+*/      // Leer información actual
+            string infoActual;
+            getline(archivo, infoActual);
+
+            // Cargar información en el objeto Risk
+            risk.cargarEstadoDesdeTexto(infoActual);
+
+            archivo.close();
+            cout << "(Lectura Exitosa) El estado de la partida se ha leido "
+                    "correctamente.\n";
+
+            risk.setIsGameInitialized(true);
+            cout << "Es el turno del jugador: "<<risk.getCurrentTurn()<<endl;
+
+            return true;
+
+        } catch (exception e) {
+            cout << "(Error al leer) La partida del archivo de texto no se ha leído correctamente: "
+                 << e.what() << endl;
+            return false;
+        }
+    } else {
+        //cout << "(Error al leer) No se pudo abrir el archivo " << nombreArchivo<<".txt" << endl;
+        return false;
+    }
+}
+
+bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
+    string nombreArchivoCompleto = nombreArchivo + ".bin";
+    map<int, int> conteoCaracteres;
+    bool error = false;
+
+    // Abrir archivo binario comprimido
+    ifstream archivo(nombreArchivoCompleto, ios::in | ios::binary);
+    if (archivo.is_open()) {
+        try {
+            // Leer estructura del árbol Huffman desde el archivo comprimido
+            ArbolHuffman arbolHuffman;
+            error = cargarArbolDesdeArchivo(archivo, conteoCaracteres);
+
+            if(error){
+                cout<<"Hubo un error en la lectura de las frecuencias\n";
+                return false;
+            }
+
+            arbolHuffman = risk.crearArbolHuffman(conteoCaracteres);
+
+            char nuevaLinea;
+            archivo.read(&nuevaLinea, 1);
+
+
+            // Lee el total de caracteres
+            uint16_t valorTotal;
+            archivo.read(reinterpret_cast<char*>(&valorTotal), sizeof(uint16_t));
+
+
+            // Leer contenido codificado desde el archivo comprimido
+            stringstream contenidoCodificado;
+            char c;
+            while (archivo.read(&c, sizeof(char))) {
+                contenidoCodificado << c;
+            }
+
+            // Decodificar contenido del juego
+            string contenidoDecodificado = decodificarString(contenidoCodificado.str(), arbolHuffman);
+
+            // Actualizar el estado del juego con el contenido decodificado
+            risk.cargarEstadoDesdeTexto(contenidoDecodificado);
+
+            archivo.close();
+            cout << "(Carga Comprimida Exitosa) El estado de la partida ha sido cargado correctamente.\n";
+
+
+            risk.setIsGameInitialized(true);
+            cout << "Es el turno del jugador: "<<risk.getCurrentTurn()<<endl;
+
+            return true;
+
+        }catch(exception e){
+            cout << "(Error al leer) La partida del archivo comprimido no se ha leído correctamente: "
+                 << e.what() << endl;
+            return false;
+        }
+
+    } else {
+        //cout << "(Error al cargar comprimido) No se pudo abrir el archivo " << nombreArchivoCompleto <<endl;}
+        return false;
+    }
+
+}
 
 
 
+bool Comandos::cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres) {
+
+    try{
+        // Lee la cantidad de caracteres diferentes
+        uint16_t contadorDiferentesCaracteres;
+        archivo.read(reinterpret_cast<char*>(&contadorDiferentesCaracteres), sizeof(uint16_t));
+
+        // Lee en un mapa los caracteres y sus frecuencias
+        std::map<uint8_t, uint16_t> conteoCarateres;
+        for (int i = 0; i < contadorDiferentesCaracteres; i++) {
+            uint8_t valorChar;
+            archivo.read(reinterpret_cast<char*>(&valorChar), sizeof(uint8_t));
+            uint16_t valorFrecuencia;
+            archivo.read(reinterpret_cast<char*>(&valorFrecuencia), sizeof(uint16_t));
+            conteoCarateres[valorChar] = valorFrecuencia;
+        }
+
+        //Convierte el mapa a enteros
+        for (const auto& pair : conteoCarateres) {
+            uint8_t caracterLeido = pair.first;
+            uint16_t frecuenciaLeida = pair.second;
+
+            int caracterInt = static_cast<int>(caracterLeido);
+            int frecuenciaInt = static_cast<int>(frecuenciaLeida);
+
+            conteoCaracteres[caracterInt] = frecuenciaInt;
+        }
+
+    }catch(exception e){
+        return -1;
+    }
+}
 
 
+string Comandos::decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman) {
+    string textoDecodificado;
+    NodoHuffman *nodoActual = arbolHuffman.getRaiz(); // Comenzamos desde la raíz del árbol
 
+    for (char bit : codigo) {
+        if (bit == '0') {
+            nodoActual = nodoActual->getIzq();
+        } else if (bit == '1') {
+            nodoActual = nodoActual->getDer();
+        }
+
+        if (nodoActual->esHoja()) {
+            // Si llegamos a una hoja, encontramos un carácter decodificado
+            textoDecodificado += nodoActual->getCodigoSimbolo();
+
+            // Reiniciamos el nodo actual al inicio del árbol para el próximo carácter
+            nodoActual = arbolHuffman.getRaiz();
+        }
+    }
+//FALTAN LOS ESPACIOS
+    return textoDecodificado;
+}
 
 
 
@@ -1888,4 +2018,3 @@ string Comandos::codificarString(string texto, map<int, string> caracteresYFrecu
 
     return codificado;
 }
-

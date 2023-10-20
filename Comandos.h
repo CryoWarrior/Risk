@@ -13,7 +13,7 @@ class Comandos {
 public:
     //Comandos principales
     void inicializarJuego(Risk& risk);
-    void inicializar(const string& nombre_archivo);
+    void inicializarPartidaCargada(Risk &risk, const string& nombre_archivo);
     void turnoJugador(int jugadorId, Risk& risk);
     void salirJuego(Risk& risk);
     void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
@@ -45,7 +45,10 @@ public:
     void contarCaracteresDeString(string cadena, map<int,int> &caracteresYFrecuencias);
     string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes , string);
     string codificarString(string texto, map<int,string> caracteresYFrecuencias);
-    void leerEstadoJuego(Risk &risk, const string &nombreArchivo);
+    bool leerArchivoTexto(Risk &risk, const string &nombreArchivo);
+    bool leerComprimido(Risk &risk, const string &nombreArchivo);
+    string decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman);
+    bool cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres);
 };
 
 
