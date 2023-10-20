@@ -46,3 +46,4 @@ bool NodoHuffman::operator<(const NodoHuffman &other) const {
 bool NodoHuffman::operator>(const NodoHuffman &other) const {
     return frecuencia > other.frecuencia;
 }
+

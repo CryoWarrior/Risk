@@ -1,29 +1,28 @@
 #include "ArbolHuffman.h"
 
-
 ArbolHuffman::ArbolHuffman() {}
 
 
-ArbolHuffman::ArbolHuffman(deque<NodoHuffman*> colaFrecuencia) {
-    while (colaFrecuencia.size() > 1) {
-        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<NodoHuffman*>());
-        NodoHuffman* izquierdo = colaFrecuencia.back();
-        colaFrecuencia.pop_back();
+ArbolHuffman::ArbolHuffman(deque<NodoHuffman*> heapFrecuencia) {
+    while (heapFrecuencia.size() > 1) {
+        pop_heap(heapFrecuencia.begin(), heapFrecuencia.end(),NodoHuffman::comparadorNodosHuffman());
+        NodoHuffman* izquierdo = heapFrecuencia.back();
+        heapFrecuencia.pop_back();
 
-        pop_heap(colaFrecuencia.begin(), colaFrecuencia.end(), greater<NodoHuffman*>());
-        NodoHuffman* derecho = colaFrecuencia.back();
-        colaFrecuencia.pop_back();
+        pop_heap(heapFrecuencia.begin(), heapFrecuencia.end(),NodoHuffman::comparadorNodosHuffman());
+        NodoHuffman* derecho = heapFrecuencia.back();
+        heapFrecuencia.pop_back();
 
 
         NodoHuffman* nodo = new NodoHuffman(izquierdo->getFrecuencia() + derecho->getFrecuencia(), '$');
         nodo->setIzq(izquierdo);
         nodo->setDer(derecho);
 
-        colaFrecuencia.push_back(nodo);
-        push_heap(colaFrecuencia.begin(),colaFrecuencia.end(),greater<NodoHuffman*>());
+        heapFrecuencia.push_back(nodo);
+        push_heap(heapFrecuencia.begin(),heapFrecuencia.end(),NodoHuffman::comparadorNodosHuffman());
     }
 
-    raiz = colaFrecuencia.back();
+    raiz = heapFrecuencia.back();
 }
 
 NodoHuffman *ArbolHuffman::getRaiz() const {

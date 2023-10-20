@@ -30,6 +30,12 @@ public:
     bool operator<(const NodoHuffman &other) const;
     bool operator>(const NodoHuffman &other) const;
 
+    struct comparadorNodosHuffman {
+        bool operator()( NodoHuffman* lhs,  NodoHuffman* rhs) const {
+            return lhs->frecuencia > rhs->frecuencia;
+        }
+    };
+
 };
 
 

@@ -428,16 +428,16 @@ void Risk::eliminarUltimaCarta()
 
 ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
 
-    deque<NodoHuffman*> colaPrioridad;
+    deque<NodoHuffman*> heap;
 
 
     for (const auto& pair : caracteresYFrecuencias) {
         NodoHuffman* node = new NodoHuffman(pair.second, pair.first);
-        colaPrioridad.push_back(node);
-        push_heap(colaPrioridad.begin(),colaPrioridad.end(),greater<NodoHuffman*>());
+        heap.push_back(node);
+        push_heap(heap.begin(),heap.end(), NodoHuffman::comparadorNodosHuffman());
     }
 
-    ArbolHuffman arbolHuffman(colaPrioridad);
+    ArbolHuffman arbolHuffman(heap);
 
     return arbolHuffman;
 }

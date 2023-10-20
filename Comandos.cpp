@@ -958,8 +958,10 @@ void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
       string infoActual;
       getline(archivo, infoActual);
 
+
       // Cargar información en el objeto Risk
       risk.cargarEstadoDesdeTexto(infoActual);
+
 
       archivo.close();
       cout << "(Lectura Exitosa) El estado de la partida se ha leído "
@@ -970,7 +972,7 @@ void Comandos::leerEstadoJuego(Risk &risk, const string &nombreArchivo) {
       return;
     }
   } else {
-    cout << "(Error al leer) No se pudo abrir el archivo\n";
+    cout << "(Error al leer) No se pudo abrir el archivo " << nombreArchivo << endl;
     return;
   }
 }
@@ -1030,9 +1032,9 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         infoBinaria = codificarString(infoSinEspacios, caracteresYCodigos);
         
         //Nombre del archivo
-        string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".txt";
+        string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".bin";
 
-        ofstream archivo(nombreArchivoUnosYCeros);
+        std::ofstream archivo(nombreArchivoUnosYCeros, ios::out | ios::binary);
         if(archivo.is_open()){
             try {
                 auto valorDiferentes = static_cast<uint16_t>(contadorDiferentesCaracteres);
@@ -1062,25 +1064,6 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
             return;
         }
 
-        //Guardar en archivo binario
-        /*
-              string nombreArchivoUnosYCeros = "D:\\Javeriana\\Estructuras de datos\\PROYECTO\\Risk\\" + nombreArchivo + ".dat";
-
-                ofstream archivo(nombreArchivoXD);
-                   if(archivo.is_open()){
-                       try {
-                           archivo.close();
-                           cout<<"(Guardado Exitoso) El estado de la partidad ha sido comprimido y bguardado exitosamente\n";
-                       }catch (exception e){
-                           cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
-                           return;
-                       }
-                   }else{
-                       cout << "(Error al guardar) No se pudo abrir el archivo\n";
-                       return;
-                   }
-
-                   */
     }
 }
 

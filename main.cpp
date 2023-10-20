@@ -43,6 +43,7 @@ int main() {
                 if(tokens.size() == 1){
                     comandos.inicializarJuego(risk);
                 }else if (tokens.size() == 2){
+
                     comandos.leerEstadoJuego(risk, tokens[1]);
                 }else {
                     cout<<"Comando no existe"<<endl;
