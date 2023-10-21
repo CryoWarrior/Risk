@@ -10,7 +10,6 @@
 
 
 
-//#include "../Comparar.h"
 
 using namespace std;
 class ArbolHuffman{

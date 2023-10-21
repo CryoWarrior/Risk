@@ -8,7 +8,6 @@
 #include "Jugador.h"
 #include "Carta.h"
 #include "Territorio.h"
-//#include "Comparar.h"
 #include "map"
 #include "Huffman\ArbolHuffman.h"
 #include <memory>
