@@ -38,14 +38,14 @@ void ArbolHuffman::generarCodigos(NodoHuffman* nodoHuffman ,string codigo,map<in
         return;
     }
 
-    if(nodoHuffman->getIzq() == nullptr && nodoHuffman->getDer() == nullptr){
+    if(nodoHuffman->esHoja()){
         if(nodoHuffman->getCodigoSimbolo() != '$'){
             caracterYCodigo[nodoHuffman->getCodigoSimbolo()] = codigo;
             return;
         }
     }
 
-    generarCodigos(nodoHuffman->getIzq(), codigo+='0',caracterYCodigo);
-    generarCodigos(nodoHuffman->getDer(),codigo+='1',caracterYCodigo);
+    generarCodigos(nodoHuffman->getIzq(), codigo + '0',caracterYCodigo);
+    generarCodigos(nodoHuffman->getDer(),codigo + '1',caracterYCodigo);
 }
 

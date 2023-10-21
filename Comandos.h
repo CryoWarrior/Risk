@@ -43,13 +43,24 @@ public:
 
     //Archivos
     void contarCaracteresDeString(string cadena, map<int,int> &caracteresYFrecuencias);
-    string contarCaracteresYDevolverSinEspacios(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes , string);
+    void contarCaracteres(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes , string);
     string codificarString(string texto, map<int,string> caracteresYFrecuencias);
     bool leerArchivoTexto(Risk &risk, const string &nombreArchivo);
     bool leerComprimido(Risk &risk, const string &nombreArchivo);
-    string decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman);
+    string decodificarString(const string &codigo,  map<int,string> codigos, const ArbolHuffman &arbolHuffman);
     bool cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres);
-};
+
+    //Operaciones en bits
+    char crearMascara(int posicion);
+    char obtenerByte(string unByte);
+    vector<char> convertirBits(string bytesCadena);
+
+    char extraerBit(char y, int posicion);
+    string extraerBits (char c);
+    string extraerBitsDeBytes(vector<char> bytes);
+
+
+    };
 
 
 #endif //COMANDOS_H
