@@ -888,10 +888,9 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
         //Obtener informacion en string
         string infoActual = risk.contenidoDeLaPartidaEnTexto();
         map<int,int> conteoCarateres;
-        int contadortotalCaracteres = 0;
         int contadorDiferentesCaracteres = 0;
 
-        contarCaracteres(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres ,infoActual);
+        contarCaracteres(conteoCarateres, contadorDiferentesCaracteres ,infoActual);
 
         string nombreArchivoCrear = nombreArchivo + ".txt";
 
@@ -905,7 +904,7 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
                     archivo << to_string(x.first) + " ";
                     archivo << to_string(x.second) + " ";
                 }
-                archivo << to_string(contadortotalCaracteres);
+                archivo << to_string(infoActual.size());
                 archivo << "\n";
 
                 archivo << infoActual;
@@ -946,7 +945,6 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         string infoSinEspacios;
         string estadoCodificado;
         int totalCaracteres = 0;
-        int contadortotalCaracteres = 0;
         int contadorDiferentesCaracteres = 0;
 
         ArbolHuffman arbolHuffman;
@@ -955,7 +953,7 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         string infoActual = risk.contenidoDeLaPartidaEnTexto();
 
         //Se obtiene la frecuencia de cada caracter
-        contarCaracteres(conteoCarateres,contadortotalCaracteres, contadorDiferentesCaracteres , infoActual);
+        contarCaracteres(conteoCarateres, contadorDiferentesCaracteres , infoActual);
 
         //Se crea el arbol teniendo la frecuencia del arbol
         arbolHuffman = risk.crearArbolHuffman(conteoCarateres);
@@ -968,9 +966,8 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
         estadoCodificado = codificarString(infoActual, caracteresYCodigos);
 
         //Convertirlo en bits
-        //vector<char> estadoEnBits = convertirBits(estadoCodificado);
+        vector<char> estadoEnBytes = convertirBits(estadoCodificado);
 
-        
         //Nombre del archivo
         string nombreArchivoComprimido = nombreArchivo + ".bin";
 
@@ -987,12 +984,15 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
                     archivo.write(reinterpret_cast<char*>(&valorFrecuencia), sizeof (uint64_t));
                 }
 
-                auto valorTotal = static_cast<uint64_t>(contadortotalCaracteres);
+                auto valorTotal = static_cast<uint64_t>(estadoEnBytes.size());
                 archivo.write(reinterpret_cast<char*>(&valorTotal), sizeof (uint64_t));
 
                 archivo << "\n";
 
-                archivo.write(estadoCodificado.c_str(), estadoCodificado.size());
+                //CON COMPRIMIDO
+                for (const char byte: estadoEnBytes){
+                    archivo.write(&byte, sizeof(char));
+                }
 
                 archivo.close();
                 cout<<"(Guardado Exitoso) El estado de la partidad ha sido guardado exitosamente\n";
@@ -1028,7 +1028,7 @@ void Comandos::inicializarPartidaCargada(Risk &risk, const string &nombre_archiv
     }
 
     if(!esDeTexto && !esBinario){
-        cout<<"(Error al leer) No se pudo abrir el archivo:" << nombre_archivo<<endl;
+        cout<<"(Error al leer) No se pudo abrir el archivo: " << nombre_archivo<<endl;
     }
 
 }
@@ -1106,36 +1106,22 @@ bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
             char nuevaLinea;
             archivo.read(&nuevaLinea, 1);
 
-            // Leer contenido codificado desde el archivo comprimido
-/*
-            //OPCION 1
-            stringstream contenidoCodificado;
-            char c;
-            while (archivo.read(&c, sizeof(char))) {
-                contenidoCodificado << c;
+            std::vector<char> bytes;
+
+            for (int i = 0; i < longitud; ++i) {
+                char byte;
+                archivo.read(&byte, sizeof(char));
+                bytes.push_back(byte);
             }
-*/
+
+            string estadoCodificado = extraerBitsDeBytes(bytes);
 /*
-            //OPCION 2
-            // Leer los datos codificados
-            char* buffer = new char[longitud + 1]; // +1 para el carácter nulo al final
-            archivo.read(buffer, longitud);
-            buffer[longitud] = '\0'; // Asegurar que la cadena termine con '\0'
-
-            string estadoCodificado(buffer);
+      //     LEER SI SE ESCRIBIO TEXTO
+                string estadoCodificado;
+                getline(archivo, estadoCodificado);
 */
-
-
-            string codigo;
-            map<int,string>  caracteresYCodigos;
-            arbolHuffman.generarCodigos(arbolHuffman.getRaiz(), codigo,caracteresYCodigos);
-
-
-            string estadoCodificado;
-            getline(archivo, estadoCodificado);
-
             // Decodificar contenido del juego
-            string contenidoDecodificado = decodificarString(estadoCodificado, caracteresYCodigos, arbolHuffman);
+            string contenidoDecodificado = decodificarString(estadoCodificado, arbolHuffman);
 
             // Actualizar el estado del juego con el contenido decodificado
             risk.cargarEstadoDesdeTexto(contenidoDecodificado);
@@ -1202,7 +1188,7 @@ bool Comandos::cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCa
 }
 
 
-string Comandos::decodificarString(const string &codigo, map<int,string> codigos, const ArbolHuffman &arbolHuffman) {
+string Comandos::decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman) {
     NodoHuffman *nodoActual = arbolHuffman.getRaiz(); // Comenzamos desde la raíz del árbol
     string  textoDecodificado;
     string cadena;
@@ -2003,10 +1989,9 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
 
 
 
-void Comandos::contarCaracteres(map<int,int> &caracteresYFrecuencias, int &total, int &diferentes ,string texto) {
+void Comandos::contarCaracteres(map<int,int> &caracteresYFrecuencias, int &diferentes ,string texto) {
 
     for(char &caracter : texto){
-            total ++;
             if(caracteresYFrecuencias.find(caracter) != caracteresYFrecuencias.end()){
                 caracteresYFrecuencias[caracter] += 1;
             } else{
@@ -2046,15 +2031,12 @@ char Comandos::extraerBit(char y, int posicion){
     } else {
         return '1'; // El bit en la posición está establecido en 0
     }
-
 }
 
 string Comandos::extraerBits (char c){
     string k = "";
-    for (int i = 0; i < 8; i++) //extraer todos los bits
-    {
+    for (int i = 7; i >= 0; i--) {
         k += extraerBit(c, i);
-
     }
     return k;
 }
@@ -2081,11 +2063,11 @@ char Comandos::crearMascara(int posicion) {
 
 char Comandos::obtenerByte(string unByte){
     char byte = 0;
-    for (int i = 0; i < unByte.length(); i++)
+    for (int i = 0;  i < 8; i++)
     {
         if (unByte[i] == '1')
         {
-            char laMascara = crearMascara(i);
+            char laMascara = crearMascara(7-i);
             byte= byte | laMascara;
         }
     }
@@ -2095,6 +2077,12 @@ char Comandos::obtenerByte(string unByte){
 
 vector<char> Comandos::convertirBits(string bytesCadena){
     int longitud = bytesCadena.length();
+    //Padding
+    while (longitud % 8 != 0){
+        bytesCadena+='0';
+        longitud = bytesCadena.length() ;
+    }
+
     string b;
     vector<char> tieneByte;
 
@@ -2103,8 +2091,8 @@ vector<char> Comandos::convertirBits(string bytesCadena){
     {
         b = b + bytesCadena[i];
         if (b.length() % 8 == 0){
-
             tieneByte.push_back(obtenerByte(b));
+            b = "";
         }
     }
     return tieneByte;
