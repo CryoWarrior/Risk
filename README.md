@@ -4,15 +4,16 @@ Este proyecto tiene como objetivo la creación de una herramienta  de software q
 ## Codigo de ejecución programa
 Compilación:
 g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp ArbolHuffman.cpp NodoHuffman.cpp main.cpp
+
 Ejecución:
 ./risk
 
-## Codigo de ejecución programa
+## Codigo de ejecución pruebas
 Compilación:
 g++ -std=c++11 -o prueba Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp ArbolHuffman.cpp NodoHuffman.cpp catch.hpp RiskTestsGuardar.cpp
+
 Ejecución:
 ./prueba
-
 
 ## Authors
 
