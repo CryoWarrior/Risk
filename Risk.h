@@ -9,7 +9,7 @@
 #include "Carta.h"
 #include "Territorio.h"
 #include "map"
-#include "Huffman\ArbolHuffman.h"
+#include "ArbolHuffman.h"
 #include <memory>
 #include <functional>
 using namespace std;

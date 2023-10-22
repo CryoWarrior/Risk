@@ -45,7 +45,7 @@ public:
     bool leerArchivoTexto(Risk &risk, const string &nombreArchivo);
     bool leerComprimido(Risk &risk, const string &nombreArchivo);
     string decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman);
-    bool cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres);
+    bool cargarFrecuenciasDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres);
 
     //Operaciones en bits
     char crearMascara(int posicion);

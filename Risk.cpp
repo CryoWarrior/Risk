@@ -395,19 +395,6 @@ ArbolHuffman Risk::crearArbolHuffman(map<int, int> caracteresYFrecuencias) {
 
 
 
-/*
-string Risk::contenidoDeLaPartidaCodificado(map<int,string> codigosCaracteres) {
-    string salidaArchivo;
-
-    for(const shared_ptr<Territorio> &territorio : listaTerritorios) {
-        //Nombre de territorio
-        for (char caracterActual: territorio.get()->getNombre()) {
-            salidaArchivo += codigosCaracteres[caracterActual];
-        }
-    }
-    return salidaArchivo;
-}*/
-
 string Risk::contenidoDeLaPartidaEnTexto() {
     string salidaArchivo;
 
@@ -514,15 +501,6 @@ void Risk::cargarEstadoDesdeTexto(const string& contenidoArchivo) {
                     break;
                 }
             }
-
-            /*
-            for (auto& carta : listaCartas) {
-                if (carta.getIdCarta() == idCarta && !carta.isAsignada()) {
-                    jugador.agregarCarta(carta);
-                    carta.setAsignada(true);
-                    break;
-                }
-            }*/
         }
 
         listaJugadores.push_back(jugador);

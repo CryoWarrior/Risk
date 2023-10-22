@@ -6,7 +6,7 @@
 #include <vector>
 #include "Comandos.h"
 #include "Risk.h"
-#include "Huffman/NodoHuffman.h"
+#include "NodoHuffman.h"
 
 #ifdef _WIN32
 #include <direct.h>

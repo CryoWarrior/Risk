@@ -916,7 +916,7 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
                 return;
             }
         }else{
-            cout << "(Error al guardar) No se pudo abrir el archivo "<<nombreArchivoCrear<<endl;
+            cout << "(Error al guardar) No se pudo guardar en el archivo "<<nombreArchivoCrear<<endl;
             return;
         }
     }
@@ -995,13 +995,13 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
                 }
 
                 archivo.close();
-                cout<<"(Guardado Exitoso) El estado de la partidad ha sido guardado exitosamente\n";
+                cout<<"(Guardado Exitoso) El estado de la partida ha sido guardado exitosamente\n";
             }catch (exception e){
                 cout << "(Error al guardar) La partida no ha sido guardada correctamente: "<<e.what() <<endl;
                 return;
             }
         }else{
-            cout << "(Error al guardar) No se pudo abrir el archivo\n";
+            cout << "(Error al guardar) No se pudo guardar en el archivo "<<nombreArchivoComprimido<<endl;
             return;
         }
 
@@ -1018,10 +1018,15 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 
 void Comandos::inicializarPartidaCargada(Risk &risk, const string &nombre_archivo) {
 
+    if (risk.isGameInitialized1())
+    {
+        cout << "(Juego en curso) El juego ya ha sido inicializado.\n";
+        return;
+    }
     bool esDeTexto = false;
     bool esBinario = false;
 
-    esDeTexto = leerArchivoTexto(risk,nombre_archivo);
+        esDeTexto = leerArchivoTexto(risk,nombre_archivo);
 
     if(!esDeTexto){
         esBinario = leerComprimido(risk, nombre_archivo);
@@ -1086,7 +1091,7 @@ bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
         try {
             // Leer estructura del árbol Huffman desde el archivo comprimido
             ArbolHuffman arbolHuffman;
-            error = cargarArbolDesdeArchivo(archivo, conteoCaracteres);
+            error = cargarFrecuenciasDesdeArchivo(archivo, conteoCaracteres);
 
             if(error){
                 cout<<"Hubo un error en la lectura de las frecuencias\n";
@@ -1115,11 +1120,7 @@ bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
             }
 
             string estadoCodificado = extraerBitsDeBytes(bytes);
-/*
-      //     LEER SI SE ESCRIBIO TEXTO
-                string estadoCodificado;
-                getline(archivo, estadoCodificado);
-*/
+
             // Decodificar contenido del juego
             string contenidoDecodificado = decodificarString(estadoCodificado, arbolHuffman);
 
@@ -1150,7 +1151,7 @@ bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
 
 
 
-bool Comandos::cargarArbolDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres) {
+bool Comandos::cargarFrecuenciasDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres) {
 
     try{
         // Lee la cantidad de caracteres diferentes
