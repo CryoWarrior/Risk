@@ -26,7 +26,7 @@ public:
     pair<int,vector<string>> encontrarCaminoMinimo(const string& inicio, const string& objetivo);
     VerticeGrafo& encontrarVertice(string nombre);
     list<VerticeGrafo*> obtenerVecinos(string nombre);
-    map<string, map<string, int>> floydWarshall();
+    pair<map<string, map<string, int>>, map<string, map<string, string>>> floydWarshall();
 };
 
 #endif //MAIN_CPP_GRAFO_H

@@ -53,20 +53,28 @@ pair<int,vector<string>> Grafo::encontrarCaminoMinimo(const string& inicio, cons
     }
 }
 
-map<string, map<string, int>>  Grafo::floydWarshall() {
+pair<map<string, map<string, int>>, map<string, map<string, string>>>   Grafo::floydWarshall() {
     map<string, map<string, int>> matrizDistancias;
     map<string, map<string, string>> matrizPredecesores;
 
+    for (VerticeGrafo& i : vertices) {
+        string nombreI = i.getDato()->getNombre();
+        for (VerticeGrafo& j : vertices) {
+            string nombreJ = j.getDato()->getNombre();
 
-    // Inicializar matrizDistancias con los valores de los vértices directos
-    for (VerticeGrafo& v : vertices) {
-        string nombreV = v.getDato()->getNombre();
-        matrizDistancias[nombreV][nombreV] = 0;
-        matrizPredecesores[nombreV][nombreV] = nombreV;
-
-
-        for (const auto& vecino : v.getPaisesColindantes()) {
-            matrizDistancias[nombreV][vecino.first] = vecino.second;
+            if (i.getDato()->getNombre() == j.getDato()->getNombre()) {
+                matrizDistancias[nombreI][nombreJ] = 0;
+                matrizPredecesores[nombreI][nombreJ] = nombreI;
+            } else {
+                auto it = i.getPaisesColindantes().find(nombreJ);
+                if (it != i.getPaisesColindantes().end()) {
+                    matrizDistancias[nombreI][nombreJ] = it->second;
+                    matrizPredecesores[nombreI][nombreJ] = nombreI;
+                } else {
+                    matrizDistancias[nombreI][nombreJ] = numeric_limits<int>::max();
+                    matrizPredecesores[nombreI][nombreJ] = "";
+                }
+            }
         }
     }
 
@@ -89,7 +97,7 @@ map<string, map<string, int>>  Grafo::floydWarshall() {
             }
         }
     }
-    return matrizDistancias;
+    return make_pair(matrizDistancias,matrizPredecesores);
 }
 
 VerticeGrafo& Grafo::encontrarVertice(string nombre) {

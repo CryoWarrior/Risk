@@ -60,7 +60,8 @@ public:
     bool verificarTerritorio(Risk& risk, string nombreTerritorio);
     vector<int> calcularPerdidasEntreTerritorios(Territorio* origen, Territorio* destino);
     bool territorioNoJugador(Jugador& jugador, string nombreTerritorio);
-
+    vector<string> obtenerCamino(map<string, map<string, string>>& matrizPredecesores,const string& inicio, const string& fin);
+    int  eliminarTropasPropiasDeCamino(Jugador& jugador, vector<string> listaTerritorios, int tropasTotales);
     };
 
 
