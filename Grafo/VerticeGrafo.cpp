@@ -13,19 +13,19 @@ void VerticeGrafo::setDato(Territorio *dato) {
     VerticeGrafo::dato = dato;
 }
 
-const list<string> &VerticeGrafo::getPaisColindante() const {
+const map<string,int> &VerticeGrafo::getPaisesColindantes() const {
     return paisesColindantes;
 }
 
-void VerticeGrafo::setPaisColindante(const list<string> &paisColindante) {
+void VerticeGrafo::setPaisesColindantes(const map<string,int> &paisColindante) {
     VerticeGrafo::paisesColindantes = paisColindante;
 }
 
-void VerticeGrafo::agregarPaisColidante(const string& nombrePais) {
-    VerticeGrafo::paisesColindantes.push_back(nombrePais);
+void VerticeGrafo::agregarPaisColidante(const string& nombrePais, int tropas) {
+    VerticeGrafo::paisesColindantes[nombrePais] = tropas;
 }
 
-VerticeGrafo::VerticeGrafo(Territorio *dato, const list<string> &paisesColindantes) : dato(dato), paisesColindantes(
+VerticeGrafo::VerticeGrafo(Territorio *dato, const map<string,int> &paisesColindantes) : dato(dato), paisesColindantes(
         paisesColindantes) {}
 
 

@@ -30,6 +30,10 @@ public:
 
     //Sobrecarga operadores
     Territorio& operator=(const Territorio &other);
+
+    //Otros
+    int contarTropas();
+
 };
 
 

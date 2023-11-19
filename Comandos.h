@@ -18,9 +18,8 @@ public:
     void salirJuego(Risk& risk);
     void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
     void guardarEstadoComprimido(Risk& risk,const string &nombreArchivo);
-    string costoConquista(Risk &risk, const string &territorio);
-    string conquistaMasBarata(Risk& risk,const vector<string> &territorios);
-
+    void costoConquista(Risk &risk, const string &territorio);
+    void conquistaMasBarata(Risk& risk, string territorioOrigen);
 
     //Inicio
     int obtenerNuevasUnidades(Jugador& jugador, Risk& risk);
@@ -59,7 +58,8 @@ public:
 
     //Buscar Camino territorio
     bool verificarTerritorio(Risk& risk, string nombreTerritorio);
-
+    vector<int> calcularPerdidasEntreTerritorios(Territorio* origen, Territorio* destino);
+    bool territorioNoJugador(Jugador& jugador, string nombreTerritorio);
 
     };
 

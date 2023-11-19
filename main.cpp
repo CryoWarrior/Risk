@@ -86,9 +86,13 @@ int main() {
                     cout << "Comando costo_conquista requiere un territorio.\n";
                 }
             } else if (commandName == "conquista_mas_barata") {
-                vector<string> territorios(0);
+                if (tokens.size() >= 2) { // Verificar que haya un territorio
+                    comandos.conquistaMasBarata(risk, tokens[1]);
+                } else {
+                    cout << "Comando conquista_mas_barata requiere un territorio.\n";
+                }
 
-                comandos.conquistaMasBarata(risk, territorios);
+
             } else if (commandName == "ayuda") {
                 if (tokens.size() == 1) {
                     if (!risk.isGameInitialized1()) {
@@ -111,7 +115,7 @@ int main() {
                                 << "costo_conquista <territorio>        Calcula el costo y la secuencia de territorios a ser conquistados para lograr "
                                    "controlar el territorio dado por el jugador actual." << endl;
                         cout
-                                << "conquista_mas_barata                Calcula el territorio el cual implica una menor cantidad de unidades de ejericito perdidos del jugador actual"
+                                << "conquista_mas_barata <territorio>    Calcula el territorio el cual implica una menor cantidad de unidades de ejericito perdidos del jugador actual"
                                 << endl;
                     }
                 } else if (tokens.size() == 2) {

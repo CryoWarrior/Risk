@@ -41,6 +41,14 @@ void Territorio::agregarTropa(Tropa tropa) {
     this->tropas.push_back(tropa);
 }
 
+int Territorio::contarTropas() {
+    int contador = 0;
+    for(const Tropa& tropa : tropas){
+        contador += tropa.getValorTropa();
+    }
+    return contador;
+}
+
 
 
 

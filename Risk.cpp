@@ -525,7 +525,7 @@ Grafo Risk::crearGrafo() {
     //Crea las relaciones
     for(VerticeGrafo& verticeGrafo: grafo.getVertices()){
         for(Territorio* territorioAdyacente: verticeGrafo.getDato()->getTerritoriosColindantes()){
-            verticeGrafo.agregarPaisColidante(territorioAdyacente->getNombre());
+            verticeGrafo.agregarPaisColidante(territorioAdyacente->getNombre(), territorioAdyacente->contarTropas());
         }
     }
 
