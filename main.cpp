@@ -115,7 +115,7 @@ int main() {
                                 << "costo_conquista <territorio>        Calcula el costo y la secuencia de territorios a ser conquistados para lograr "
                                    "controlar el territorio dado por el jugador actual." << endl;
                         cout
-                                << "conquista_mas_barata <territorio>    Calcula el territorio el cual implica una menor cantidad de unidades de ejericito perdidos del jugador actual"
+                                << "conquista_mas_barata <territorio>    Calcula el camino que implica menor perdida de tropas para atacar de cada uno de los territorios"
                                 << endl;
                     }
                 } else if (tokens.size() == 2) {
