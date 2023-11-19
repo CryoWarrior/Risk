@@ -17,14 +17,14 @@ public:
     NodoHuffman(int frecuencia, int codigoSimbolo);
 
     //Getters y Setters
-    NodoHuffman *getIzq() const;
-    void setIzq(NodoHuffman *izq);
-    NodoHuffman *getDer() const;
-    void setDer(NodoHuffman *der);
-    int getFrecuencia() const;
-    void setFrecuencia(int frecuencia);
-    int getCodigoSimbolo() const;
-    void setCodigoSimbolo(int codigoSimbolo);
+        NodoHuffman *getIzq() const;
+        void setIzq(NodoHuffman *izq);
+        NodoHuffman *getDer() const;
+        void setDer(NodoHuffman *der);
+        int getFrecuencia() const;
+        void setFrecuencia(int frecuencia);
+        int getCodigoSimbolo() const;
+        void setCodigoSimbolo(int codigoSimbolo);
 
     //Sobrecarga operadores
     bool operator<(const NodoHuffman &other) const;

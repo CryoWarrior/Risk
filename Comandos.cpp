@@ -274,13 +274,6 @@ void Comandos::inicializarJuego(Risk &risk)
     }
 }
 
-
-
-
-
-
-
-
 void Comandos::turnoJugador(int jugadorId, Risk &risk)
 {
     bool condicional = false;
@@ -868,10 +861,6 @@ void Comandos::salirJuego(Risk &risk)
     cout << "El juego ha terminado. Hasta luego!\n";
 }
 
-
-
-
-
 void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
 {
     if (!risk.isGameInitialized1())
@@ -921,11 +910,6 @@ void Comandos::guardarEstadoJuego(Risk &risk, const string &nombreArchivo)
         }
     }
 }
-
-
-
-
-
 
 void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
 {
@@ -1008,14 +992,6 @@ void Comandos::guardarEstadoComprimido(Risk &risk, const string &nombreArchivo)
     }
 }
 
-
-
-
-
-
-
-
-
 void Comandos::inicializarPartidaCargada(Risk &risk, const string &nombre_archivo) {
 
     if (risk.isGameInitialized1())
@@ -1037,8 +1013,6 @@ void Comandos::inicializarPartidaCargada(Risk &risk, const string &nombre_archiv
     }
 
 }
-
-
 
 bool Comandos::leerArchivoTexto(Risk &risk, const string &nombreArchivo) {
 
@@ -1149,8 +1123,6 @@ bool Comandos::leerComprimido(Risk &risk, const string &nombreArchivo) {
 
 }
 
-
-
 bool Comandos::cargarFrecuenciasDesdeArchivo(ifstream& archivo, map<int,int>& conteoCaracteres) {
 
     try{
@@ -1188,7 +1160,6 @@ bool Comandos::cargarFrecuenciasDesdeArchivo(ifstream& archivo, map<int,int>& co
     }
 }
 
-
 string Comandos::decodificarString(const string &codigo, const ArbolHuffman &arbolHuffman) {
     NodoHuffman *nodoActual = arbolHuffman.getRaiz(); // Comenzamos desde la raíz del árbol
     string  textoDecodificado;
@@ -1213,19 +1184,7 @@ string Comandos::decodificarString(const string &codigo, const ArbolHuffman &arb
     return textoDecodificado;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-string Comandos::costoConquista(Risk &risk, const string &territorio, const vector<string> &territorios)
+string Comandos::costoConquista(Risk &risk, const string &territorio)
 {
     if (!risk.isGameInitialized1())
     {
@@ -1238,63 +1197,115 @@ string Comandos::costoConquista(Risk &risk, const string &territorio, const vect
     }
     else
     {
+
+        bool existe = verificarTerritorio(risk, territorio);
+        if(!existe){
+            cout<<"Este territorio no existe"<<endl;
+            return "";
+        }
+
+        //Crea Grafo
+        Grafo grafo = risk.crearGrafo();
+
+
         // Mostrar el mensaje con los valores calculados
         cout << "(Comando correcto) Para conquistar el territorio "
              << territorio;
 
-        if (!territorios.empty())
+        if (!territorio.empty())
         {
-            cout << ", debe atacar desde " << territorios[0]
+            cout << ", debe atacar desde " << territorio[0]
                  << ", pasando por los territorios ";
 
-            for (size_t i = 1; i < territorios.size(); ++i)
+            for (size_t i = 1; i < territorio.size(); ++i)
             {
-                cout << territorios[i];
-                if (i < territorios.size() - 1)
+                cout << territorio[i];
+                if (i < territorio.size() - 1)
                 {
                     cout << ", ";
                 }
             }
         }
 
-        cout << ". Debe conquistar " << territorios.size()
+        cout << ". Debe conquistar " << territorio.size()
              << " unidades de ejercito.\n";
     }
     return "Pronto implementado >O";
 }
 
-string Comandos::conquistaMasBarata(Risk &risk, const vector<string> &territorios)
+vector<int> Comandos::calcularPerdidasEntreTerritorios(Territorio* origen, Territorio* destino) {
+    //Obtener la cantidad de tropas del atacante y del defensor
+    list<Tropa> tropasAtacante = origen->getTropas();
+    list<Tropa> tropasDefensor = destino->getTropas();
+
+    //Calcular la cantidad de tropas que se utilizaban en el ataque
+    int cantidadAtacante = tropasAtacante.size() <= 3 ? tropasAtacante.size() : 3;
+    int cantidadDefensor = tropasDefensor.size() <= 2 ? tropasDefensor.size() : 2;
+
+    //Lanzar dados para el atacante y el defensor
+    vector<int> resultadoAtacante = lanzarDados(cantidadAtacante);
+    vector<int> resultadoDefensor = lanzarDados(cantidadDefensor);
+
+    //Calcular las pérdidas comparando los resultados de los dados
+    int perdidasA = 0;
+    int perdidasD = 0;
+
+    //Comparar los resultados de los dados para determinar las pérdidas
+    for (size_t i = 0; i < min(resultadoAtacante.size(), resultadoDefensor.size()); i++) {
+        if (resultadoDefensor[i] >= resultadoAtacante[i]) {
+            perdidasA++;
+        } else {
+            perdidasD++;
+        }
+    }
+
+    //El vector de vuelta devuelve primero las pérdidas del defensor y luego las del atacante
+    vector<int> perdidas = { perdidasD, perdidasA };
+    return perdidas;
+}
+
+string Comandos::conquistaMasBarata(Risk& risk, const vector<string>& territorios)
 {
-    if (!risk.isGameInitialized1())
-    {
-        cout << "(Juego no inicializado) Esta partida no ha sido inicializada "
-                "correctamente.\n";
+    if (!risk.isGameInitialized1()) {
+        return "(Juego no inicializado) Esta partida no ha sido inicializada correctamente.";
     }
-    else if (risk.isGameOver1())
-    {
-        cout << "(Juego terminado) Esta partida ya tuvo un ganador.\n";
+    else if (risk.isGameOver1()) {
+        return "(Juego terminado) Esta partida ya tuvo un ganador.";
     }
-    else
-    {
-        // Mostrar el mensaje con los valores calculados
-        cout << "(Comando correcto) El territorio con menor costo de conquista es: \n";
+    else {
+        Jugador jugadorActual = risk.getJugadorPorTurnoActual(); // Obtener el jugador actual
+        list<Territorio*> territoriosLista = jugadorActual.getTerritoriosOcupados();
+        // Inicializar variables para el cálculo de la conquista más barata
+        string territorioOrigen = "";
+        string territorioDestino = "";
+        int unidadesPerdidas = numeric_limits<int>::max(); // Inicializado con un valor muy grande
 
-        if (!territorios.empty())
-        {
-            cout << ", debe avanzar sobre el territorio " << territorios[0]
-                 << ", desde el territorio ";
-
-            for (size_t i = 1; i < territorios.size(); ++i)
-            {
-                cout << territorios[i];
-                if (i < territorios.size() - 1)
-                {
-                    cout << ", ";
+        // Iterar sobre los territorios del jugador para encontrar la conquista más barata
+        for (Territorio* origen : jugadorActual.getTerritoriosOcupados()) {
+            for (Territorio* destino : origen->getTerritoriosColindantes()) {
+                //Calcular las pérdidas entre el territorio actual y el territorio destino
+                vector<int> perdidas = calcularPerdidasEntreTerritorios(origen, destino);
+                //Actualizar información si las unidades perdidas son menores
+                if (perdidas[1] < unidadesPerdidas) {
+                    territorioOrigen = origen -> getNombre();
+                    territorioDestino = destino -> getNombre();
+                    unidadesPerdidas = perdidas[1]; //Actualizar la cantidad mínima de unidades perdidas
                 }
             }
         }
+
+        // Generar la salida en función de los resultados obtenidos
+        if (territorioOrigen.empty() || territorioDestino.empty()) {
+            return "(Jugador no válido) No se encontró una conquista más barata válida.";
+        }
+        else {
+            // Generar el mensaje con los territorios involucrados y unidades perdidas
+            string mensaje = "(Comando correcto) La conquista más barata es avanzar sobre el territorio " + territorioDestino +
+                             " desde el territorio " + territorioOrigen + ". Debe conquistar " + to_string(unidadesPerdidas) +
+                             " unidades de ejército.";
+            return mensaje;
+        }
     }
-    return "Implementado pronto :v";
 }
 
 int Comandos::obtenerNuevasUnidades(Jugador &jugador, Risk &risk)
@@ -1988,8 +1999,6 @@ void Comandos::fortificarPosicion(Jugador &jugadorActual, Risk &risk)
     }
 }
 
-
-
 void Comandos::contarCaracteres(map<int,int> &caracteresYFrecuencias, int &diferentes ,string texto) {
 
     for(char &caracter : texto){
@@ -2013,13 +2022,6 @@ string Comandos::codificarString(string texto, map<int, string> caracteresYCodig
 
     return codificado;
 }
-
-
-
-
-
-
-
 
 char Comandos::extraerBit(char y, int posicion){
     //1. crear la mascara con la posicion (se hace llamando la funcion crear mascara)
@@ -2052,7 +2054,6 @@ string Comandos::extraerBitsDeBytes(vector<char> bytes) {
     return res;
 }
 
-
 char Comandos::crearMascara(int posicion) {
     // Crear un byte con un 1 guardado en la posición deseada
     char uno = 1;
@@ -2075,7 +2076,6 @@ char Comandos::obtenerByte(string unByte){
     return byte;
 }
 
-
 vector<char> Comandos::convertirBits(string bytesCadena){
     int longitud = bytesCadena.length();
     //Padding
@@ -2097,5 +2097,18 @@ vector<char> Comandos::convertirBits(string bytesCadena){
         }
     }
     return tieneByte;
+}
+
+bool Comandos::verificarTerritorio(Risk& risk, string nombreTerritorio) {
+    bool existe = false;
+
+    for(auto territorio:risk.getListaTerritorios()){
+        if(territorio.get()->getNombre() == nombreTerritorio){
+            existe = true;
+            break;
+        }
+    }
+
+    return existe;
 }
 

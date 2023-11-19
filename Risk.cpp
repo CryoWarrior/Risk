@@ -510,3 +510,25 @@ void Risk::cargarEstadoDesdeTexto(const string& contenidoArchivo) {
     ss >> currentTurn;
 
 }
+
+Grafo Risk::crearGrafo() {
+
+    Grafo grafo;
+
+    //Crea las vertices
+    for(const shared_ptr<Territorio>& territorioP : this->listaTerritorios){
+        Territorio* territorio = territorioP.get();
+        VerticeGrafo verticeGrafo(territorio);
+        grafo.agregarVertice(verticeGrafo);
+    }
+
+    //Crea las relaciones
+    for(VerticeGrafo& verticeGrafo: grafo.getVertices()){
+        for(Territorio* territorioAdyacente: verticeGrafo.getDato()->getTerritoriosColindantes()){
+            verticeGrafo.agregarPaisColidante(territorioAdyacente->getNombre());
+        }
+    }
+
+    return grafo;
+}
+

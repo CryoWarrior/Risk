@@ -6,7 +6,7 @@
 #include <vector>
 #include "Comandos.h"
 #include "Risk.h"
-#include "NodoHuffman.h"
+#include "Huffman/NodoHuffman.h"
 
 #ifdef _WIN32
 #include <direct.h>
@@ -81,12 +81,7 @@ int main() {
                 }
             } else if (commandName == "costo_conquista") {
                 if (tokens.size() >= 2) { // Verificar que haya un territorio
-                    vector<string> territoriosNecesarios;
-
-                    for (size_t i = 2; i < tokens.size(); ++i) {
-                        territoriosNecesarios.push_back(tokens[i]);
-                    }
-                    comandos.costoConquista(risk, tokens[1], territoriosNecesarios);
+                    comandos.costoConquista(risk, tokens[1]);
                 } else {
                     cout << "Comando costo_conquista requiere un territorio.\n";
                 }

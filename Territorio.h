@@ -1,6 +1,3 @@
-#pragma once
-
-
 #ifndef TERRITORIO_H
 #define TERRITORIO_H
 
@@ -33,8 +30,6 @@ public:
 
     //Sobrecarga operadores
     Territorio& operator=(const Territorio &other);
-
-
 };
 
 

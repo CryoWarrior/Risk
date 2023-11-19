@@ -16,11 +16,9 @@ class ArbolHuffman{
 protected:
 
     NodoHuffman* raiz;
-    int cantidadDeCaracteres;
 
 public:
     //Constructor
-    struct customComparator;
     ArbolHuffman();
     ArbolHuffman(deque<NodoHuffman*> colaFrecuencia);
 

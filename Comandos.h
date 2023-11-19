@@ -18,7 +18,7 @@ public:
     void salirJuego(Risk& risk);
     void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
     void guardarEstadoComprimido(Risk& risk,const string &nombreArchivo);
-    string costoConquista(Risk& risk, const string &territorio,const vector<string> &territorios);
+    string costoConquista(Risk &risk, const string &territorio);
     string conquistaMasBarata(Risk& risk,const vector<string> &territorios);
 
 
@@ -55,6 +55,10 @@ public:
     char extraerBit(char y, int posicion);
     string extraerBits (char c);
     string extraerBitsDeBytes(vector<char> bytes);
+
+
+    //Buscar Camino territorio
+    bool verificarTerritorio(Risk& risk, string nombreTerritorio);
 
 
     };

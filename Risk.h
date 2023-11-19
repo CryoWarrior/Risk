@@ -1,17 +1,23 @@
 #ifndef RISK_H
 #define RISK_H
 
-#include "list"
-#include "vector"
+#include <list>
+#include <map>
+#include <vector>
+#include <memory>
+#include <functional>
+
+
 #include "Tropa.h"
 #include "Continente.h"
 #include "Jugador.h"
 #include "Carta.h"
 #include "Territorio.h"
-#include "map"
-#include "ArbolHuffman.h"
-#include <memory>
-#include <functional>
+
+#include "Huffman/ArbolHuffman.h"
+
+#include "Grafo/Grafo.h"
+
 using namespace std;
 class Risk {
 protected:
@@ -51,7 +57,9 @@ public:
 
     string contenidoDeLaPartidaEnTexto();
     void cargarEstadoDesdeTexto(const string& contenidoArchivo);
-    string contenidoDeLaPartidaCodificado(map<int,string> carateresYCodigos);
+
+    Grafo crearGrafo();
+
 
 };
 

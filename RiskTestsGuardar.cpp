@@ -1,7 +1,7 @@
 // This tells Catch to provide a main() - only do this in one cpp file
 #define CATCH_CONFIG_MAIN
 // This includes the catch.hpp file
-#include "catch.hpp"
+#include "Librerias/catch.hpp"
 #include "Comandos.h"
 #include "Risk.h"
 
