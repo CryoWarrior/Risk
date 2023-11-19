@@ -3,7 +3,7 @@ Este proyecto tiene como objetivo la creación de una herramienta  de software q
 
 ## Codigo de ejecución programa
 Compilación:
-g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp ArbolHuffman.cpp NodoHuffman.cpp main.cpp
+g++ -std=c++11 -o risk Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp Huffman/ArbolHuffman.cpp Huffman/NodoHuffman.cpp Grafo/Grafo.cpp  Grafo/VerticeGrafo.cpp main.cpp
 
 Ejecución:
 ./risk
