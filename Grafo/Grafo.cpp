@@ -100,15 +100,14 @@ pair<map<string, map<string, int>>, map<string, map<string, string>>>   Grafo::f
     return make_pair(matrizDistancias,matrizPredecesores);
 }
 
-VerticeGrafo& Grafo::encontrarVertice(string nombre) {
+VerticeGrafo* Grafo::encontrarVertice(string nombre) {
 
     for(VerticeGrafo& vertice : vertices){
         if(vertice.getDato()->getNombre()==nombre){
-            return vertice;
+            return &vertice;
         }
     }
-    VerticeGrafo vertice;
-    return vertice;
+    return nullptr;
 }
 
 list<VerticeGrafo *> Grafo::obtenerVecinos(string nombre) {
@@ -118,7 +117,7 @@ list<VerticeGrafo *> Grafo::obtenerVecinos(string nombre) {
         if(verticeGrafo.getDato()->getNombre() == nombre){
             for(auto Pvecino: verticeGrafo.getPaisesColindantes()){
                 string vecino = Pvecino.first;
-                vecinos.push_back(&encontrarVertice(vecino));
+                vecinos.push_back(encontrarVertice(vecino));
             }
             break;
         }

@@ -24,7 +24,7 @@ public:
     void agregarVertice(const VerticeGrafo& vertice);
 
     pair<int,vector<string>> encontrarCaminoMinimo(const string& inicio, const string& objetivo);
-    VerticeGrafo& encontrarVertice(string nombre);
+    VerticeGrafo* encontrarVertice(string nombre);
     list<VerticeGrafo*> obtenerVecinos(string nombre);
     pair<map<string, map<string, int>>, map<string, map<string, string>>> floydWarshall();
 };
