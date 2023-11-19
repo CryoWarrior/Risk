@@ -2202,37 +2202,6 @@ bool Comandos::verificarTerritorio(Risk& risk, string nombreTerritorio) {
     return existe;
 }
 
-vector<int> Comandos::calcularPerdidasEntreTerritorios(Territorio* origen, Territorio* destino) {
-    //Obtener la cantidad de tropas del atacante y del defensor
-    list<Tropa> tropasAtacante = origen->getTropas();
-    list<Tropa> tropasDefensor = destino->getTropas();
-
-    //Calcular la cantidad de tropas que se utilizaban en el ataque
-    int cantidadAtacante = tropasAtacante.size() <= 3 ? tropasAtacante.size() : 3;
-    int cantidadDefensor = tropasDefensor.size() <= 2 ? tropasDefensor.size() : 2;
-
-    //Lanzar dados para el atacante y el defensor
-    vector<int> resultadoAtacante = lanzarDados(cantidadAtacante);
-    vector<int> resultadoDefensor = lanzarDados(cantidadDefensor);
-
-    //Calcular las pérdidas comparando los resultados de los dados
-    int perdidasA = 0;
-    int perdidasD = 0;
-
-    //Comparar los resultados de los dados para determinar las pérdidas
-    for (size_t i = 0; i < min(resultadoAtacante.size(), resultadoDefensor.size()); i++) {
-        if (resultadoDefensor[i] >= resultadoAtacante[i]) {
-            perdidasA++;
-        } else {
-            perdidasD++;
-        }
-    }
-
-    //El vector de vuelta devuelve primero las pérdidas del defensor y luego las del atacante
-    vector<int> perdidas = { perdidasD, perdidasA };
-    return perdidas;
-}
-
 bool Comandos::territorioNoJugador(Jugador& jugador, string nombreTerritorio) {
     bool esDeJugador = false;
 
