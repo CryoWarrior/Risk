@@ -2262,3 +2262,5 @@ int Comandos::eliminarTropasPropiasDeCamino(Jugador& jugador, vector<string> lis
 
     return tropasTotales;
 }
+
+
