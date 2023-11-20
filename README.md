@@ -10,7 +10,7 @@ Ejecución:
 
 ## Codigo de ejecución pruebas
 Compilación:
-g++ -std=c++11 -o prueba Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp ArbolHuffman.cpp NodoHuffman.cpp catch.hpp RiskTestsGuardar.cpp
+g++ -std=c++11 -o prueba Carta.cpp Comandos.cpp Continente.cpp Jugador.cpp Risk.cpp Territorio.cpp Tropa.cpp Huffman/ArbolHuffman.cpp Huffman/NodoHuffman.cpp Grafo/Grafo.cpp  Grafo/VerticeGrafo.cpp RiskTests.cpp
 
 Ejecución:
 ./prueba
