@@ -12,7 +12,7 @@
 // Include the header file of the class that you are testing
 
 void inicializarJuegoQuemado(Risk &risk);
-/*
+
 // Create a test case
 TEST_CASE("Creacion de archivos")
 {
@@ -129,20 +129,8 @@ TEST_CASE("Guardar contenido partida correctamente"){
         REQUIRE(contenidoLeido == contenidoEsperado);
     }
 }
-*/
-TEST_CASE("Pruebas grafos"){
-    SECTION("Costo Conquista"){
 
-        Risk risk = Risk();
-        inicializarJuegoQuemado(risk);
 
-        Comandos comandos;
-        string resultado = comandos.costoConquista(risk, "India");
-
-        REQUIRE(resultado == "hola");
-
-    }
-}
 
 /*
 TEST_CASE("Lectura de archivos")
