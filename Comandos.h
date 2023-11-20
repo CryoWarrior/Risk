@@ -18,8 +18,8 @@ public:
     void salirJuego(Risk& risk);
     void guardarEstadoJuego(Risk& risk, const string &nombreArchivo);
     void guardarEstadoComprimido(Risk& risk,const string &nombreArchivo);
-    void costoConquista(Risk &risk, const string &territorio);
-    void conquistaMasBarata(Risk& risk, string territorioOrigen);
+    string costoConquista(Risk &risk, const string &territorio);
+    string conquistaMasBarata(Risk& risk, string territorioOrigen);
 
     //Inicio
     int obtenerNuevasUnidades(Jugador& jugador, Risk& risk);

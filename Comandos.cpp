@@ -1218,7 +1218,7 @@ string Comandos::decodificarString(const string &codigo, const ArbolHuffman &arb
 
 
 
-void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
+string Comandos::costoConquista(Risk &risk, const string &territorioDestino)
 {
     if (!risk.isGameInitialized1())
     {
@@ -1235,7 +1235,7 @@ void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
         bool existe = verificarTerritorio(risk, territorioDestino);
         if(!existe){
             cout<<"Este territorio no existe"<<endl;
-            return;
+            return "Este territorio no existe";
         }
 
         Jugador* jugadorActual;
@@ -1251,7 +1251,7 @@ void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
         for(auto territorio: jugadorActual->getTerritoriosOcupados()){
             if(territorio->getNombre() == territorioDestino){
                 cout<<"Este territorio ya es tuyo"<<endl;
-                return;
+                return "Este territorio ya es tuyo";
             }
         }
 
@@ -1265,7 +1265,6 @@ void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
             listaOpciones.push_back(grafo.encontrarCaminoMinimo(territorioJugador->getNombre(), territorioDestino));
         }
 
-
         pair<int,vector<string>> caminoMenor = listaOpciones[0];
 
         for(auto opcionCamino : listaOpciones){
@@ -1274,9 +1273,12 @@ void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
             }
         }
 
+        string prueba;
+
         // Mostrar el mensaje con los valores calculados
         cout << "(Comando correcto) Para conquistar el territorio "
              << territorioDestino;
+        prueba += "(Comando correcto) Para conquistar el territorio " + territorioDestino;
 
         vector<string> territoriosCaminoMenor = caminoMenor.second;
         list<string> territoriosCamino;
@@ -1284,23 +1286,29 @@ void Comandos::costoConquista(Risk &risk, const string &territorioDestino)
         {
             cout << ", debe atacar desde " << territoriosCaminoMenor[0]
                  << ", pasando por los territorios ";
+            prueba += ", debe atacar desde "+ territoriosCaminoMenor[0]+", pasando por los territorios ";
 
             for (size_t i = 1; i < territoriosCaminoMenor.size(); ++i)
             {
                 cout << territoriosCaminoMenor[i];
+                prueba += territoriosCaminoMenor[i];
                 if (i < territoriosCaminoMenor.size() - 1)
                 {
                     cout << ", ";
+                    prueba += ", ";
                 }
             }
         }
 
         cout << ". Debe conquistar " << caminoMenor.first
              << " unidades de ejercito.\n";
+        prueba + ". Debe conquistar " + to_string(caminoMenor.first)  + " unidades de ejercito.\n";
+
+        return  prueba;
     }
 }
 
-void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
+string Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
 {
     if (!risk.isGameInitialized1()) {
         cout << "(Juego no inicializado) Esta partida no ha sido inicializada correctamente."<<endl;
@@ -1313,7 +1321,7 @@ void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
         bool existe = verificarTerritorio(risk, nTerritorioOrigen);
         if(!existe){
             cout<<"Este territorio no existe"<<endl;
-            return;
+            return "Este territorio no existe";
         }
 
         Jugador* jugadorActual; // Obtener el jugador actual
@@ -1330,7 +1338,7 @@ void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
         esDeJugador = territorioNoJugador(*jugadorActual, nTerritorioOrigen);
         if(!esDeJugador){
             cout <<  "Este territorio no es tuyo"<<endl;
-            return;
+            return "Este territorio no es tuyo";
         }
 
         Territorio territorioOrigen;
@@ -1356,7 +1364,7 @@ void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
 
         map<string, pair<vector<string>, int> > listaCaminos;
 
-        // Imprimir las matrizDistancias
+        // Obtener los caminos
         for(auto territorio: risk.getListaTerritorios()){
             esDeJugador = territorioNoJugador(*jugadorActual, territorio->getNombre());
             if(!esDeJugador){
@@ -1367,6 +1375,8 @@ void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
                 listaCaminos[territorio->getNombre()] = datos;
             }
         }
+        string prueba;
+        int contadorPrueba = 1;
 
         // Generar el mensaje con los territorios involucrados y unidades perdidas
         for(auto territorioV : risk.getListaTerritorios()){
@@ -1375,16 +1385,25 @@ void Comandos::conquistaMasBarata(Risk &risk, string nTerritorioOrigen)
             if(!esDeJugador){
                 cout << "La conquista mas barata para llegar al territorio " + territorioV->getNombre() +
                         " es comenzar desde el territorio " + nTerritorioOrigen + ", pasando por los territorios: ";
+                if(contadorPrueba == 1)
+                prueba += "La conquista mas barata para llegar al territorio " + territorioV->getNombre() +
+                         " es comenzar desde el territorio " + nTerritorioOrigen + ", pasando por los territorios: ";
 
                 for(const string& camino: listaCaminos[territorioV->getNombre()].first) {
                     cout<< camino +" ";
+                    if(contadorPrueba == 1)
+                        prueba += camino +" ";
                 }
 
                 cout<<".Debe conquistar " + to_string(listaCaminos[territorioV->getNombre()].second) + " unidades de ejercito.\n";
+                if(contadorPrueba == 1)
+                    prueba += ".Debe conquistar " + to_string(listaCaminos[territorioV->getNombre()].second) + " unidades de ejercito.\n";
             }
             cout<<endl<<endl;
         }
+        return prueba;
     }
+
 }
 
 int Comandos::obtenerNuevasUnidades(Jugador &jugador, Risk &risk)

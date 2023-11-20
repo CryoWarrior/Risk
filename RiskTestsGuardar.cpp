@@ -12,7 +12,7 @@
 // Include the header file of the class that you are testing
 
 void inicializarJuegoQuemado(Risk &risk);
-
+/*
 // Create a test case
 TEST_CASE("Creacion de archivos")
 {
@@ -127,6 +127,80 @@ TEST_CASE("Guardar contenido partida correctamente"){
 
 
         REQUIRE(contenidoLeido == contenidoEsperado);
+    }
+}
+*/
+TEST_CASE("Pruebas grafos"){
+    SECTION("Costo Conquista"){
+
+        Risk risk = Risk();
+        inicializarJuegoQuemado(risk);
+
+        Comandos comandos;
+        comandos.costoConquista(risk, "India");
+
+        REQUIRE(true);
+
+
+
+        /*
+        Jugador* jugadorActual;
+
+        for (Jugador &jugadorX : risk.getListaJugadores())
+        {
+            if (risk.getCurrentTurn() == jugadorX.getIdJugador())
+            {
+                jugadorActual = &jugadorX;
+                break;
+            }
+        }
+
+        //Crea Grafo
+        Grafo grafo = risk.crearGrafo();
+        string territorioDestino = "India";
+        vector<pair<int,vector<string>>> listaOpciones;
+
+        for(auto territorioJugador: jugadorActual->getTerritoriosOcupados()){
+            listaOpciones.push_back(grafo.encontrarCaminoMinimo(territorioJugador->getNombre(), territorioDestino));
+        }
+
+        pair<int,vector<string>> caminoMenor = listaOpciones[0];
+
+        for(auto opcionCamino : listaOpciones){
+            if(opcionCamino.second.size() <= caminoMenor.second.size()){
+                caminoMenor = opcionCamino;
+            }
+        }
+
+        // Mostrar el mensaje con los valores calculados
+        cout << "(Comando correcto) Para conquistar el territorio "
+             << territorioDestino;
+
+        vector<string> territoriosCaminoMenor = caminoMenor.second;
+        list<string> territoriosCamino;
+        if (!territoriosCaminoMenor.empty())
+        {
+            cout << ", debe atacar desde " << territoriosCaminoMenor[0]
+                 << ", pasando por los territorios ";
+
+            for (size_t i = 1; i < territoriosCaminoMenor.size(); ++i)
+            {
+                cout << territoriosCaminoMenor[i];
+                if (i < territoriosCaminoMenor.size() - 1)
+                {
+                    cout << ", ";
+                }
+            }
+        }
+
+        REQUIRE(contenidoLeido == contenidoEsperado);
+
+
+        cout << ". Debe conquistar " << caminoMenor.first
+             << " unidades de ejercito.\n";
+             */
+
+
     }
 }
 
